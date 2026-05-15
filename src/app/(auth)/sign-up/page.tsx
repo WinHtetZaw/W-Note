@@ -1,20 +1,54 @@
 "use client";
 
 import { authClient } from "@/lib/auth-client";
+import { useState } from "react";
 
 export default function SignUpPage() {
+  const [name, setName] = useState("")
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+
   async function handleSignup() {
+    console.log("Signing up with:", { name, email, password });
+    if(!name || !email || !password) {
+      alert("Please fill in all fields");
+      return;
+    }
     await authClient.signUp.email({
-      email: "test@test.com",
-      password: "12345678",
-      name: "Zeed",
+      email,
+      password,
+      name,
     });
   }
 
   return (
-    <button onClick={handleSignup}>
-      Sign Up
-    </button>
+    // <button onClick={handleSignup}>
+    //   Sign Up
+    // </button>
+    <div>
+     <input
+        placeholder="Name"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
+
+      <input
+        placeholder="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+
+      <input
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
+
+      <button onClick={handleSignup}>
+        Sign Up
+      </button>
+    </div>
   );
 }
 
