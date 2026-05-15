@@ -9,23 +9,15 @@ import {
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 import { user as usersTable } from "./auth-schema";
-import * as authSchema from "./auth-schema";
 
-/* =========================================================
-   USERS
-========================================================= */
+export const createdAt = timestamp("created_at", { withTimezone: true })
+  .defaultNow()
+  .notNull();
 
-// export const usersTable = pgTable("users", {
-//   id: text("id").primaryKey(), // clerk user id
-//   name: varchar("name", { length: 255 }),
-//   email: varchar("email", { length: 255 }).notNull().unique(),
-//   image: text("image"),
-//   createdAt: timestamp("created_at").defaultNow().notNull(),
-//   updatedAt: timestamp("updated_at")
-//     .defaultNow()
-//     .$onUpdate(() => new Date())
-//     .notNull(),
-// });
+export const updatedAt = timestamp("updated_at", { withTimezone: true })
+  .defaultNow()
+  .$onUpdate(() => new Date())
+  .notNull();
 
 /* =========================================================
    WORKSPACES
@@ -39,11 +31,8 @@ export const workspacesTable = pgTable("workspaces", {
     .references(() => usersTable.id, {
       onDelete: "cascade",
     }),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at")
-    .defaultNow()
-    .$onUpdate(() => new Date())
-    .notNull(),
+  createdAt,
+  updatedAt,
 });
 
 /* =========================================================
@@ -93,11 +82,8 @@ export const foldersTable = pgTable("folders", {
   name: varchar("name", {
     length: 255,
   }).notNull(),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at")
-    .defaultNow()
-    .$onUpdate(() => new Date())
-    .notNull(),
+  createdAt,
+  updatedAt,
 });
 
 /* =========================================================
@@ -123,11 +109,8 @@ export const notesTable = pgTable("notes", {
     length: 255,
   }).notNull(),
   content: text("content"),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at")
-    .defaultNow()
-    .$onUpdate(() => new Date())
-    .notNull(),
+  createdAt,
+  updatedAt,
 });
 
 /* =========================================================
@@ -157,11 +140,8 @@ export const subscriptionsTable = pgTable("subscriptions", {
     .notNull()
     .default("active"),
   currentPeriodEnd: timestamp("current_period_end"),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at")
-    .defaultNow()
-    .$onUpdate(() => new Date())
-    .notNull(),
+  createdAt,
+  updatedAt,
 });
 
 /* =========================================================
@@ -186,7 +166,7 @@ export const aiUsageTable = pgTable("ai_usage", {
     .$type<"summarize" | "grammar_fix" | "generate_title">()
     .notNull(),
   tokensUsed: integer("tokens_used").notNull().default(0),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
+  createdAt,
 });
 
 /* =========================================================
