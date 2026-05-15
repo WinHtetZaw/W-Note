@@ -2,6 +2,7 @@ import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { db } from "@/db"; // your drizzle instance
 import * as schema from "@/db/schema"; // your drizzle schema, ensure it includes the auth tables
+import { env } from "@/data/env/server";
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
@@ -22,6 +23,6 @@ export const auth = betterAuth({
   //       clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
   //     },
   //   },
-  secret: process.env.BETTER_AUTH_SECRET!,
-  baseURL: process.env.BETTER_AUTH_URL!,
+  secret: env.BETTER_AUTH_SECRET,
+  baseURL: env.BETTER_AUTH_URL,
 });
