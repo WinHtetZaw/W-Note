@@ -9,6 +9,7 @@ export const auth = betterAuth({
   }),
   emailAndPassword: {
     enabled: true,
+    autoSignIn: false, // disable auto sign-in after sign-up
   },
   experimental: { joins: true },
   schema: {
@@ -21,4 +22,6 @@ export const auth = betterAuth({
   //       clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
   //     },
   //   },
+  secret: process.env.BETTER_AUTH_SECRET!,
+  baseURL: process.env.BETTER_AUTH_URL!,
 });
