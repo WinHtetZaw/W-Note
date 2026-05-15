@@ -69,12 +69,12 @@ export const workspaceMembersTable = pgTable(
       .default("member"),
     joinedAt: timestamp("joined_at").defaultNow().notNull(),
   },
-
-  (table) => ({
-    pk: primaryKey({
+  (table) => [
+    primaryKey({
       columns: [table.workspaceId, table.userId],
+      name: "workspace_members_pk",
     }),
-  }),
+  ],
 );
 
 /* =========================================================
