@@ -11,14 +11,9 @@ import {
 
 export default function NoteDetailPage() {
   return (
-    <main className="min-h-screen bg-zinc-950 text-white">
-      {/* Glow */}
-      <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-        <div className="absolute right-0 top-0 h-[500px] w-[500px] rounded-full bg-violet-600/20 blur-[140px]" />
-      </div>
-
-      {/* Topbar */}
-      <header className="sticky top-0 z-50 border-b border-white/10 bg-zinc-950/70 backdrop-blur-xl">
+    <>
+      {/* Head */}
+      <div className="sticky top-0 z-50 border-b border-white/10 bg-zinc-950/70 backdrop-blur-xl">
         <div className="flex h-20 items-center justify-between px-6">
           {/* Left */}
           <div>
@@ -61,7 +56,7 @@ export default function NoteDetailPage() {
             </button>
           </div>
         </div>
-      </header>
+      </div>
 
       {/* Layout */}
       <div className="grid gap-6 p-6 xl:grid-cols-[1fr_350px]">
@@ -181,7 +176,7 @@ We will add realtime collaboration, AI agents, and advanced workspace analytics.
           </div>
         </aside>
       </div>
-    </main>
+    </>
   );
 }
 

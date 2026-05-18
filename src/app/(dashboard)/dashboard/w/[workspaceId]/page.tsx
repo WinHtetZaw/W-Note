@@ -1,5 +1,3 @@
-// app/(app)/workspace/[workspaceId]/page.tsx
-
 import Link from "next/link";
 import {
   Brain,
@@ -28,94 +26,87 @@ const recentActivity = [
 
 export default function WorkspaceDetailPage() {
   return (
-    <main className="min-h-screen bg-zinc-950 text-white">
-      {/* Glow */}
-      <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-        <div className="absolute right-0 top-0 h-[500px] w-[500px] rounded-full bg-violet-600/20 blur-[140px]" />
-      </div>
-
-      <div className="p-6">
-        {/* Header */}
-        <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-          <div>
-            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm backdrop-blur-md">
-              <Sparkles className="h-4 w-4 text-violet-400" />
-              Workspace Overview
-            </div>
-
-            <h1 className="text-4xl font-black md:text-5xl">Startup Team</h1>
-
-            <p className="mt-4 text-lg text-zinc-400">
-              Manage your team, notes, and AI workflows.
-            </p>
+    <>
+      {/* Head */}
+      <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+        <div>
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm backdrop-blur-md">
+            <Sparkles className="h-4 w-4 text-violet-400" />
+            Workspace Overview
           </div>
 
-          <div className="flex gap-3">
-            <button className="flex items-center gap-2 rounded-2xl bg-violet-600 px-6 py-4 font-semibold transition hover:bg-violet-500">
-              <Plus className="h-5 w-5" />
-              New Note
-            </button>
+          <h1 className="text-4xl font-black md:text-5xl">Startup Team</h1>
 
-            <button className="rounded-2xl border border-white/10 bg-white/5 p-4 transition hover:bg-white/10">
-              <Settings className="h-5 w-5" />
-            </button>
-          </div>
+          <p className="mt-4 text-lg text-zinc-400">
+            Manage your team, notes, and AI workflows.
+          </p>
         </div>
 
-        {/* Stats */}
-        <div className="mt-10 grid gap-6 md:grid-cols-3">
-          {stats.map((stat) => (
-            <StatCard key={stat.label} {...stat} />
-          ))}
-        </div>
+        <div className="flex gap-3">
+          <button className="flex items-center gap-2 rounded-2xl bg-violet-600 px-6 py-4 font-semibold transition hover:bg-violet-500">
+            <Plus className="h-5 w-5" />
+            New Note
+          </button>
 
-        {/* Content Grid */}
-        <div className="mt-10 grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
-          {/* Notes Preview */}
-          <div className="rounded-[32px] border border-white/10 bg-white/5 p-8 backdrop-blur-2xl">
-            <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-bold">Recent Notes</h2>
-
-              <Link
-                href="notes"
-                className="flex items-center gap-2 text-sm text-zinc-400 hover:text-white"
-              >
-                View all <ArrowRight className="h-4 w-4" />
-              </Link>
-            </div>
-
-            <div className="mt-8 space-y-4">
-              <NoteRow title="AI Roadmap" />
-              <NoteRow title="Marketing Plan" />
-              <NoteRow title="System Design Notes" />
-              <NoteRow title="Team Meeting Summary" />
-            </div>
-          </div>
-
-          {/* Activity */}
-          <div className="rounded-[32px] border border-white/10 bg-white/5 p-8 backdrop-blur-2xl">
-            <div className="flex items-center gap-2">
-              <Activity className="h-6 w-6 text-violet-400" />
-
-              <h2 className="text-2xl font-bold">Activity</h2>
-            </div>
-
-            <div className="mt-8 space-y-5">
-              {recentActivity.map((item) => (
-                <ActivityItem key={item} text={item} />
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Quick Actions */}
-        <div className="mt-10 grid gap-6 md:grid-cols-3">
-          <QuickAction label="Manage Members" />
-          <QuickAction label="Workspace Settings" />
-          <QuickAction label="AI Usage Analytics" />
+          <button className="rounded-2xl border border-white/10 bg-white/5 p-4 transition hover:bg-white/10">
+            <Settings className="h-5 w-5" />
+          </button>
         </div>
       </div>
-    </main>
+
+      {/* Stats */}
+      <div className="mt-10 grid gap-6 md:grid-cols-3">
+        {stats.map((stat) => (
+          <StatCard key={stat.label} {...stat} />
+        ))}
+      </div>
+
+      {/* Content Grid */}
+      <div className="mt-10 grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
+        {/* Notes Preview */}
+        <div className="rounded-[32px] border border-white/10 bg-white/5 p-8 backdrop-blur-2xl">
+          <div className="flex items-center justify-between">
+            <h2 className="text-2xl font-bold">Recent Notes</h2>
+
+            <Link
+              href="notes"
+              className="flex items-center gap-2 text-sm text-zinc-400 hover:text-white"
+            >
+              View all <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+
+          <div className="mt-8 space-y-4">
+            <NoteRow title="AI Roadmap" />
+            <NoteRow title="Marketing Plan" />
+            <NoteRow title="System Design Notes" />
+            <NoteRow title="Team Meeting Summary" />
+          </div>
+        </div>
+
+        {/* Activity */}
+        <div className="rounded-[32px] border border-white/10 bg-white/5 p-8 backdrop-blur-2xl">
+          <div className="flex items-center gap-2">
+            <Activity className="h-6 w-6 text-violet-400" />
+
+            <h2 className="text-2xl font-bold">Activity</h2>
+          </div>
+
+          <div className="mt-8 space-y-5">
+            {recentActivity.map((item) => (
+              <ActivityItem key={item} text={item} />
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Quick Actions */}
+      <div className="mt-10 grid gap-6 md:grid-cols-3">
+        <QuickAction label="Manage Members" />
+        <QuickAction label="Workspace Settings" />
+        <QuickAction label="AI Usage Analytics" />
+      </div>
+    </>
   );
 }
 

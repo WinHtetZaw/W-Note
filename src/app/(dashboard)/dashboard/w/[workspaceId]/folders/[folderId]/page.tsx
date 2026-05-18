@@ -3,7 +3,6 @@ import {
   Folder,
   FileText,
   Plus,
-  Sparkles,
   Clock3,
   MoreHorizontal,
   ArrowRight,
@@ -34,42 +33,35 @@ const notes = [
 
 export default function FolderPage() {
   return (
-    <main className="min-h-screen bg-zinc-950 text-white">
-      {/* Glow */}
-      <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-        <div className="absolute right-0 top-0 h-[500px] w-[500px] rounded-full bg-violet-600/20 blur-[140px]" />
-      </div>
-
-      <div className="p-6">
-        {/* Header */}
-        <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-          <div>
-            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm backdrop-blur-md">
-              <Folder className="h-4 w-4 text-violet-400" />
-              Folder View
-            </div>
-
-            <h1 className="text-4xl font-black md:text-5xl">Product Folder</h1>
-
-            <p className="mt-4 text-lg text-zinc-400">
-              All notes inside this folder.
-            </p>
+    <>
+      {/* Head */}
+      <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+        <div>
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm backdrop-blur-md">
+            <Folder className="h-4 w-4 text-violet-400" />
+            Folder View
           </div>
 
-          <button className="flex items-center gap-2 rounded-2xl bg-violet-600 px-6 py-4 font-semibold transition hover:bg-violet-500">
-            <Plus className="h-5 w-5" />
-            New Note
-          </button>
+          <h1 className="text-4xl font-black md:text-5xl">Product Folder</h1>
+
+          <p className="mt-4 text-lg text-zinc-400">
+            All notes inside this folder.
+          </p>
         </div>
 
-        {/* Notes */}
-        <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-          {notes.map((note) => (
-            <NoteCard key={note.id} {...note} />
-          ))}
-        </div>
+        <button className="flex items-center gap-2 rounded-2xl bg-violet-600 px-6 py-4 font-semibold transition hover:bg-violet-500">
+          <Plus className="h-5 w-5" />
+          New Note
+        </button>
       </div>
-    </main>
+
+      {/* Notes */}
+      <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+        {notes.map((note) => (
+          <NoteCard key={note.id} {...note} />
+        ))}
+      </div>
+    </>
   );
 }
 
