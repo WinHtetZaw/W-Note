@@ -18,18 +18,18 @@ export default async function Layout({
   // }
 
   return (
-    <main className="min-h-screen bg-zinc-950 text-white">
+    <main className="h-screen overflow-hidden bg-zinc-950 text-white">
       {/* Background Glow */}
       <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
         <div className="absolute left-1/2 top-0 h-125 w-125 -translate-x-1/2 rounded-full bg-violet-600/20 blur-[140px]" />
       </div>
 
-      <div className="flex">
+      <div className="flex h-full">
         {/* Sidebar */}
         <DashboardSidebar />
 
         {/* Main */}
-        <div className="flex-1">
+        <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-white/50 scrollbar-track-transparent">
           {/* Topbar */}
           <DashboardHeader />
 

@@ -14,7 +14,7 @@ import React from "react";
 
 export default function DashboardSidebar() {
   return (
-    <aside className="hidden min-h-screen w-72 border-r border-white/10 bg-zinc-950/80 backdrop-blur-xl lg:block">
+    <aside className="hidden min-h-screen overflow-y-auto scrollbar-none w-72 border-r border-white/10 bg-zinc-950/80 backdrop-blur-xl lg:block">
       <div className="flex h-20 items-center border-b border-white/10 px-6">
         <Link href="/" className="flex items-center gap-3">
           <Brain className="h-8 w-8 text-violet-400" />
