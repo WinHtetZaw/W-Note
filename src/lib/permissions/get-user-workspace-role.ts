@@ -1,7 +1,7 @@
 import { and, eq } from "drizzle-orm";
 import { db } from "@/db";
 import { workspaceMembersTable } from "@/db/schema";
-import { WorkspaceRole } from "./type";
+import { WorkspaceRole } from "./types";
 
 export async function getUserWorkspaceRole(
   workspaceId: string,
