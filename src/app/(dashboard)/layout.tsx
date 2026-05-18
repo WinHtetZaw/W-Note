@@ -11,9 +11,9 @@ export default async function Layout({
     headers: await headers(),
   });
 
-  if (!session) {
-    redirect("/sign-in");
-  }
+  // if (!session) {
+  //   redirect("/sign-in");
+  // }
 
   return <>{children}</>;
 }
