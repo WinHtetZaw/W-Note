@@ -50,6 +50,7 @@ export async function fetchWorkspaceById(workspaceId: string) {
 export async function createWorkspace(input: CreateWorkspaceInput) {
   const user = await requireAuth();
   const validated = createWorkspaceSchema.safeParse(input);
+  console.log("Validated workspace input:", validated);
   if (!validated.success) {
     return { success: false, message: "Invalid workspace data" };
   }

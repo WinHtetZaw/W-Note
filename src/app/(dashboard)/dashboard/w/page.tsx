@@ -8,6 +8,7 @@ import {
   Sparkles,
   ArrowRight,
 } from "lucide-react";
+import { fetchUserWorkspaces } from "@/features/workspaces/server/actions";
 
 const workspaces = [
   {
@@ -33,7 +34,12 @@ const workspaces = [
   },
 ];
 
-export default function WorkspacePage() {
+export default async function WorkspacePage() {
+  const workspaces2 = (await fetchUserWorkspaces()).data?.map(
+    (ws) => ws.workspace,
+  );
+  // const workspaces2 = await fetchUserWorkspaces();
+  console.log("Fetched workspaces:", workspaces2);
   return (
     <>
       {/* Head */}
@@ -51,16 +57,24 @@ export default function WorkspacePage() {
           </p>
         </div>
 
-        <button className="flex items-center gap-2 rounded-2xl bg-violet-600 px-6 py-4 font-semibold transition hover:bg-violet-500">
+        <a
+          href="w/new"
+          className="flex items-center gap-2 rounded-2xl bg-violet-600 px-6 py-4 font-semibold transition hover:bg-violet-500"
+        >
           <Plus className="h-5 w-5" />
           New Workspace
-        </button>
+        </a>
       </div>
 
       {/* Grid */}
       <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
         {workspaces.map((ws) => (
           <WorkspaceCard key={ws.id} {...ws} />
+        ))}
+        {workspaces2?.map((ws) => (
+          <Link href={`w/${ws.id}`} key={ws.id} className="bg-rose-500">
+            <p>{ws.name}</p>
+          </Link>
         ))}
       </div>
     </>

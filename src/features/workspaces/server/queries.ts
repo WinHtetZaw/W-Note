@@ -25,6 +25,25 @@ export async function getUserWorkspaces(userId: string) {
   });
 }
 
+// export async function getWorkspaces(userId: string) {
+//   return db.query.workspacesTable.findMany({
+//     where: eq(workspacesTable.ownerId, userId),
+//     with: {
+//       subscription: true,
+//       members: {
+//         columns: { userId: true },
+//       },
+//       notes: {
+//         columns: { id: true },
+//       },
+//       folders: {
+//         columns: { id: true },
+//       },
+//     },
+//     orderBy: (table, { desc }) => [desc(table.createdAt)],
+//   });
+// }
+
 export async function getWorkspaceById(workspaceId: string) {
   // "use cache";
   // cacheTag(

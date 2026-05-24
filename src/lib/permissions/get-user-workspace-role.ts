@@ -6,7 +6,7 @@ import { WorkspaceRole } from "./types";
 export async function getUserWorkspaceRole(
   workspaceId: string,
   userId: string,
-): Promise<WorkspaceRole | null> {
+): Promise<WorkspaceRole> {
   const member = await db.query.workspaceMembersTable.findFirst({
     where: and(
       eq(workspaceMembersTable.workspaceId, workspaceId),
@@ -15,5 +15,5 @@ export async function getUserWorkspaceRole(
     columns: { role: true },
   });
 
-  return member?.role ?? null;
+  return member ? member.role : "member";
 }
