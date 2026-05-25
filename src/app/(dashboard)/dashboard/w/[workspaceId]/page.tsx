@@ -1,6 +1,5 @@
 import Link from "next/link";
 import {
-  Brain,
   Plus,
   FileText,
   FolderTree,
@@ -9,7 +8,10 @@ import {
   Sparkles,
   Activity,
   ArrowRight,
+  Edit2,
+  EditIcon,
 } from "lucide-react";
+import WorkspaceDetailActions from "@/features/workspaces/components/workspace-detail-actions";
 
 const stats = [
   { label: "Total Notes", value: 128, icon: FileText },
@@ -24,7 +26,14 @@ const recentActivity = [
   "New folder created: Marketing",
 ];
 
-export default function WorkspaceDetailPage() {
+type Props = {
+  params: Promise<{ workspaceId: string }>;
+};
+
+export default async function WorkspaceDetailPage({ params }: Props) {
+  const { workspaceId } = await params;
+
+  // console.log("Workspace ID:", workspaceId);
   return (
     <>
       {/* Head */}
@@ -48,9 +57,10 @@ export default function WorkspaceDetailPage() {
             New Note
           </button>
 
-          <button className="rounded-2xl border border-white/10 bg-white/5 p-4 transition hover:bg-white/10">
+          {/* <button className="rounded-2xl border border-white/10 bg-white/5 p-4 transition hover:bg-white/10">
             <Settings className="h-5 w-5" />
-          </button>
+          </button> */}
+          <WorkspaceDetailActions workspaceId={workspaceId} />
         </div>
       </div>
 

@@ -9,16 +9,20 @@ type WorkspaceFormValues = {
   description?: string;
 };
 
-const oldWorkspace = {
-  name: "Startup Team",
-  description: "AI workspace for product development and collaboration.",
+// const oldWorkspace = {
+//   name: "Startup Team",
+//   description: "AI workspace for product development and collaboration.",
+// };
+
+type Props = {
+  isEditForm?: boolean;
+  oldWorkspace?: WorkspaceFormValues;
 };
 
 export default function WorkspaceForm({
   isEditForm = false,
-}: {
-  isEditForm?: boolean;
-}) {
+  oldWorkspace,
+}: Props) {
   const isEdit = isEditForm;
 
   const {
