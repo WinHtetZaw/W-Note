@@ -7,8 +7,16 @@ import {
   ArrowRight,
   Search,
 } from "lucide-react";
+import { listFolders } from "@/features/folders/server/actions";
+import { FoldersNotes } from "@/features/folders/server/queries";
 
-const folders = [
+type Props = {
+  params: Promise<{
+    workspaceId: string;
+  }>;
+};
+
+const dummyFolders = [
   {
     id: "1",
     name: "Product",
@@ -35,7 +43,15 @@ const folders = [
   },
 ];
 
-export default function FoldersPage() {
+export default async function FoldersPage({ params }: Props) {
+  const { workspaceId } = await params;
+  const { data: folders } = await listFolders(workspaceId);
+  // type Folders = typeof folders
+
+  if (!folders) {
+    return <>Not found</>;
+  }
+
   return (
     <>
       {/* Head */}
@@ -53,10 +69,13 @@ export default function FoldersPage() {
           </p>
         </div>
 
-        <button className="flex items-center gap-2 rounded-2xl bg-violet-600 px-6 py-4 font-semibold transition hover:bg-violet-500">
+        <Link
+          href={"folders/new"}
+          className="flex items-center gap-2 rounded-2xl bg-violet-600 px-6 py-4 font-semibold transition hover:bg-violet-500"
+        >
           <Plus className="h-5 w-5" />
           New Folder
-        </button>
+        </Link>
       </div>
 
       {/* Search */}
@@ -71,15 +90,54 @@ export default function FoldersPage() {
 
       {/* Grid */}
       <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-        {folders.map((folder) => (
-          <FolderCard key={folder.id} {...folder} />
+        {dummyFolders.map((folder) => (
+          <FolderCard2 key={folder.id} {...folder} />
+        ))}
+        {/* {folders?.map((folder) => (
+          <FolderCard key={folder.id} folder={folder} />
+        ))} */}
+      </div>
+      <FolderCardLooping folders={folders} />
+    </>
+  );
+}
+
+function FolderCardLooping({ folders }: { folders: FoldersNotes }) {
+  return (
+    <>
+      <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+        {folders?.map((folder) => (
+          <Link
+            key={folder.id}
+            href={`folders/${folder.id}`}
+            className="group rounded-[32px] border border-white/10 bg-white/5 p-8 backdrop-blur-2xl transition hover:bg-white/10"
+          >
+            <div className="flex items-center justify-between">
+              <div className="rounded-2xl bg-violet-500/10 p-3">
+                <Folder className="h-6 w-6 text-violet-400" />
+              </div>
+
+              <ArrowRight className="h-5 w-5 text-zinc-500 transition group-hover:text-white" />
+            </div>
+
+            <h2 className="mt-6 text-2xl font-bold">{folder.name}</h2>
+
+            <div className="mt-6 flex items-center justify-between text-sm text-zinc-400">
+              <div className="flex items-center gap-2">
+                <FileText className="h-4 w-4 text-violet-400" />
+                {folder.notes.length} notes
+              </div>
+
+              {/* <span>{new Date(folder.createdAt)}</span> */}
+            </div>
+          </Link>
         ))}
       </div>
     </>
   );
 }
 
-function FolderCard({
+function FolderCard2({
   id,
   name,
   notes,

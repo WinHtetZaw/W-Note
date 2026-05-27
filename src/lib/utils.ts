@@ -8,3 +8,6 @@ export function cn(...inputs: ClassValue[]) {
 export function stringEquals(a: string, b: string) {
   return a.toLocaleLowerCase() === b.toLocaleLowerCase();
 }
+
+export const wait = (ms: number) =>
+  new Promise((resolve) => setTimeout(resolve, ms));

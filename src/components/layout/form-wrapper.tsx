@@ -7,7 +7,7 @@ type Props = {
   desc: string;
 };
 
-export default function WorkspaceFormWrapper({
+export default function FormWrapper({
   children,
   title,
   formTitle,

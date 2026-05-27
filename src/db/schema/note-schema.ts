@@ -34,6 +34,8 @@ export const notesTable = pgTable("notes", {
   updatedAt,
 });
 
+export type Note = typeof notesTable.$inferSelect;
+
 /* =========================================================
    NOTE VERSIONS
 ========================================================= */

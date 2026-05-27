@@ -132,9 +132,16 @@ export const foldersTable = pgTable("folders", {
   name: varchar("name", {
     length: 255,
   }).notNull(),
+  // createdBy: text("created_by")
+  //   .notNull()
+  //   .references(() => usersTable.id, {
+  //     onDelete: "cascade",
+  //   }),
   createdAt,
   updatedAt,
 });
+
+export type Folders = typeof foldersTable.$inferSelect;
 
 /* =========================================================
    RELATIONS

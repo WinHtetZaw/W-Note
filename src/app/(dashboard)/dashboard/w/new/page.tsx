@@ -1,10 +1,14 @@
+import FormWrapper from "@/components/layout/form-wrapper";
 import WorkspaceForm from "@/features/workspaces/components/workspace-form";
-import WorkspaceFormWrapper from "@/features/workspaces/components/workspace-form-wrapper";
 
 export default function WorkspaceFormPage() {
   return (
-    <WorkspaceFormWrapper>
+    <FormWrapper
+      title="Workspace Setup"
+      formTitle="Create New Workspace"
+      desc="Configure your AI workspace settings."
+    >
       <WorkspaceForm />
-    </WorkspaceFormWrapper>
+    </FormWrapper>
   );
 }
