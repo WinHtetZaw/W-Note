@@ -21,7 +21,11 @@ export default async function WorkspaceFormPage({ params }: Props) {
   // console.log("Fetched workspace data:", workspace);
 
   return (
-    <WorkspaceFormWrapper>
+    <WorkspaceFormWrapper
+      title="Workspace Setup"
+      formTitle="Rename Workspace"
+      desc="Configure your AI workspace settings."
+    >
       <WorkspaceForm isEditForm={true} oldWorkspace={workspace} />
     </WorkspaceFormWrapper>
   );

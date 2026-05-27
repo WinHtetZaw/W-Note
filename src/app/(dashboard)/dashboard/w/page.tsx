@@ -57,13 +57,13 @@ export default async function WorkspacePage() {
           </p>
         </div>
 
-        <a
+        <Link
           href="w/new"
           className="flex items-center gap-2 rounded-2xl bg-violet-600 px-6 py-4 font-semibold transition hover:bg-violet-500"
         >
           <Plus className="h-5 w-5" />
           New Workspace
-        </a>
+        </Link>
       </div>
 
       {/* Grid */}
