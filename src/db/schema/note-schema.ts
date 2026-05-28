@@ -5,6 +5,7 @@ import {
   varchar,
   integer,
   index,
+  timestamp,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 import { user as usersTable } from "./auth-schema";
@@ -30,6 +31,7 @@ export const notesTable = pgTable("notes", {
     length: 255,
   }).notNull(),
   content: text("content"),
+  deletedAt: timestamp("deleted_at", { withTimezone: true }),
   createdAt,
   updatedAt,
 });
