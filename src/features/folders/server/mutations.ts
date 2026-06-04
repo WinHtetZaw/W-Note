@@ -8,6 +8,7 @@ export async function insertFolder(data: typeof foldersTable.$inferInsert) {
     .values({
       workspaceId: data.workspaceId,
       name: data.name,
+      createdBy: data.createdBy,
     })
     .returning();
 

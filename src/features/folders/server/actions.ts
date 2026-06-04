@@ -15,7 +15,6 @@ import {
   UpdateFolderInput,
   updateFolderSchema,
 } from "../schemas/update-folder-schema";
-import { success } from "zod";
 
 export async function fetchFolder(folderId: string, workspaceId: string) {
   // Validate Auth

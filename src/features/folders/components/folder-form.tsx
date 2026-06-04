@@ -8,18 +8,16 @@ import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useTransition } from "react";
-import { wait } from "@/lib/utils";
 import { createFolder, renameFolder } from "../server/actions";
 import { useParams } from "next/navigation";
 import { toast } from "sonner";
-
-type FolderFormValues = {
-  name: string;
-};
+import { authClient } from "@/lib/auth-client";
 
 const formSchema = z.object({
   name: z.string().trim().min(2, "Folder name must be at least 2 characters"),
 });
+
+type FolderFormValues = z.infer<typeof formSchema>;
 
 type Props = {
   isEditForm?: boolean;
@@ -34,11 +32,16 @@ export default function FolderForm({ isEditForm, oldFolder }: Props) {
   const [isPending, startTransition] = useTransition();
   const { workspaceId, folderId }: { workspaceId: string; folderId: string } =
     useParams();
-
-  isEditForm && console.log(oldFolder);
+  // isEditForm && console.log(oldFolder);
 
   const handleCreate = async (data: z.infer<typeof formSchema>) => {
-    const result = await createFolder({ ...data, workspaceId });
+    const { data: session, error } = await authClient.getSession();
+    if (error || !session) return;
+    const result = await createFolder({
+      ...data,
+      workspaceId,
+      createdBy: session.user.id,
+    });
     if (!result.success) {
       toast.error(result.message);
     } else {
@@ -48,7 +51,14 @@ export default function FolderForm({ isEditForm, oldFolder }: Props) {
   };
 
   const handleRename = async (data: z.infer<typeof formSchema>) => {
-    const result = await renameFolder({ ...data, workspaceId, folderId });
+    const { data: session, error } = await authClient.getSession();
+    if (error || !session) return;
+    const result = await renameFolder({
+      ...data,
+      workspaceId,
+      folderId,
+      createdBy: session.user.id,
+    });
     if (!result.success) {
       toast.error(result.message);
     } else {
