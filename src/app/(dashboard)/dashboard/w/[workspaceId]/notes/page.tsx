@@ -1,3 +1,4 @@
+import { fetchNotes } from "@/features/notes/server/actions/fetch-notes";
 import {
   Search,
   Plus,
@@ -7,8 +8,10 @@ import {
   MoreHorizontal,
   FolderTree,
 } from "lucide-react";
+import Link from "next/link";
+import { Suspense } from "react";
 
-const notes = [
+const notes2 = [
   {
     title: "AI SaaS Product Roadmap",
     description: "Planning features, onboarding flow, and pricing strategy.",
@@ -32,13 +35,17 @@ const notes = [
 
   {
     title: "Marketing Strategy",
-    description: "Q3 campaign planning and SEO optimization notes.",
+    description: "Q3 campaign planning and SEO optimization 2.",
     updatedAt: "2 days ago",
     category: "Marketing",
   },
 ];
 
-export default function NotesPage() {
+type Props = { params: Promise<{ workspaceId: string }> };
+
+export default async function NotesPage({ params }: Props) {
+  const { workspaceId } = await params;
+  const notes = await fetchNotes(workspaceId);
   return (
     <>
       {/* Head */}
@@ -83,11 +90,24 @@ export default function NotesPage() {
       </div>
 
       {/* Notes Grid */}
-      <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-        {notes.map((note) => (
-          <NoteCard key={note.title} {...note} />
-        ))}
-      </div>
+      <Suspense
+        fallback={
+          <div className="mt-10 text-center text-zinc-500">
+            Loading notes...
+          </div>
+        }
+      >
+        <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+          {notes2.map((note) => (
+            <NoteCard key={note.title} {...note} />
+          ))}
+          {notes.data?.map((note) => (
+            <Link href={`notes/${note.id}`} key={note.id}>
+              {note.title}
+            </Link>
+          ))}
+        </div>
+      </Suspense>
     </>
   );
 }

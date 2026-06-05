@@ -135,12 +135,16 @@ export async function renameFolder(input: UpdateFolderInput) {
   };
 }
 
-export async function removeFolder(folderId: string, workspaceId: string) {
+export async function removeFolder(folderId: string) {
   // Validate Auth
   await requireAuth();
 
   // permission check
-  await requireWorkspaceAdmin(workspaceId);
+  const folder = await getFolder(folderId);
+  if (!folder) {
+    return { success: false, message: "Fail to delete folder" };
+  }
+  await requireWorkspaceAdmin(folder.workspaceId);
 
   // deleting folder
   const isDeleted = await deleteFolder(folderId);

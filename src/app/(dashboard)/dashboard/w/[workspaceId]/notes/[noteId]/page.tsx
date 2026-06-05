@@ -1,3 +1,4 @@
+import NoteDeleteButton from "@/features/notes/components/note-delete-button";
 import {
   Sparkles,
   Clock3,
@@ -9,7 +10,12 @@ import {
   MessageSquare,
 } from "lucide-react";
 
-export default function NoteDetailPage() {
+type Props = {
+  params: Promise<{ noteId: string }>;
+};
+
+export default async function NoteDetailPage({ params }: Props) {
+  // const { noteId } = await params;
   return (
     <>
       {/* Head */}
@@ -176,6 +182,8 @@ We will add realtime collaboration, AI agents, and advanced workspace analytics.
           </div>
         </aside>
       </div>
+
+      <NoteDeleteButton />
     </>
   );
 }

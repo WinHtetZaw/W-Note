@@ -3,6 +3,7 @@ import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { db } from "@/db"; // your drizzle instance
 // import * as schema from "@/db/schema"; // your drizzle schema, ensure it includes the auth tables
 import { env } from "@/data/env/server";
+import { nextCookies } from "better-auth/next-js";
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
@@ -12,6 +13,13 @@ export const auth = betterAuth({
     enabled: true,
     autoSignIn: false, // disable auto sign-in after sign-up
   },
+  // session: {
+  //   cookieCache: {
+  //     enabled: true,
+  //     maxAge: 60 * 5, //  5 min
+  //   },
+  // },
+  // plugins: [nextCookies()],
   experimental: { joins: true },
   // schema: {
   //   ...schema,
