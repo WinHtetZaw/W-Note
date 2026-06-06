@@ -13,13 +13,13 @@ export const auth = betterAuth({
     enabled: true,
     autoSignIn: false, // disable auto sign-in after sign-up
   },
-  // session: {
-  //   cookieCache: {
-  //     enabled: true,
-  //     maxAge: 60 * 5, //  5 min
-  //   },
-  // },
-  // plugins: [nextCookies()],
+  session: {
+    cookieCache: {
+      enabled: true,
+      maxAge: 60 * 5, //  5 min
+    },
+  },
+  plugins: [nextCookies()],
   experimental: { joins: true },
   // schema: {
   //   ...schema,

@@ -1,7 +1,11 @@
+import SignOutButton from "@/features/auth/components/sign-out-button";
+import { auth } from "@/lib/auth";
 import { Brain } from "lucide-react";
+import { headers } from "next/headers";
 import Link from "next/link";
+import { Suspense } from "react";
 
-export default function Header() {
+export default async function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-zinc-950/70 backdrop-blur-xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
@@ -24,13 +28,13 @@ export default function Header() {
           >
             Pricing
           </Link>
-
-          <Link
-            href="/sign-in"
-            className="text-zinc-300 transition hover:text-white"
+          <Suspense
+            fallback={
+              <div className="h-5 w-20 animate-pulse rounded bg-zinc-700" />
+            }
           >
-            Sign In
-          </Link>
+            <AuthCheckLink />
+          </Suspense>
 
           <Link
             href="/sign-up"
@@ -41,5 +45,24 @@ export default function Header() {
         </nav>
       </div>
     </header>
+  );
+}
+
+async function AuthCheckLink() {
+  const session = await auth.api.getSession({ headers: await headers() });
+
+  return (
+    <>
+      {session?.user ? (
+        <SignOutButton className="text-zinc-300 transition hover:text-white" />
+      ) : (
+        <Link
+          href="/sign-in"
+          className="text-zinc-300 transition hover:text-white"
+        >
+          Sign In
+        </Link>
+      )}
+    </>
   );
 }

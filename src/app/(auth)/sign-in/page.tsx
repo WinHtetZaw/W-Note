@@ -1,14 +1,26 @@
-"use client";
-
-import { authClient } from "@/lib/auth-client";
+import AuthFormWrapper from "@/features/auth/components/auth-form-wrapper";
+import SignInForm from "@/features/auth/components/sign-in-form";
+import { Sparkles } from "lucide-react";
+import Link from "next/link";
 
 export default function SignInPage() {
-  const onSignIn = async () => {
-    await authClient.signIn.email({
-      email: "test@example.com",
-      password: "password123",
-    });
-  };
-
-  return <button onClick={onSignIn}>Sign In</button>;
+  return (
+    <>
+      <AuthFormWrapper
+        pageTitle="Welcome Back"
+        formTitle="Sign In"
+        formDescription="Access your AI workspace and notes."
+        link={
+          <>
+            Don't have an account?{" "}
+            <Link href="/sign-up" className="font-medium text-violet-400">
+              Sign Up
+            </Link>
+          </>
+        }
+      >
+        <SignInForm />
+      </AuthFormWrapper>
+    </>
+  );
 }
