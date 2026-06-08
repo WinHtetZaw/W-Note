@@ -8,7 +8,7 @@ import {
   Sparkles,
   ArrowRight,
 } from "lucide-react";
-import { fetchUserWorkspaces } from "@/features/workspaces/server/actions";
+import { fetchUserWorkspaces } from "@/features/workspaces/server/actions/fetch-user-workspaces";
 
 const workspaces = [
   {

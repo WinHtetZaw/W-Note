@@ -1,4 +1,4 @@
-import { fetchUserWorkspaces } from "@/features/workspaces/server/actions";
+import { fetchUserWorkspaces } from "@/features/workspaces/server/actions/fetch-user-workspaces";
 import {
   Plus,
   Sparkles,

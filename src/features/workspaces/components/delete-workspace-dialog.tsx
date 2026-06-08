@@ -14,8 +14,8 @@ import {
   AlertDialogDescription,
   AlertDialogFooter,
 } from "@/components/ui/alert-dialog";
-import { removeWorkspace } from "../server/actions";
 import { Trash } from "lucide-react";
+import { removeWorkspace } from "../server/actions/remove-workspace";
 
 type Props = {
   workspaceId: string;

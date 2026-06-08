@@ -2,11 +2,12 @@
 
 import { useForm } from "react-hook-form";
 import { Save, Building2, FileText } from "lucide-react";
-import { createWorkspace } from "../server/actions";
+import { renameWorkspace } from "../server/actions/rename-workspace";
+import { createWorkspace } from "../server/actions/create-workspace";
 
 type WorkspaceFormValues = {
   name: string;
-  description?: string;
+  // description?: string;
 };
 
 // const oldWorkspace = {
@@ -17,11 +18,13 @@ type WorkspaceFormValues = {
 type Props = {
   isEditForm?: boolean;
   oldWorkspace?: WorkspaceFormValues;
+  workspaceId?: string;
 };
 
 export default function WorkspaceForm({
   isEditForm = false,
   oldWorkspace,
+  workspaceId,
 }: Props) {
   const isEdit = isEditForm;
 
@@ -34,19 +37,18 @@ export default function WorkspaceForm({
       ? oldWorkspace
       : {
           name: "",
-          description: "",
+          // description: "",
         },
   });
 
   const onSubmit = async (values: WorkspaceFormValues) => {
     console.log("Form submitted with values:", values);
     // return;
-    if (isEdit) {
-      // Update existing workspace logic
-      console.log("Updating workspace with values:", values);
+    if (isEdit && workspaceId) {
+      const data = await renameWorkspace({ ...values, workspaceId });
     } else {
       const data = await createWorkspace(values);
-      console.log("Created workspace:", data);
+      // console.log("Created workspace:", data);
     }
   };
 
@@ -72,7 +74,7 @@ export default function WorkspaceForm({
           )}
         </div>
 
-        <div>
+        {/* <div>
           <label className="mb-3 flex items-center gap-2 text-sm text-zinc-400">
             <FileText className="h-4 w-4" />
             Description
@@ -83,7 +85,7 @@ export default function WorkspaceForm({
             placeholder="Describe your workspace..."
             className="min-h-45 w-full rounded-2xl border border-white/10 bg-white/5 px-5 py-4 outline-none transition focus:border-violet-500"
           />
-        </div>
+        </div> */}
 
         <button className="flex ml-auto items-center gap-2 rounded-2xl bg-violet-600 px-6 py-4 font-semibold transition hover:bg-violet-500">
           <Save className="h-5 w-5" />

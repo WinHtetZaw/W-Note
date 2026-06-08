@@ -1,6 +1,6 @@
 import WorkspaceForm from "@/features/workspaces/components/workspace-form";
 import WorkspaceFormWrapper from "@/features/workspaces/components/workspace-form-wrapper";
-import { fetchWorkspaceById } from "@/features/workspaces/server/actions";
+import { fetchWorkspace } from "@/features/workspaces/server/actions/fetch-workspace";
 
 type Props = {
   params: Promise<{ workspaceId: string }>;
@@ -8,7 +8,7 @@ type Props = {
 
 export default async function WorkspaceFormPage({ params }: Props) {
   const workspaceId = (await params).workspaceId;
-  const { data: workspace, success } = await fetchWorkspaceById(workspaceId);
+  const { data: workspace, success } = await fetchWorkspace(workspaceId);
 
   if (!success) {
     return (

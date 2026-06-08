@@ -9,8 +9,8 @@ import {
   workspaceLinks,
 } from "./dashboard-sidebar-data";
 import AddNoteButton from "../ui/add-note-button";
-import { fetchUserWorkspaces } from "@/features/workspaces/server/actions";
 import { redirect } from "next/navigation";
+import { fetchUserWorkspaces } from "@/features/workspaces/server/actions/fetch-user-workspaces";
 
 export async function DashboardSidebar() {
   const { success, data: workspaces } = await fetchUserWorkspaces();
