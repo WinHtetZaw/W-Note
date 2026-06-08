@@ -20,14 +20,12 @@ import {
 import Link from "next/link";
 import { useState } from "react";
 import DeleteWorkspaceDialog from "./delete-workspace-dialog";
+import { useParams } from "next/navigation";
 
-export default function WorkspaceDetailActions({
-  workspaceId,
-}: {
-  workspaceId: string;
-}) {
+export default function WorkspaceDetailActions() {
   const [open, setOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
+  const { workspaceId } = useParams();
 
   return (
     <>
@@ -96,7 +94,7 @@ export default function WorkspaceDetailActions({
       </DropdownMenu>
       {/* 🔥 Dialog */}
       <DeleteWorkspaceDialog
-        workspaceId={workspaceId}
+        workspaceId={workspaceId as string}
         open={deleteOpen}
         onOpenChange={setDeleteOpen}
       />

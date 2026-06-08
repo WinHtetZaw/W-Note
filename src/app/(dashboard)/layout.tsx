@@ -1,8 +1,7 @@
+import { DashboardSidebar } from "@/components/dashboard/dashboard-sidebar";
 import DashboardHeader from "@/components/layout/dashboard-header";
-import DashboardSidebar from "@/components/layout/dashboard-sidebar";
-import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
-import { redirect } from "next/navigation";
+import { Suspense } from "react";
 
 export default async function Layout({
   children,
@@ -26,7 +25,9 @@ export default async function Layout({
 
       <div className="flex h-full">
         {/* Sidebar */}
-        <DashboardSidebar />
+        <Suspense fallback={<p>loading sidebar</p>}>
+          <DashboardSidebar />
+        </Suspense>
 
         {/* Main */}
         <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-white/50 scrollbar-track-transparent">

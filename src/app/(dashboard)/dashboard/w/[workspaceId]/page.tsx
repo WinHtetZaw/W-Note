@@ -12,6 +12,7 @@ import {
   EditIcon,
 } from "lucide-react";
 import WorkspaceDetailActions from "@/features/workspaces/components/workspace-detail-actions";
+import { Suspense } from "react";
 
 const stats = [
   { label: "Total Notes", value: 128, icon: FileText },
@@ -30,8 +31,8 @@ type Props = {
   params: Promise<{ workspaceId: string }>;
 };
 
-export default async function WorkspaceDetailPage({ params }: Props) {
-  const { workspaceId } = await params;
+export default async function WorkspaceDetailPage() {
+  // const { workspaceId } = await params;
 
   // console.log("Workspace ID:", workspaceId);
   return (
@@ -60,7 +61,9 @@ export default async function WorkspaceDetailPage({ params }: Props) {
           {/* <button className="rounded-2xl border border-white/10 bg-white/5 p-4 transition hover:bg-white/10">
             <Settings className="h-5 w-5" />
           </button> */}
-          <WorkspaceDetailActions workspaceId={workspaceId} />
+          <Suspense fallback={<p>loading</p>}>
+            <WorkspaceDetailActions />
+          </Suspense>
         </div>
       </div>
 

@@ -1,3 +1,4 @@
+import { fetchUserWorkspaces } from "@/features/workspaces/server/actions";
 import {
   Plus,
   Sparkles,
@@ -8,8 +9,15 @@ import {
   ArrowUpRight,
   Activity,
 } from "lucide-react";
+import { redirect } from "next/navigation";
 
 export default async function DashboardPage() {
+  const { success, data: workspaces } = await fetchUserWorkspaces();
+  if (!success || !workspaces) {
+    return redirect("/");
+  }
+  const firstWorkspace = workspaces[0];
+  redirect(`/dashboard/w/${firstWorkspace.workspaceId}`);
   return (
     <>
       {/* Hero */}
