@@ -10,14 +10,15 @@ import {
 } from "./dashboard-sidebar-data";
 import AddNoteButton from "../ui/add-note-button";
 import { redirect } from "next/navigation";
-import { fetchUserWorkspaces } from "@/features/workspaces/server/actions/fetch-user-workspaces";
+import { fetchUserWorkspace } from "@/features/workspaces/server/actions/fetch-user-workspace";
 
 export async function DashboardSidebar() {
-  const { success, data: workspaces } = await fetchUserWorkspaces();
-  if (!success || !workspaces) {
+  const result = await fetchUserWorkspace();
+  if (!result.success) {
     return redirect("/dashboard/w/new");
   }
-  const { workspaceId } = workspaces[0];
+
+  const { workspaceId } = result.data;
 
   return (
     <aside className="hidden w-72 h-screen overflow-y-auto scrollbar-none border-r border-white/10 bg-zinc-950/80 backdrop-blur-xl lg:block">

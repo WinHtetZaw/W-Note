@@ -1,97 +1,60 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import { Save, Building2, FileText } from "lucide-react";
+import { Save } from "lucide-react";
 import { renameWorkspace } from "../server/actions/rename-workspace";
 import { createWorkspace } from "../server/actions/create-workspace";
-
-type WorkspaceFormValues = {
-  name: string;
-  // description?: string;
-};
-
-// const oldWorkspace = {
-//   name: "Startup Team",
-//   description: "AI workspace for product development and collaboration.",
-// };
+import { zodResolver } from "@hookform/resolvers/zod";
+import { FormInput, FormSubmitButton } from "@/components/form";
+import { useTransition } from "react";
+import {
+  WorkspaceFormValues,
+  workspaceSchema,
+} from "../schemas/form-workspace-schema";
+import { handleToast } from "@/lib/utils";
 
 type Props = {
-  isEditForm?: boolean;
-  oldWorkspace?: WorkspaceFormValues;
+  initialValues?: WorkspaceFormValues;
   workspaceId?: string;
 };
 
-export default function WorkspaceForm({
-  isEditForm = false,
-  oldWorkspace,
-  workspaceId,
-}: Props) {
-  const isEdit = isEditForm;
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<WorkspaceFormValues>({
-    defaultValues: isEdit
-      ? oldWorkspace
-      : {
-          name: "",
-          // description: "",
-        },
+export default function WorkspaceForm({ initialValues, workspaceId }: Props) {
+  const isEditForm = !!workspaceId;
+  const form = useForm<WorkspaceFormValues>({
+    resolver: zodResolver(workspaceSchema),
+    defaultValues: !!workspaceId ? initialValues : { name: "" },
   });
+  const [isPending, startTransition] = useTransition();
+
+  const submitWorkspace = async (values: WorkspaceFormValues) => {
+    const result = isEditForm
+      ? await renameWorkspace({ ...values, workspaceId })
+      : await createWorkspace(values);
+    handleToast(result.success, result.message);
+  };
 
   const onSubmit = async (values: WorkspaceFormValues) => {
-    console.log("Form submitted with values:", values);
-    // return;
-    if (isEdit && workspaceId) {
-      const data = await renameWorkspace({ ...values, workspaceId });
-    } else {
-      const data = await createWorkspace(values);
-      // console.log("Created workspace:", data);
-    }
+    // console.log("Form submitted with values:", values);
+    startTransition(() => submitWorkspace(values));
   };
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-        <div>
-          <label className="mb-3 flex items-center gap-2 text-sm text-zinc-400">
-            <Building2 className="h-4 w-4" />
-            Workspace Name
-          </label>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <FormInput
+          control={form.control}
+          name="name"
+          label="Workspace Name"
+          placeholder="Enter your workspace name ..."
+        />
 
-          <input
-            {...register("name", {
-              required: "Workspace name is required",
-            })}
-            className="h-14 w-full rounded-2xl border border-white/10 bg-white/5 px-5 outline-none transition focus:border-violet-500"
-            placeholder="Startup Team"
-          />
-
-          {errors.name && (
-            <p className="mt-2 text-sm text-red-400">{errors.name.message}</p>
-          )}
-        </div>
-
-        {/* <div>
-          <label className="mb-3 flex items-center gap-2 text-sm text-zinc-400">
-            <FileText className="h-4 w-4" />
-            Description
-          </label>
-
-          <textarea
-            {...register("description")}
-            placeholder="Describe your workspace..."
-            className="min-h-45 w-full rounded-2xl border border-white/10 bg-white/5 px-5 py-4 outline-none transition focus:border-violet-500"
-          />
-        </div> */}
-
-        <button className="flex ml-auto items-center gap-2 rounded-2xl bg-violet-600 px-6 py-4 font-semibold transition hover:bg-violet-500">
-          <Save className="h-5 w-5" />
-
-          {isEdit ? "Save Changes" : "Create Workspace"}
-        </button>
+        <FormSubmitButton
+          className="md:w-fit md:ml-auto flex"
+          isPending={isPending}
+        >
+          <Save className="size-5" />
+          {isEditForm ? "Save Changes" : "Create Workspace"}
+        </FormSubmitButton>
       </form>
     </>
   );

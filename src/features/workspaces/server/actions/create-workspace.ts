@@ -20,5 +20,9 @@ export async function createWorkspace(input: CreateWorkspaceInput) {
   //   revalidateTag(`user-${user.id}`, "max"); // this user's list
   //   revalidateTag("workspaces", "max"); // new workspace exists
   //   revalidateTag("workspace-members", "max"); // creator membership added
-  return { success: true, data: workspace };
+  return {
+    success: true,
+    message: "Succcessfully created workspace",
+    data: workspace,
+  };
 }

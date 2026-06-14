@@ -26,7 +26,7 @@ export default async function WorkspaceFormPage({ params }: Props) {
       formTitle="Rename Workspace"
       desc="Configure your AI workspace settings."
     >
-      <WorkspaceForm isEditForm={true} oldWorkspace={workspace} />
+      <WorkspaceForm initialValues={workspace} />
     </WorkspaceFormWrapper>
   );
 }

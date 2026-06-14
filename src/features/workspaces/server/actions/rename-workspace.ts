@@ -15,5 +15,5 @@ export async function renameWorkspace(input: UpdateWorkspaceInput) {
   }
   await requireWorkspaceAdmin(data.workspaceId);
   const result = await updateWorkspace(data);
-  return { success: result };
+  return { success: result, message: "Successfully renamed workspace" };
 }
