@@ -6,17 +6,18 @@ import {
   varchar,
   primaryKey,
   index,
+  uniqueIndex,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 import { user as usersTable } from "./auth-schema";
 import { notesTable } from "./note-schema";
-import {
-  aiUsageTable,
-  createdAt,
-  subscriptionsTable,
-  updatedAt,
-} from "./user-schema";
+import { createdAt, updatedAt } from "./db-schema-helper";
+import { subscriptionsTable } from "./billing-schema";
+import { aiUsageTable } from "./ai-schema";
 
+/* =========================================================
+   WORKSPACES
+========================================================= */
 export const workspacesTable = pgTable("workspaces", {
   id: uuid("id").defaultRandom().primaryKey(),
   name: varchar("name", { length: 255 }).notNull(),
@@ -32,7 +33,6 @@ export const workspacesTable = pgTable("workspaces", {
 /* =========================================================
    WORKSPACE MEMBERS
 ========================================================= */
-
 export const workspaceMembersTable = pgTable(
   "workspace_members",
   {
@@ -65,28 +65,23 @@ export const workspaceMembersTable = pgTable(
 /* =========================================================
    WORKSPACE INVITATIONS
 ========================================================= */
-
 export const workspaceInvitationsTable = pgTable(
   "workspace_invitations",
   {
     id: uuid("id").defaultRandom().primaryKey(),
-
     workspaceId: uuid("workspace_id")
       .notNull()
       .references(() => workspacesTable.id, {
         onDelete: "cascade",
       }),
-
     invitedBy: text("invited_by")
       .notNull()
       .references(() => usersTable.id, {
         onDelete: "cascade",
       }),
-
     email: varchar("email", {
       length: 255,
     }).notNull(),
-
     role: varchar("role", {
       length: 50,
     })
@@ -100,55 +95,57 @@ export const workspaceInvitationsTable = pgTable(
       .$type<"pending" | "accepted" | "declined">()
       .notNull()
       .default("pending"),
-
     token: text("token").notNull(),
-
     expiresAt: timestamp("expires_at", {
       withTimezone: true,
     }).notNull(),
-
     createdAt,
   },
   (table) => [
     index("workspace_invites_workspace_idx").on(table.workspaceId),
-
     index("workspace_invites_email_idx").on(table.email),
-
     index("workspace_invites_token_idx").on(table.token),
+    uniqueIndex("workspace_invite_unique").on(table.workspaceId, table.email),
   ],
 );
 
 /* =========================================================
    FOLDERS
 ========================================================= */
-
-export const foldersTable = pgTable("folders", {
-  id: uuid("id").defaultRandom().primaryKey(),
-  workspaceId: uuid("workspace_id")
-    .notNull()
-    .references(() => workspacesTable.id, {
-      onDelete: "cascade",
-    }),
-  name: varchar("name", {
-    length: 255,
-  }).notNull(),
-  createdBy: text("created_by")
-    .notNull()
-    .references(() => usersTable.id, {
-      onDelete: "cascade",
-    }),
-  createdAt,
-  updatedAt,
-});
-
-export type Folders = typeof foldersTable.$inferSelect;
+export const foldersTable = pgTable(
+  "folders",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    workspaceId: uuid("workspace_id")
+      .notNull()
+      .references(() => workspacesTable.id, {
+        onDelete: "cascade",
+      }),
+    name: varchar("name", {
+      length: 255,
+    }).notNull(),
+    createdBy: text("created_by")
+      .notNull()
+      .references(() => usersTable.id, {
+        onDelete: "cascade",
+      }),
+    createdAt,
+    updatedAt,
+  },
+  (table) => [
+    index("folders_workspace_idx").on(table.workspaceId),
+    uniqueIndex("folders_workspace_name_unique").on(
+      table.workspaceId,
+      table.name,
+    ),
+  ],
+);
 
 /* =========================================================
    RELATIONS
 ========================================================= */
 
 /* ---------------- WORKSPACES ---------------- */
-
 export const workspacesRelations = relations(
   workspacesTable,
   ({ one, many }) => ({
@@ -166,7 +163,6 @@ export const workspacesRelations = relations(
 );
 
 /* ---------------- WORKSPACE MEMBERS ---------------- */
-
 export const workspaceMembersRelations = relations(
   workspaceMembersTable,
   ({ one }) => ({
@@ -182,7 +178,6 @@ export const workspaceMembersRelations = relations(
 );
 
 /* ---------------- WORKSPACE INVITATIONS ---------------- */
-
 export const workspaceInvitationsRelations = relations(
   workspaceInvitationsTable,
   ({ one }) => ({
@@ -199,7 +194,6 @@ export const workspaceInvitationsRelations = relations(
 );
 
 /* ---------------- FOLDERS ---------------- */
-
 export const foldersRelations = relations(foldersTable, ({ one, many }) => ({
   workspace: one(workspacesTable, {
     fields: [foldersTable.workspaceId],
