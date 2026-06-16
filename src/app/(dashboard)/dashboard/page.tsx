@@ -1,4 +1,4 @@
-import { fetchUserWorkspaces } from "@/features/workspaces/server/actions/fetch-user-workspaces";
+import { fetchUserWorkspace } from "@/features/workspaces/server/actions/fetch-user-workspace";
 import {
   Plus,
   Sparkles,
@@ -12,12 +12,13 @@ import {
 import { redirect } from "next/navigation";
 
 export default async function DashboardPage() {
-  const { success, data: workspaces } = await fetchUserWorkspaces();
-  if (!success || !workspaces) {
-    return redirect("/");
+  const result = await fetchUserWorkspace();
+
+  if (!result.success) {
+    redirect("/dashboard/w/new");
   }
-  const firstWorkspace = workspaces[0];
-  redirect(`/dashboard/w/${firstWorkspace.workspaceId}`);
+
+  redirect(`/dashboard/w/${result.data.workspaceId}`);
   return (
     <>
       {/* Hero */}
