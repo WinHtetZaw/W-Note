@@ -8,7 +8,7 @@ import {
   generalLinks,
   workspaceLinks,
 } from "./dashboard-sidebar-data";
-import AddNoteButton from "../ui/add-note-button";
+import AddNoteButton from "../ui/note-create-button";
 import { redirect } from "next/navigation";
 import { fetchUserWorkspace } from "@/features/workspaces/server/actions/fetch-user-workspace";
 
