@@ -1,82 +1,59 @@
-import Link from "next/link";
-import {
-  Plus,
-  FileText,
-  FolderTree,
-  Users,
-  Settings,
-  Sparkles,
-  Activity,
-  ArrowRight,
-  Edit2,
-  EditIcon,
-} from "lucide-react";
+import { FileText, FolderTree, Users } from "lucide-react";
 import WorkspaceDetailActions from "@/features/workspaces/components/workspace-detail-actions";
 import { Suspense } from "react";
+import NoteCreateButton from "@/components/ui/note-create-button";
+import PageHead from "@/components/dashboard/page-head";
+import { GlassCard } from "@/components/ui/glass-card";
+import RecentNotes from "@/features/workspaces/components/recent-notes";
+import WorkspaceStats from "@/features/workspaces/components/wokspace-stats";
 
-const stats = [
-  { label: "Total Notes", value: 128, icon: FileText },
-  { label: "Folders", value: 14, icon: FolderTree },
-  { label: "Members", value: 6, icon: Users },
-];
+// const stats = [
+//   { label: "Total Notes", value: 128, icon: FileText },
+//   { label: "Folders", value: 14, icon: FolderTree },
+//   { label: "Members", value: 6, icon: Users },
+// ];
 
-const recentActivity = [
-  "Alex created a new note",
-  "AI summarized meeting notes",
-  "Sarah updated roadmap",
-  "New folder created: Marketing",
-];
+// const recentActivity = [
+//   "Alex created a new note",
+//   "AI summarized meeting notes",
+//   "Sarah updated roadmap",
+//   "New folder created: Marketing",
+// ];
 
 type Props = {
   params: Promise<{ workspaceId: string }>;
 };
 
-export default async function WorkspaceDetailPage() {
+export default async function WorkspaceDetailPage({ params }: Props) {
   // const { workspaceId } = await params;
 
   // console.log("Workspace ID:", workspaceId);
   return (
     <>
-      {/* Head */}
-      <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-        <div>
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm backdrop-blur-md">
-            <Sparkles className="h-4 w-4 text-violet-400" />
-            Workspace Overview
+      <PageHead
+        pageLabel="Workspace Overview"
+        title="Startup Team"
+        subTitle="Manage your team, notes, and AI workflows."
+        link={
+          <div className="flex gap-3">
+            <NoteCreateButton workspaceId="12234" />
+            <Suspense fallback={<p>loading</p>}>
+              <WorkspaceDetailActions />
+            </Suspense>
           </div>
-
-          <h1 className="text-4xl font-black md:text-5xl">Startup Team</h1>
-
-          <p className="mt-4 text-lg text-zinc-400">
-            Manage your team, notes, and AI workflows.
-          </p>
-        </div>
-
-        <div className="flex gap-3">
-          <button className="flex items-center gap-2 rounded-2xl bg-violet-600 px-6 py-4 font-semibold transition hover:bg-violet-500">
-            <Plus className="h-5 w-5" />
-            New Note
-          </button>
-
-          {/* <button className="rounded-2xl border border-white/10 bg-white/5 p-4 transition hover:bg-white/10">
-            <Settings className="h-5 w-5" />
-          </button> */}
-          <Suspense fallback={<p>loading</p>}>
-            <WorkspaceDetailActions />
-          </Suspense>
-        </div>
-      </div>
+        }
+      />
 
       {/* Stats */}
-      <div className="mt-10 grid gap-6 md:grid-cols-3">
+      {/* <div className="my-10 grid gap-6 md:grid-cols-3">
         {stats.map((stat) => (
           <StatCard key={stat.label} {...stat} />
         ))}
-      </div>
+      </div> */}
+      <WorkspaceStats workspaceId={(await params).workspaceId} />
 
       {/* Content Grid */}
-      <div className="mt-10 grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
-        {/* Notes Preview */}
+      {/* <div className="mt-10 grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
         <div className="rounded-[32px] border border-white/10 bg-white/5 p-8 backdrop-blur-2xl">
           <div className="flex items-center justify-between">
             <h2 className="text-2xl font-bold">Recent Notes</h2>
@@ -97,7 +74,6 @@ export default async function WorkspaceDetailPage() {
           </div>
         </div>
 
-        {/* Activity */}
         <div className="rounded-[32px] border border-white/10 bg-white/5 p-8 backdrop-blur-2xl">
           <div className="flex items-center gap-2">
             <Activity className="h-6 w-6 text-violet-400" />
@@ -111,10 +87,14 @@ export default async function WorkspaceDetailPage() {
             ))}
           </div>
         </div>
-      </div>
+      </div> */}
+
+      <Suspense fallback={<>recent notes loading</>}>
+        <RecentNotes params={params} className="mb-10" />
+      </Suspense>
 
       {/* Quick Actions */}
-      <div className="mt-10 grid gap-6 md:grid-cols-3">
+      <div className="grid gap-6 md:grid-cols-3">
         <QuickAction label="Manage Members" />
         <QuickAction label="Workspace Settings" />
         <QuickAction label="AI Usage Analytics" />
@@ -125,7 +105,7 @@ export default async function WorkspaceDetailPage() {
 
 function StatCard({ label, value, icon: Icon }: any) {
   return (
-    <div className="rounded-[28px] border border-white/10 bg-white/5 p-6 backdrop-blur-2xl">
+    <GlassCard className="p-6 rounded-[28px]">
       <div className="flex items-center justify-between">
         <Icon className="h-6 w-6 text-violet-400" />
       </div>
@@ -133,7 +113,7 @@ function StatCard({ label, value, icon: Icon }: any) {
       <h3 className="mt-6 text-4xl font-black">{value}</h3>
 
       <p className="mt-2 text-zinc-400">{label}</p>
-    </div>
+    </GlassCard>
   );
 }
 

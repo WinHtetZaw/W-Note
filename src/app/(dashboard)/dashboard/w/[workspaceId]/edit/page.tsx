@@ -8,9 +8,9 @@ type Props = {
 
 export default async function WorkspaceFormPage({ params }: Props) {
   const workspaceId = (await params).workspaceId;
-  const { data: workspace, success } = await fetchWorkspace(workspaceId);
+  const result = await fetchWorkspace(workspaceId);
 
-  if (!success) {
+  if (!result.success) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-zinc-950 text-white">
         <h1 className="text-2xl font-bold">Workspace not found</h1>
@@ -26,7 +26,7 @@ export default async function WorkspaceFormPage({ params }: Props) {
       formTitle="Rename Workspace"
       desc="Configure your AI workspace settings."
     >
-      <WorkspaceForm initialValues={workspace} />
+      <WorkspaceForm initialValues={result.data} />
     </WorkspaceFormWrapper>
   );
 }

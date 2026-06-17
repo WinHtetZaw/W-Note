@@ -20,7 +20,6 @@ export default async function WorkspaceLayout({
           <DashboardSidebar />
         </Suspense>
 
-        {/* Main */}
         <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-white/50 scrollbar-track-transparent">
           {/* Topbar */}
           <DashboardHeader />

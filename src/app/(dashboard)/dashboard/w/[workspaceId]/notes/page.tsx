@@ -1,8 +1,8 @@
+import PageHead from "@/components/dashboard/page-head";
+import NoteCreateButton from "@/components/ui/note-create-button";
 import { fetchNotes } from "@/features/notes/server/actions/fetch-notes";
 import {
   Search,
-  Plus,
-  Sparkles,
   FileText,
   Clock3,
   MoreHorizontal,
@@ -48,26 +48,12 @@ export default async function NotesPage({ params }: Props) {
   const notes = await fetchNotes(workspaceId);
   return (
     <>
-      {/* Head */}
-      <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-        <div>
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm backdrop-blur-md">
-            <Sparkles className="h-4 w-4 text-violet-400" />
-            AI Powered Notes
-          </div>
-
-          <h1 className="text-4xl font-black md:text-5xl">Notes Workspace</h1>
-
-          <p className="mt-4 text-lg text-zinc-400">
-            Manage and organize your AI-enhanced notes.
-          </p>
-        </div>
-
-        <button className="flex items-center justify-center gap-2 rounded-2xl bg-violet-600 px-6 py-4 font-semibold transition hover:bg-violet-500">
-          <Plus className="h-5 w-5" />
-          Create Note
-        </button>
-      </div>
+      <PageHead
+        pageLabel="AI Powered Notes"
+        title="Notes Workspace"
+        subTitle="Manage and organize your AI-enhanced notes."
+        link={<NoteCreateButton workspaceId={workspaceId} />}
+      />
 
       {/* Search */}
       <div className="mt-10 flex flex-col gap-4 lg:flex-row">

@@ -48,9 +48,9 @@ export default async function FoldersPage({ params }: Props) {
   const { data: folders } = await listFolders(workspaceId);
   // type Folders = typeof folders
 
-  if (!folders) {
-    return <>Not found</>;
-  }
+  // if (!folders) {
+  //   return <>Not found</>;
+  // }
 
   return (
     <>

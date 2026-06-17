@@ -1,14 +1,17 @@
 "use server";
 
 import { requireWorkspaceMember } from "@/lib/permissions";
-import { getWorkspace } from "../queries/get-workspace";
+import { getWorkspace, Workspace } from "../queries/get-workspace";
+import { fail, ok, Result } from "@/lib/types";
 
-export async function fetchWorkspace(workspaceId: string) {
+export async function fetchWorkspace(
+  workspaceId: string,
+): Promise<Result<Workspace>> {
   await requireWorkspaceMember(workspaceId);
 
   const workspace = await getWorkspace(workspaceId);
   if (!workspace) {
-    return { success: false, message: "Workspace not found" };
+    return fail("Workspace not found");
   }
-  return { success: true, data: workspace };
+  return ok(workspace);
 }

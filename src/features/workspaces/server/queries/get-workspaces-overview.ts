@@ -60,6 +60,6 @@ export async function getWorkspacesOverview(userId: string) {
   return workspaces;
 }
 
-export type WorkspaceOverview = NonNullable<
+export type WorkspacesOverview = NonNullable<
   Awaited<ReturnType<typeof getWorkspacesOverview>>
 >;

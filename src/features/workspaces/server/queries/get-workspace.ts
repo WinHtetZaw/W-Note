@@ -12,8 +12,10 @@ export async function getWorkspace(workspaceId: string) {
 
   return db.query.workspacesTable.findFirst({
     where: eq(workspacesTable.id, workspaceId),
-    with: {
-      subscription: true,
-    },
+    // with: {
+    //   subscription: true,
+    // },
   });
 }
+
+export type Workspace = NonNullable<Awaited<ReturnType<typeof getWorkspace>>>;

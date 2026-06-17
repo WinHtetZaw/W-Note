@@ -3,12 +3,12 @@
 import { requireAuth } from "@/lib/permissions";
 import {
   getWorkspacesOverview,
-  WorkspaceOverview,
+  WorkspacesOverview,
 } from "../queries/get-workspaces-overview";
 import { fail, ok, Result } from "@/lib/types";
 
 export const fetchWorkspacesOverview = async (): Promise<
-  Result<WorkspaceOverview>
+  Result<WorkspacesOverview>
 > => {
   const user = await requireAuth();
 
