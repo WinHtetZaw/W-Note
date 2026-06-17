@@ -14,6 +14,7 @@ import { fetchUserWorkspace } from "@/features/workspaces/server/actions/fetch-u
 
 export async function DashboardSidebar() {
   const result = await fetchUserWorkspace();
+
   if (!result.success) {
     return redirect("/dashboard/w/new");
   }
@@ -34,8 +35,12 @@ export async function DashboardSidebar() {
 
       <div className="space-y-8 p-6">
         <WorkspaceSwitcher />
-        <AddNoteButton workspaceId={workspaceId} className="w-full" />
-        <div className="space-y-2">
+        <AddNoteButton
+          variant="outline"
+          workspaceId={workspaceId}
+          className="w-full"
+        />
+        {/* <div className="space-y-2">
           {generalLinks.map((item) => (
             <SidebarNavItem
               key={item.label}
@@ -44,7 +49,7 @@ export async function DashboardSidebar() {
               href={`/dashboard/w/${workspaceId}`}
             />
           ))}
-        </div>
+        </div> */}
 
         <div>
           <p className="mb-3 px-4 text-xs font-semibold tracking-wider text-zinc-500 uppercase">

@@ -50,10 +50,7 @@ import { eq, sql } from "drizzle-orm";
 export async function getWorkspaceOverview(workspaceId: string) {
   const workspace = await db.query.workspacesTable.findFirst({
     where: eq(workspacesTable.id, workspaceId),
-    columns: {
-      id: true,
-      name: true,
-    },
+    columns: { id: true, name: true },
   });
 
   if (!workspace) return null;
