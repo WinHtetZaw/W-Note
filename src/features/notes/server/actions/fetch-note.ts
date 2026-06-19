@@ -1,20 +1,24 @@
 "use server";
 
 import { requireAuth, requireWorkspaceMember } from "@/lib/permissions";
-import { getNote } from "../queries/get-note";
+import { getNote, Note } from "../queries/get-note";
+import { fail, ok, Result } from "@/lib/types";
 
-export async function fetchNote(noteId: string) {
+export async function fetchNote(
+  noteId: string,
+  workspaceId: string,
+): Promise<Result<Note>> {
   // Validate auth
-  await requireAuth();
+  await requireWorkspaceMember(workspaceId);
 
   // fetching a note
   const note = await getNote(noteId);
   if (!note) {
-    return { success: false, message: "Fail to get note" };
+    return fail("Fail to get note");
   }
 
   // permission check from db workspaceId
   await requireWorkspaceMember(note.workspaceId);
 
-  return { success: true, data: note };
+  return ok(note);
 }

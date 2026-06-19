@@ -1,15 +1,11 @@
 import PageHead from "@/components/dashboard/page-head";
 import NoteCreateButton from "@/components/ui/note-create-button";
+import NotesList from "@/features/notes/components/notes-list";
+import NotesSearchBar from "@/features/notes/components/notes-search-bar";
+import NotesSearchInput from "@/features/notes/components/notes-search-input";
 import { fetchNotes } from "@/features/notes/server/actions/fetch-notes";
-import {
-  Search,
-  FileText,
-  Clock3,
-  MoreHorizontal,
-  FolderTree,
-} from "lucide-react";
-import Link from "next/link";
-import { Suspense } from "react";
+import { searchNotesAction } from "@/features/notes/server/actions/search-notes-action";
+import { FileText, Clock3, MoreHorizontal, FolderTree } from "lucide-react";
 
 const notes2 = [
   {
@@ -41,11 +37,25 @@ const notes2 = [
   },
 ];
 
-type Props = { params: Promise<{ workspaceId: string }> };
+type Props = {
+  params: Promise<{ workspaceId: string }>;
+  searchParams: Promise<{ q: string }>;
+};
 
-export default async function NotesPage({ params }: Props) {
+export default async function NotesPage({ params, searchParams }: Props) {
   const { workspaceId } = await params;
-  const notes = await fetchNotes(workspaceId);
+  const { q } = await searchParams;
+  const result = q
+    ? await searchNotesAction(workspaceId, q)
+    : await fetchNotes(workspaceId);
+  // const result = await searchNotesAction(workspaceId, q);
+
+  if (!result.success) {
+    return <p>notes not found</p>;
+  }
+
+  console.log(result.data);
+
   return (
     <>
       <PageHead
@@ -56,15 +66,8 @@ export default async function NotesPage({ params }: Props) {
       />
 
       {/* Search */}
-      <div className="mt-10 flex flex-col gap-4 lg:flex-row">
-        <div className="flex flex-1 items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-4 backdrop-blur-xl">
-          <Search className="h-5 w-5 text-zinc-500" />
-
-          <input
-            placeholder="Search notes..."
-            className="w-full bg-transparent outline-none placeholder:text-zinc-500"
-          />
-        </div>
+      {/* <div className="mt-10 flex flex-col gap-4 lg:flex-row">
+        <NotesSearchInput />
 
         <button className="rounded-2xl border border-white/10 bg-white/5 px-6 py-4 transition hover:bg-white/10">
           All Notes
@@ -73,32 +76,37 @@ export default async function NotesPage({ params }: Props) {
         <button className="rounded-2xl border border-white/10 bg-white/5 px-6 py-4 transition hover:bg-white/10">
           Recent
         </button>
-      </div>
+      </div> */}
+      <NotesSearchBar />
 
       {/* Notes Grid */}
-      <Suspense
+      {/* <Suspense
         fallback={
           <div className="mt-10 text-center text-zinc-500">
             Loading notes...
           </div>
         }
       >
-        <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-          {notes2.map((note) => (
-            <NoteCard key={note.title} {...note} />
-          ))}
-          {notes.data?.map((note) => (
-            <Link href={`notes/${note.id}`} key={note.id}>
-              {note.title}
-            </Link>
+        <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3 ">
+          {result.data?.map((note) => (
+            <NoteCard {...note} workspaceId={workspaceId} key={note.id} />
           ))}
         </div>
-      </Suspense>
+      </Suspense> */}
+
+      <NotesList notes={result.data} query={q} />
     </>
   );
 }
+{
+  /* <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+  {notes2.map((note) => (
+    <NoteCard2 key={note.title} {...note} />
+  ))}
+</div> */
+}
 
-function NoteCard({
+function NoteCard2({
   title,
   description,
   updatedAt,

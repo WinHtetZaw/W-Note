@@ -11,7 +11,7 @@ import {
 type FormInputProps<T extends FieldValues> = {
   control: Control<T>;
   name: Path<T>;
-  label: string;
+  label?: string;
   placeholder?: string;
   icon?: React.ReactNode;
   type?: string;
@@ -26,9 +26,11 @@ export function FormInput<T extends FieldValues>(props: FormInputProps<T>) {
       name={name}
       render={({ field, fieldState }) => (
         <Field data-invalid={fieldState.invalid}>
-          <FieldLabel htmlFor={name} className="mb-1 text-sm text-zinc-400">
-            {label}
-          </FieldLabel>
+          {label && (
+            <FieldLabel htmlFor={name} className="mb-1 text-sm text-zinc-400">
+              {label}
+            </FieldLabel>
+          )}
 
           <InputGroup>
             <InputGroupInput

@@ -5,10 +5,17 @@ import { eq } from "drizzle-orm";
 export async function getNotes(workspaceId: string, limit?: number) {
   return db.query.notesTable.findMany({
     where: eq(notesTable.workspaceId, workspaceId),
-    // with: { folder: true },
+    with: {
+      folder: {
+        columns: {
+          id: true,
+          name: true,
+        },
+      },
+    },
     orderBy: (table, { desc }) => [desc(table.updatedAt)],
     limit,
   });
 }
 
-export type Notes = Awaited<ReturnType<typeof getNotes>>;
+export type Notes = NonNullable<Awaited<ReturnType<typeof getNotes>>>;

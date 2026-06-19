@@ -6,8 +6,10 @@ export async function getNote(noteId: string) {
   // todo implement data cache
   const note = await db.query.notesTable.findFirst({
     where: eq(notesTable.id, noteId),
-    // with: { folder: true, author: true },
+    with: { folder: true, author: true },
   });
 
   return note;
 }
+
+export type Note = NonNullable<Awaited<ReturnType<typeof getNote>>>;
