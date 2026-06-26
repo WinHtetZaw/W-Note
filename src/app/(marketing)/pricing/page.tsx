@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Check, Sparkles, Zap, Shield, Users } from "lucide-react";
 import { CTASection } from "@/features/marketing/components/cta-section";
+import Hero from "@/components/home/hero";
 
 const plans = [
   {
@@ -58,28 +59,11 @@ const plans = [
 export default function PricingPage() {
   return (
     <>
-      {/* Hero */}
-      <section className="relative">
-        <div className="mx-auto max-w-5xl px-6 py-28 text-center">
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm backdrop-blur-md">
-            <Sparkles className="h-4 w-4 text-violet-400" />
-            Simple & Transparent Pricing
-          </div>
-
-          <h1 className="text-5xl font-black leading-tight tracking-tight md:text-7xl">
-            Pricing built for
-            <span className="bg-gradient-to-r from-violet-400 to-fuchsia-400 bg-clip-text text-transparent">
-              {" "}
-              every workflow
-            </span>
-          </h1>
-
-          <p className="mx-auto mt-8 max-w-2xl text-lg leading-8 text-zinc-400 md:text-xl">
-            Start free and scale your productivity with powerful AI tools,
-            collaboration, and workspace management.
-          </p>
-        </div>
-      </section>
+      <Hero
+        shortLabel="Simple & Transparent Pricing"
+        title={<TitleDisplay />}
+        desc="Start free and scale your productivity with powerful AI tools, collaboration, and workspace management."
+      />
 
       {/* Pricing Cards */}
       <section className="mx-auto max-w-7xl px-6 pb-28">
@@ -201,6 +185,15 @@ export default function PricingPage() {
         />
       </section>
     </>
+  );
+}
+
+function TitleDisplay() {
+  return (
+    <h1 className="text-5xl max-w-5xl font-black leading-tight tracking-tight md:text-7xl">
+      Pricing built for
+      <span className="text-gradient"> every workflow</span>
+    </h1>
   );
 }
 

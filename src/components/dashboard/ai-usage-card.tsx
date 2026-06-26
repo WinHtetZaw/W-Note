@@ -2,7 +2,7 @@ import { Zap } from "lucide-react";
 
 export function AIUsageCard() {
   return (
-    <div className="rounded-3xl border border-white/10 bg-white/5 p-5 backdrop-blur-xl">
+    <div className="p-5 glass">
       <div className="flex items-center gap-2">
         <Zap className="size-5 text-violet-400" />
 
@@ -11,7 +11,7 @@ export function AIUsageCard() {
 
       <div className="mt-5">
         <div className="flex justify-between text-sm">
-          <span className="text-zinc-400">Monthly Tokens</span>
+          <span className="text-muted">Monthly Tokens</span>
 
           <span>72%</span>
         </div>
@@ -20,7 +20,7 @@ export function AIUsageCard() {
           <div className="h-full w-[72%] rounded-full bg-violet-500" />
         </div>
 
-        <p className="mt-4 text-sm text-zinc-400">72,000 / 100,000 used</p>
+        <p className="mt-4 text-sm text-muted">72,000 / 100,000 used</p>
       </div>
     </div>
   );

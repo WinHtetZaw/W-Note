@@ -7,14 +7,14 @@ export default function MarketingLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <main className="min-h-screen overflow-hidden bg-zinc-950 text-white">
+    <div className="min-h-screen overflow-hidden bg-transparent">
       {/* Background Glow */}
       <div className="absolute inset-0 -z-10">
-        <div className="absolute left-1/2 top-0 h-125 max-w-125 -translate-x-1/2 rounded-full bg-violet-600/30 blur-[140px]" />
+        <div className="absolute left-1/2 top-0 h-125 w-125 -translate-x-1/2 rounded-full bg-violet-600/30 blur-[140px]" />
       </div>
       <Header />
-      {children}
+      <main className="pt-18 page-container">{children}</main>
       <Footer />
-    </main>
+    </div>
   );
 }

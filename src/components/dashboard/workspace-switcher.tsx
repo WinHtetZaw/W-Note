@@ -15,16 +15,16 @@ export function WorkspaceSwitcher() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button
-          variant="outline"
-          className="w-full justify-between rounded-xl border-white/10 bg-white/5"
-        >
+        <Button variant="outline" className="w-full justify-between">
           Personal
           <ChevronDown className="size-4" />
         </Button>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent align="start" className="w-60">
+      <DropdownMenuContent
+        align="start"
+        className="w-60 bg-background text-foreground"
+      >
         <DropdownMenuItem>Personal</DropdownMenuItem>
 
         <DropdownMenuItem>Startup</DropdownMenuItem>

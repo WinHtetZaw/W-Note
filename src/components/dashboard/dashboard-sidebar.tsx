@@ -22,13 +22,13 @@ export async function DashboardSidebar() {
   const { workspaceId } = result.data;
 
   return (
-    <aside className="hidden w-72 h-screen overflow-y-auto scrollbar-none border-r border-white/10 bg-zinc-950/80 backdrop-blur-xl lg:block">
-      <div className="flex h-20 items-center border-b border-white/10 px-6">
+    <aside className="hidden w-72 h-screen overflow-y-auto scrollbar-none border-r backdrop-blur-xl lg:block">
+      <div className="flex h-20 items-center border-b px-6">
         <Link href="/" className="flex items-center gap-3">
-          <Brain className="size-8 text-violet-400" />
+          <Brain className="size-8 text-primary" />
           <div>
             <h2 className="font-bold">NoteAI</h2>
-            <p className="text-xs text-zinc-400">AI Workspace</p>
+            <p className="text-xs text-muted">AI Workspace</p>
           </div>
         </Link>
       </div>

@@ -40,7 +40,7 @@ export function SidebarNavItem({ href, label, icon }: SidebarNavItemProps) {
         "flex items-center gap-3 rounded-xl px-4 py-3 transition-all",
         active
           ? "bg-violet-600 text-white"
-          : "text-zinc-400 hover:bg-white/5 hover:text-white",
+          : "text-muted hover:bg-secondary hover:text-white",
       )}
     >
       <Icon className="size-5" />
