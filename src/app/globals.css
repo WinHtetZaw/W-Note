@@ -56,9 +56,8 @@
   --card-foreground: oklch(0.141 0.005 285.823);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.141 0.005 285.823);
-  --primary: var(--color-violet-400);
+  --primary: var(--color-violet-500);
   --primary-foreground: oklch(0.985 0 0);
-  --icon: var(--color-violet-400);
   /* --secondary: oklch(0.967 0.001 286.375); */
   --secondary: color-mix(in oklab, var(--color-white) /* #fff = #ffffff */ 5%, transparent);
   --secondary-foreground: oklch(1 0 0);
@@ -176,11 +175,15 @@
 
 @layer utilities {
   .glass {
-    @apply rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl;
+    @apply border border-white/10 bg-white/5 backdrop-blur-xl;
   }
 
    .text-gradient {
     @apply bg-gradient-to-r from-violet-400 to-fuchsia-400 bg-clip-text text-transparent;
+  }
+
+  .icon {
+    @apply text-violet-400
   }
 }
 
@@ -205,4 +208,9 @@ body {
       transparent 25%
     ),
     hsl(240 10% 4%); */
+}
+
+.rose-gold {
+  background-color: #cd4e6e;
+  background: linear-gradient(90deg, #B76E79 0%, #FAD3D1 50%, #B76E79 100%);
 }

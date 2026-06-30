@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { GlassCard } from "@/components/ui/glass-card";
 import { fetchNotes } from "@/features/notes/server/actions/fetch-notes";
 import { cn } from "@/lib/utils";
 import { ArrowRight, FileText } from "lucide-react";
@@ -20,13 +19,13 @@ export default async function RecentNotes({ params, className }: Props) {
   }
 
   return (
-    <GlassCard className={cn("p-8", className)}>
+    <div className={cn("p-8 glass rounded-4xl", className)}>
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold">Recent Notes</h2>
 
         <Link
           href={`/dashboard/w/${workspaceId}/notes`}
-          className="flex items-center gap-2 text-sm text-zinc-400 hover:text-white"
+          className="flex items-center gap-2 text-sm text-muted hover:text-foreground"
         >
           View all <ArrowRight className="size-4" />
         </Link>
@@ -43,11 +42,11 @@ export default async function RecentNotes({ params, className }: Props) {
             <Link href={`/dashboard/w/${workspaceId}/notes/${note.id}`}>
               <span className="font-medium">{note.title}</span>
 
-              <FileText className="size-4 text-violet-400" />
+              <FileText className="size-4 icon" />
             </Link>
           </Button>
         ))}
       </div>
-    </GlassCard>
+    </div>
   );
 }

@@ -37,13 +37,13 @@ export function SidebarNavItem({ href, label, icon }: SidebarNavItemProps) {
     <Link
       href={href}
       className={cn(
-        "flex items-center gap-3 rounded-xl px-4 py-3 transition-all",
+        "flex group items-center gap-3 rounded-xl px-4 py-3 transition-all",
         active
           ? "bg-violet-600 text-white"
-          : "text-muted hover:bg-secondary hover:text-white",
+          : "text-muted hover:bg-secondary hover:text-violet-400",
       )}
     >
-      <Icon className="size-5" />
+      <Icon className="size-5 group-hover:text-inherit" />
 
       <span className="font-medium">{label}</span>
     </Link>

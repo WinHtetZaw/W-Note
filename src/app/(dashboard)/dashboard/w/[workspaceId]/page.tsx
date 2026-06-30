@@ -139,10 +139,10 @@ function ActivityItem({ text }: { text: string }) {
 
 function QuickAction({ label }: { label: string }) {
   return (
-    <button className="rounded-[28px] border border-white/10 bg-white/5 p-6 text-left backdrop-blur-2xl transition hover:bg-white/10">
+    <button className="p-6 glass rounded-3xl cursor-pointer hover:bg-white/10">
       <h3 className="font-semibold">{label}</h3>
 
-      <p className="mt-2 text-sm text-zinc-400">Manage and configure</p>
+      <p className="mt-2 text-sm text-muted">Manage and configure</p>
     </button>
   );
 }
