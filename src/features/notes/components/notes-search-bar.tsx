@@ -51,8 +51,9 @@ export default function NotesSearchBar() {
 
   return (
     <div className="mt-10 flex flex-col gap-4 lg:flex-row">
-      <InputGroup className="flex-1">
+      <InputGroup className="group flex-1 pl-2">
         <InputGroupInput
+          className=" text-[1rem] placeholder:text-zinc-500"
           value={value}
           onBlur={handleSearch}
           onKeyUp={handleEnterClick}
@@ -60,7 +61,7 @@ export default function NotesSearchBar() {
           placeholder="Search..."
         />
         <InputGroupAddon>
-          <Search />
+          <Search className="size-5 text-zinc-500" />
         </InputGroupAddon>
         <InputGroupAddon align="inline-end">
           <Button
@@ -70,7 +71,7 @@ export default function NotesSearchBar() {
             size={"icon"}
             className="hover:bg-transparent hover:text-current"
           >
-            <XIcon className="size-5" />
+            <XIcon className="size-5 text-zinc-500 group-focus-within:text-zinc-200" />
           </Button>
         </InputGroupAddon>
       </InputGroup>

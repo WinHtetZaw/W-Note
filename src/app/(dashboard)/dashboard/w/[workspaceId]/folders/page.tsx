@@ -8,7 +8,8 @@ import {
   Search,
 } from "lucide-react";
 import { listFolders } from "@/features/folders/server/actions";
-import { FoldersNotes } from "@/features/folders/server/queries";
+import { FolderswithNotes } from "@/features/folders/server/queries";
+import { pluralize, timeAgo } from "@/lib/utils";
 
 type Props = {
   params: Promise<{
@@ -46,11 +47,10 @@ const dummyFolders = [
 export default async function FoldersPage({ params }: Props) {
   const { workspaceId } = await params;
   const { data: folders } = await listFolders(workspaceId);
-  // type Folders = typeof folders
 
-  // if (!folders) {
-  //   return <>Not found</>;
-  // }
+  if (!folders) {
+    return <>Not found</>;
+  }
 
   return (
     <>
@@ -102,7 +102,7 @@ export default async function FoldersPage({ params }: Props) {
   );
 }
 
-function FolderCardLooping({ folders }: { folders: FoldersNotes }) {
+function FolderCardLooping({ folders }: { folders: FolderswithNotes }) {
   return (
     <>
       <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
@@ -125,10 +125,10 @@ function FolderCardLooping({ folders }: { folders: FoldersNotes }) {
             <div className="mt-6 flex items-center justify-between text-sm text-zinc-400">
               <div className="flex items-center gap-2">
                 <FileText className="h-4 w-4 text-violet-400" />
-                {folder.notes.length} notes
+                {pluralize(folder.notes.length, "note")}
               </div>
 
-              {/* <span>{new Date(folder.createdAt)}</span> */}
+              <span>{timeAgo(folder.updatedAt)}</span>
             </div>
           </Link>
         ))}

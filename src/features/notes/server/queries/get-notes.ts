@@ -1,10 +1,13 @@
 import { db } from "@/db";
 import { notesTable } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { and, eq, isNull } from "drizzle-orm";
 
 export async function getNotes(workspaceId: string, limit?: number) {
   return db.query.notesTable.findMany({
-    where: eq(notesTable.workspaceId, workspaceId),
+    where: and(
+      eq(notesTable.workspaceId, workspaceId),
+      isNull(notesTable.deletedAt),
+    ),
     with: {
       folder: {
         columns: {
@@ -13,6 +16,7 @@ export async function getNotes(workspaceId: string, limit?: number) {
         },
       },
     },
+
     orderBy: (table, { desc }) => [desc(table.updatedAt)],
     limit,
   });

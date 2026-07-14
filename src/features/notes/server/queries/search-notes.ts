@@ -1,4 +1,4 @@
-import { and, desc, eq, ilike } from "drizzle-orm";
+import { and, desc, eq, ilike, isNull } from "drizzle-orm";
 import { db } from "@/db";
 import { notesTable } from "@/db/schema";
 
@@ -10,7 +10,8 @@ export async function searchNotes(
   return db.query.notesTable.findMany({
     where: and(
       eq(notesTable.workspaceId, workspaceId),
-      ilike(notesTable.title, `%${query}%`),
+      isNull(notesTable.deletedAt),
+      ilike(notesTable.title, `%${query}%`), // need to check squence of isNull and ilinke, which one is first for performance
     ),
     // columns: {
     //   id: true,

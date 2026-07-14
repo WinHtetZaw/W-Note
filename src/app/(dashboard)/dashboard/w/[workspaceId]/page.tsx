@@ -50,7 +50,9 @@ export default async function WorkspaceDetailPage({ params }: Props) {
           <StatCard key={stat.label} {...stat} />
         ))}
       </div> */}
-      <WorkspaceStats workspaceId={(await params).workspaceId} />
+      <Suspense fallback={<p>loading</p>}>
+        <WorkspaceStats params={params} />
+      </Suspense>
 
       {/* Content Grid */}
       {/* <div className="mt-10 grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">

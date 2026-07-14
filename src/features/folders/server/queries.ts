@@ -18,7 +18,9 @@ export async function getFolders(workspaceId: string) {
   });
 }
 
-export type FoldersNotes = Awaited<ReturnType<typeof getFolders>>;
+export type FolderswithNotes = NonNullable<
+  Awaited<ReturnType<typeof getFolders>>
+>;
 
 // export async function getFoldersWithNotes(workspaceId: string) {
 //   return db.query.foldersTable.findMany({

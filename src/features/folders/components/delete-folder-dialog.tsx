@@ -6,7 +6,6 @@ import { toast } from "sonner";
 
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogHeader,
@@ -15,41 +14,34 @@ import {
   AlertDialogFooter,
 } from "@/components/ui/alert-dialog";
 import { Trash } from "lucide-react";
-import { removeWorkspace } from "../server/actions/remove-workspace";
 import { Button } from "@/components/ui/button";
+import { removeFolder } from "../server/actions";
 
 type Props = {
+  folderId: string;
   workspaceId: string;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 };
 
-export default function DeleteWorkspaceDialog({
-  workspaceId,
-  open,
-  onOpenChange,
-}: Props) {
+export default function DeleteFolderDialog(props: Props) {
+  const { folderId, workspaceId, open, onOpenChange } = props;
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
+
   const handleDelete = () => {
-    // 🔥 optimistic UI
-    onOpenChange(false);
-    toast.loading("Deleting workspace...");
+    onOpenChange(true);
 
     startTransition(async () => {
-      const res = await removeWorkspace(workspaceId);
+      const res = await removeFolder(folderId);
       if (!res.success) {
-        // toast.error(res.error || "Something went wrong");
         toast.error("Something went wrong");
         return;
       }
 
-      // ✅ success
       toast.success("Workspace deleted");
-
-      // 🔁 refresh or redirect
-      router.push("/dashboard");
-      router.refresh();
+      onOpenChange(false);
+      router.push(`/dashboard/w/${workspaceId}/folders`);
     });
   };
   return (
@@ -61,35 +53,38 @@ export default function DeleteWorkspaceDialog({
           </div>
 
           <AlertDialogTitle className="text-center text-3xl font-black text-white">
-            Delete Workspace
+            Delete Folder
           </AlertDialogTitle>
 
           <AlertDialogDescription className="mt-4 text-base leading-7 text-muted">
-            This action cannot be undone. All notes, folders, AI usage history,
-            and workspace members will be permanently removed.
+            This action cannot be undone. All notes will be moved to under
+            workspace. You can delete the notes later if you want.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <div className="mt-6 rounded-2xl border border-red-500/20 bg-red-500/5 p-5">
           <h3 className="font-semibold text-destructive">Warning</h3>
 
           <p className="mt-2 text-sm leading-6 text-muted">
-            Once deleted, all workspace data will be permanently lost.
+            Once deleted, folder will be permanently lost.
           </p>
         </div>
         <AlertDialogFooter className="mt-8 justify-between bg-transparent">
           <AlertDialogCancel asChild>
-            <Button variant={"outline"} className="text-white">
+            <Button
+              variant={"outline"}
+              disabled={isPending}
+              className="text-white"
+            >
               Cancel
             </Button>
           </AlertDialogCancel>
-
-          <AlertDialogAction
+          <Button
+            variant="destructive"
             onClick={handleDelete}
             disabled={isPending}
-            className="h-12 rounded-2xl bg-red-500 hover:bg-red-400"
           >
-            {isPending ? "Deleting..." : "Delete Workspace"}
-          </AlertDialogAction>
+            {isPending ? "Deleting..." : "Delete folder"}
+          </Button>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

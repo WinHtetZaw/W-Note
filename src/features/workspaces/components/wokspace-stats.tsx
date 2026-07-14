@@ -1,13 +1,12 @@
 import { FileText, FolderTree, Users } from "lucide-react";
 import { fetchWorkspaceOverview } from "../server/actions/fetch-workspace-overview";
-import { GlassCard } from "@/components/ui/glass-card";
 
 export default async function WorkspaceStats({
-  workspaceId,
+  params,
 }: {
-  workspaceId: string;
+  params: Promise<{ workspaceId: string }>;
 }) {
-  const result = await fetchWorkspaceOverview(workspaceId);
+  const result = await fetchWorkspaceOverview((await params).workspaceId);
 
   if (!result.success) {
     // todo implement not found workspace stat card

@@ -10,3 +10,5 @@ export async function getFolderNotes(workspaceId: string, folderId: string) {
     ),
   });
 }
+
+export type FolderNote = Awaited<ReturnType<typeof getFolderNotes>>[number];

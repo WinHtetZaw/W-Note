@@ -27,7 +27,7 @@ export const pluralize = (
   plural?: string,
 ) => {
   if (typeof count === "string") count = +count;
-  if (count === 1) return `${count} ${singular}`;
+  if (count <= 1) return `${count} ${singular}`;
   return `${count} ${plural || singular + "s"}`;
 };
 

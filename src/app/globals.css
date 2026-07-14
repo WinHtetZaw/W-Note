@@ -39,6 +39,7 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
+  --color-icon: var(--icon);
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -52,7 +53,8 @@
   /* --background: oklch(1 0 0); */
   --background: oklch(14.1% 0.005 285.823);
   --foreground: oklch(1 0 0);
-  --card: oklch(1 0 0);
+  /* --card: oklch(1 0 0); */
+  --card: color-mix(in oklab, var(--color-white) /* #fff = #ffffff */ 5%)
   --card-foreground: oklch(0.141 0.005 285.823);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.141 0.005 285.823);
@@ -65,12 +67,15 @@
   --muted-foreground: oklch(0.552 0.016 285.938); */
   --muted: var(--color-zinc-400);
   --muted-foreground: color-mix(in oklab, var(--color-white) /* #fff = #ffffff */ 5%);
-  --accent: oklch(0.967 0.001 286.375);
-  --accent-foreground: oklch(0.21 0.006 285.885);
+  /* --accent: oklch(0.967 0.001 286.375); */
+  --accent: color-mix(in oklab, var(--color-white) /* #fff = #ffffff */ 5%, transparent);
+  /* --accent-foreground: oklch(0.21 0.006 285.885); */
+  --accent-foreground: var(--color-violet-400);
   --destructive: oklch(58.6% 0.253 17.585);
   --border: color-mix(in oklab, var(--color-white) /* #fff = #ffffff */ 10%, transparent);
   --input: oklch(0.92 0.004 286.32);
   --ring: oklch(0.705 0.015 286.067);
+  --icon: var(--color-violet-400);
   --chart-1: oklch(0.871 0.006 286.286);
   --chart-2: oklch(0.552 0.016 285.938);
   --chart-3: oklch(0.442 0.017 285.786);
@@ -175,16 +180,20 @@
 
 @layer utilities {
   .glass {
-    @apply border border-white/10 bg-white/5 backdrop-blur-xl;
+    @apply border border-white/10 bg-white/5 backdrop-blur-2xl;
   }
 
-   .text-gradient {
+  .text-gradient {
     @apply bg-gradient-to-r from-violet-400 to-fuchsia-400 bg-clip-text text-transparent;
   }
 
-  .icon {
-    @apply text-violet-400
+  .card {
+    @apply border rounded-3xl border-border bg-card hover:bg-white/10 transition;
   }
+
+  /* .icon {
+    @apply text-violet-400
+  } */
 }
 
 @layer components {
