@@ -5,8 +5,8 @@ import { getNote, Note } from "../queries/get-note";
 import { fail, ok, Result } from "@/lib/types";
 
 export async function fetchNote(
-  noteId: string,
   workspaceId: string,
+  noteId: string,
 ): Promise<Result<Note>> {
   // Validate auth
   await requireWorkspaceMember(workspaceId);
@@ -18,7 +18,7 @@ export async function fetchNote(
   }
 
   // permission check from db workspaceId
-  await requireWorkspaceMember(note.workspaceId);
+  // await requireWorkspaceMember(note.workspaceId);
 
   return ok(note);
 }

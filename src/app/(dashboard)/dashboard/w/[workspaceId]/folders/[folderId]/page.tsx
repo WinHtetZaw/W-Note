@@ -109,7 +109,13 @@ async function FolderDetailContent({ params }: Props) {
         }
       />
 
-      <FolderNotesList notes={result.data} />
+      {result.data.length === 0 ? (
+        <div className="mt-10 text-center text-zinc-400">
+          No notes found in this folder.
+        </div>
+      ) : (
+        <FolderNotesList notes={result.data} />
+      )}
     </>
   );
 }

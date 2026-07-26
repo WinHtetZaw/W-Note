@@ -11,3 +11,5 @@ export const db = drizzle(pool, {
   schema,
   logger: true,
 });
+
+export type Neondb = typeof db;

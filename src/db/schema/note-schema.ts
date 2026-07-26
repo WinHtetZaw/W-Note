@@ -6,6 +6,7 @@ import {
   integer,
   index,
   timestamp,
+  jsonb,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 import { user as usersTable } from "./auth-schema";
@@ -36,7 +37,8 @@ export const notesTable = pgTable(
     title: varchar("title", {
       length: 255,
     }).notNull(),
-    content: text("content").notNull(),
+    content: text("content"),
+    // content: jsonb("content").$type<Record<string, unknown>>().notNull(),
     status: varchar("status", {
       length: 50,
     })

@@ -1,9 +1,13 @@
 import { eq, sql } from "drizzle-orm";
-import { db } from "@/db";
+// import { db } from "@/db";
 import { notesTable, noteVersionsTable } from "@/db/schema";
 import { requireAuth } from "@/lib/permissions";
+import { Neondb } from "@/db";
 
-export async function createNoteVersion(note: typeof notesTable.$inferSelect) {
+export async function createNoteVersion(
+  db: Neondb,
+  note: typeof notesTable.$inferSelect,
+) {
   const user = await requireAuth();
 
   const latest = await db.query.noteVersionsTable.findFirst({
@@ -15,7 +19,7 @@ export async function createNoteVersion(note: typeof notesTable.$inferSelect) {
     noteId: note.id,
     editedBy: user.id,
     title: note.title,
-    content: note.content,
+    content: note.content ?? "",
     version: (latest?.version ?? 0) + 1,
   });
 }

@@ -22,11 +22,11 @@ export async function insertNote(
     .values({
       workspaceId,
       folderId,
-      title: "Untitled Note",
+      title: "New Note",
       authorId,
       content: "",
     })
-    .returning({ id: notesTable.id });
+    .returning();
 
   //todo revalidate
 

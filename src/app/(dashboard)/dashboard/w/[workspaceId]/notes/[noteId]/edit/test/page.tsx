@@ -27,7 +27,7 @@ export default async function NoteDetailPage({ params }: Props) {
     <>
       {/* keep your header */}
 
-      {/* <div className="grid gap-6 p-6 xl:grid-cols-[1fr_350px]">
+      <div className="grid gap-6 p-6 xl:grid-cols-[1fr_350px]">
         <div
           className="
           rounded-[36px]
@@ -58,25 +58,25 @@ export default async function NoteDetailPage({ params }: Props) {
                 Generate summaries, rewrite content, and more.
               </p>
             </div>
-          </div> */}
+          </div>
 
-      <NoteEditor
-        title={title}
-        noteId={noteId}
-        workspaceId={workspaceId}
-        content={
-          content
-          // result.data.content ?? {
-          //   type: "doc",
-          //   content: [],
-          // }
-        }
-      />
-      {/* <UpdateNoteButton/> */}
-      {/* </div> */}
+          <NoteEditor
+            title={title}
+            noteId={noteId}
+            workspaceId={workspaceId}
+            content={
+              content
+              // result.data.content ?? {
+              //   type: "doc",
+              //   content: [],
+              // }
+            }
+          />
+          {/* <UpdateNoteButton/> */}
+        </div>
 
-      {/* your existing AI sidebar */}
-      {/* </div> */}
+        {/* your existing AI sidebar */}
+      </div>
     </>
   );
 }

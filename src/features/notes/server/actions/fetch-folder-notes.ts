@@ -7,9 +7,10 @@ export async function fetchFolderNotes(
   folderId: string,
 ): Promise<Result<FolderNote[]>> {
   await requireWorkspaceMember(workspaceId);
+  console.log(workspaceId, folderId);
 
   const notes = await getFolderNotes(workspaceId, folderId);
-  if (notes.length === 0) {
+  if (!notes) {
     return fail("Fail to get notes");
   }
 

@@ -183,6 +183,10 @@
     @apply border border-white/10 bg-white/5 backdrop-blur-2xl;
   }
 
+  .glass-violet {
+    @apply border border-violet-500/20 bg-violet-500/10;
+  }
+
   .text-gradient {
     @apply bg-gradient-to-r from-violet-400 to-fuchsia-400 bg-clip-text text-transparent;
   }
