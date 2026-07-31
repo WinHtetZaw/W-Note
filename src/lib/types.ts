@@ -1,3 +1,5 @@
+import { db } from "@/db";
+
 export type Result<T> =
   | {
       success: true;
@@ -23,3 +25,5 @@ export function fail(message: string): Result<never> {
     message,
   };
 }
+
+export type Transaction = Parameters<Parameters<typeof db.transaction>[0]>[0];

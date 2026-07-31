@@ -88,11 +88,10 @@ export const workspaceInvitationsTable = pgTable(
       .$type<"admin" | "member">()
       .notNull()
       .default("member"),
-
     status: varchar("status", {
       length: 50,
     })
-      .$type<"pending" | "accepted" | "declined">()
+      .$type<"pending" | "accepted" | "declined" | "revoked">()
       .notNull()
       .default("pending"),
     token: text("token").notNull(),
@@ -104,7 +103,7 @@ export const workspaceInvitationsTable = pgTable(
   (table) => [
     index("workspace_invites_workspace_idx").on(table.workspaceId),
     index("workspace_invites_email_idx").on(table.email),
-    index("workspace_invites_token_idx").on(table.token),
+    index("workspace_invites_token_unique").on(table.token),
     uniqueIndex("workspace_invite_unique").on(table.workspaceId, table.email),
   ],
 );

@@ -54,3 +54,5 @@ export function timeAgo(date: Date | string | number): string {
 
   return "just now";
 }
+
+export const now = () => new Date();

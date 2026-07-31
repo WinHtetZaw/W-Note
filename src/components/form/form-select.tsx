@@ -64,7 +64,11 @@ export default function FormSelect<T extends FieldValues>(
             </SelectTrigger>
             <SelectContent position={contentAlign}>
               {selectValues.map((el) => (
-                <SelectItem value={el.value} className="capitalize">
+                <SelectItem
+                  key={el.value}
+                  value={el.value}
+                  className="capitalize"
+                >
                   {el.name}
                 </SelectItem>
               ))}
