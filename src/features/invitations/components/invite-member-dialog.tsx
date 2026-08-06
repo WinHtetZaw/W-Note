@@ -17,12 +17,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import FormSelect from "@/components/form/form-select";
 import { useTransition } from "react";
 import { useParams } from "next/navigation";
-import { wait } from "@/lib/utils";
 import {
   InvitationFormValues,
   sendInvitationSchema,
 } from "../schemas/send-invitation-schema";
 import { createWorkspaceInvite } from "../server/actions/create-workspace-invite";
+import { toast } from "sonner";
 
 interface Props {
   open: boolean;
@@ -45,6 +45,11 @@ export default function InviteMemberDialog({ open, onOpenChange }: Props) {
       // await wait(5000);
       console.log(values);
       const result = await createWorkspaceInvite({ workspaceId, ...values });
+      if (!result.success) {
+        toast.error(result.message);
+      }
+      toast.success(result.message);
+      console.dir(result);
       onOpenChange(false);
     });
   }

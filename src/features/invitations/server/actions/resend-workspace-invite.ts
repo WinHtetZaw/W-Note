@@ -10,6 +10,7 @@ import { getInvitationExpiration } from "../../services/get-invitation-expiratio
 import { generateInviteLink } from "../../services/generate-invite-link";
 import { fail, ok, Result } from "@/lib/types";
 import { InvitationWithInviteLink } from "../../types";
+import { hashInvitationToken } from "../../services/hash-invitation-token";
 
 // import { sendInvitationEmail } from "../services/send-invitation-email";
 
@@ -25,9 +26,10 @@ export async function resendWorkspaceInvite(
   validateRevocableInvitation(invitation);
 
   const token = generateInvitationToken();
+  const tokenHash = hashInvitationToken(token);
   const expiresAt = getInvitationExpiration();
   const updatedInvitation = await updateInvitation(invitation.id, {
-    token,
+    tokenHash,
     expiresAt,
   });
 

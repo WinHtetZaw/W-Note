@@ -15,6 +15,7 @@ import {
   CreateWorkspaceInviteInput,
   createWorkspaceInviteSchema,
 } from "../../schemas/create-workspace-invite-schema";
+import { inviteUserToWorkspace } from "../../services/invite-user-to-workspace";
 
 // import { sendInvitationEmail } from "../services/send-invitation-email";
 
@@ -22,39 +23,17 @@ export async function createWorkspaceInvite(
   input: CreateWorkspaceInviteInput,
 ): Promise<Result<Invitation>> {
   // incoming data vadalidation
-  const { success, data } = createWorkspaceInviteSchema.safeParse(input);
-  if (!success) return fail("Invalid invitation data.");
-  const { workspaceId, email, role } = data;
+  // const { success, data } = createWorkspaceInviteSchema.safeParse(input);
+  // if (!success) return fail("Invalid invitation data.");
+  // const { workspaceId, email, role } = data;
 
   // Auth and Authzi validation
-  const { user } = await requireWorkspaceAdmin(workspaceId);
+  const { user } = await requireWorkspaceAdmin(input.workspaceId);
 
-  // Checking for existing invitation
-  const existing = await getInvitationByEmail(workspaceId, email);
-  if (existing) fail("User already has a pending invitation.");
+  const invitation = await inviteUserToWorkspace(input, user);
 
-  const token = generateInvitationToken();
-  const expiresAt = getInvitationExpiration();
-
-  // mutation db
-  const invitation = await createInvitation({
-    workspaceId,
-    invitedBy: user.id,
-    email,
-    role,
-    token,
-    expiresAt,
-  });
-  if (!invitation) return fail("Fail to create invatation");
-
-  //   const inviteLink = generateInviteLink({ token });
-  //   await sendInvitationEmail({
-  //     email,
-  //     inviterName: user.name,
-  //     workspaceName: workspace.name,
-  //     inviteLink,
-  //   });
+  // todo revalidate cache
   // revalidatePath(`/dashboard/w/${workspaceId}/members`);
 
-  return ok(invitation);
+  return invitation;
 }

@@ -4,7 +4,7 @@ import { workspaceInvitationsTable } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
 type UpdateInvitationData = {
-  token: string;
+  tokenHash: string;
   expiresAt: Date;
 };
 
@@ -15,7 +15,7 @@ export async function updateInvitation(
   const [invitation] = await db
     .update(workspaceInvitationsTable)
     .set({
-      token: data.token,
+      tokenHash: data.tokenHash,
       expiresAt: data.expiresAt,
     })
     .where(eq(workspaceInvitationsTable.id, invitationId))

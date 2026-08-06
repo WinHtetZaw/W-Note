@@ -8,3 +8,8 @@ export const updatedAt = timestamp("updated_at", { withTimezone: true })
   .defaultNow()
   .$onUpdate(() => new Date())
   .notNull();
+
+export const timeAt = (name: string) =>
+  timestamp(name, {
+    withTimezone: true,
+  });

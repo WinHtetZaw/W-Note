@@ -1,7 +1,7 @@
 import { db } from "@/db";
-import { createWorkspaceMember } from "../schemas/mutations/create-workspace-member";
-import { markInvitationAccepted } from "../schemas/mutations/mark-invitation-accepted";
 import { Invitation } from "../types";
+import { createWorkspaceMember } from "../server/mutations/create-workspace-member";
+import { markInvitationAccepted } from "../server/mutations/mark-invitation-accepted";
 
 // type AcceptInvitationData = {
 //   invitation: {

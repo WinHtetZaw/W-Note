@@ -1,3 +1,4 @@
+import { getCurrentUser } from "@/lib/permissions";
 import {
   CalendarClock,
   CheckCircle2,
@@ -6,6 +7,7 @@ import {
   Users,
   WandSparkles,
 } from "lucide-react";
+import { redirect } from "next/navigation";
 
 export default async function InvitationPage({
   params,
@@ -15,7 +17,14 @@ export default async function InvitationPage({
   }>;
 }) {
   const { token } = await params;
+  const user = await getCurrentUser();
+  console.dir(user);
 
+  if (!user) {
+    return redirect(`/sign-in?token=${token}`);
+  }
+
+  return redirect("/invitations");
   // TODO:
   // const invitation = await getInvitation(token)
 

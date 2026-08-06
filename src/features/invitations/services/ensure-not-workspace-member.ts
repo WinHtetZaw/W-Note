@@ -9,4 +9,6 @@ export async function ensureNotWorkspaceMember(
   if (member) {
     throw new Error("User is already a workspace member.");
   }
+
+  return true;
 }

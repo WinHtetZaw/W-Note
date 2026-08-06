@@ -18,7 +18,6 @@ export async function getWorkspaceMember(workspaceId: string, userId: string) {
         },
       },
     },
-    orderBy: (table, { asc }) => [asc(table.joinedAt)],
   });
 }
 

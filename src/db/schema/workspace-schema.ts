@@ -11,7 +11,7 @@ import {
 import { relations } from "drizzle-orm";
 import { user as usersTable } from "./auth-schema";
 import { notesTable } from "./note-schema";
-import { createdAt, updatedAt } from "./db-schema-helper";
+import { createdAt, timeAt, updatedAt } from "./db-schema-helper";
 import { subscriptionsTable } from "./billing-schema";
 import { aiUsageTable } from "./ai-schema";
 
@@ -94,17 +94,21 @@ export const workspaceInvitationsTable = pgTable(
       .$type<"pending" | "accepted" | "declined" | "revoked">()
       .notNull()
       .default("pending"),
-    token: text("token").notNull(),
-    expiresAt: timestamp("expires_at", {
-      withTimezone: true,
-    }).notNull(),
+    // token: text("token").notNull(),
+    tokenHash: text("token_hash").notNull(),
+    expiresAt: timeAt("expires_at").notNull(),
+    acceptedAt: timeAt("accepted_at"),
+    declinedAt: timeAt("declined_at"),
+    revokedAt: timeAt("revoked_at"),
     createdAt,
   },
   (table) => [
     index("workspace_invites_workspace_idx").on(table.workspaceId),
     index("workspace_invites_email_idx").on(table.email),
-    index("workspace_invites_token_unique").on(table.token),
+    // index("workspace_invites_token_unique").on(table.token),
+    index("workspace_invites_token_hash_idx").on(table.tokenHash),
     uniqueIndex("workspace_invite_unique").on(table.workspaceId, table.email),
+    uniqueIndex("workspace_invites_token_hash_unique").on(table.tokenHash),
   ],
 );
 
