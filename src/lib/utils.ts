@@ -13,7 +13,7 @@ export function stringEquals(a: string, b: string) {
 export const wait = (ms: number) =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
-export const handleToast = (success: boolean, message: string) => {
+export const handleToast = (success: boolean, message?: string) => {
   if (!success) {
     toast.error(message ?? "Something wrong!");
     return;

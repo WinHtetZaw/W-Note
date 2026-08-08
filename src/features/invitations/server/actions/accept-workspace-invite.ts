@@ -9,17 +9,15 @@ import { ensureNotWorkspaceMember } from "../../services/ensure-not-workspace-me
 import { acceptInvitation } from "../../services/accept-invitation";
 import { ok, Result } from "@/lib/types";
 import { getInvitationById } from "../queries/get-invitation-by-id";
+import { requireAuth } from "@/lib/permissions";
 
 export async function acceptWorkspaceInvite(
   // token: string,
   invitationId: string,
 ): Promise<Result<string>> {
   // Auth
-  const session = await auth.api.getSession();
-  if (!session) {
-    throw new Error("Unauthorized");
-  }
-  const { email, id: userId } = session.user;
+  const user = await requireAuth();
+  const { email, id: userId } = user;
 
   // const invitation = await getInvitation(invitationId);
   const invitation = await getInvitationById(invitationId);

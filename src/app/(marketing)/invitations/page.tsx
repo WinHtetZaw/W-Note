@@ -1,3 +1,4 @@
+import InvitationAcceptButton from "@/features/invitations/components/invitation-accept-button";
 import { fetchUserPendingInvitations } from "@/features/invitations/server/actions/fetch-user-pending-invitations";
 import { auth } from "@/lib/auth";
 import { CalendarClock, Crown, Sparkles, Users } from "lucide-react";
@@ -8,7 +9,7 @@ const invitations = [
     workspace: "AI Notes Team",
     inviter: "Alex Johnson",
     role: "Member",
-    expiresIn: "6 days",
+    expiresAt: "6 days",
   },
 
   {
@@ -16,7 +17,7 @@ const invitations = [
     workspace: "Marketing",
     inviter: "Sarah Kim",
     role: "Admin",
-    expiresIn: "4 days",
+    expiresAt: "4 days",
   },
 ];
 
@@ -26,7 +27,7 @@ export default async function InvitationsPage() {
   if (!res.success) {
     return <p>not found invitations</p>;
   }
-  console.log(res);
+  console.log("res data --->", res.data);
   return (
     <main className="mx-auto max-w-5xl px-6 py-16">
       {/* Header */}
@@ -63,6 +64,18 @@ export default async function InvitationsPage() {
             <InvitationCard key={invitation.id} invitation={invitation} />
           ))
         )}
+        {res.data.map((el) => (
+          <InvitationCard
+            key={el.id}
+            invitation={{
+              id: el.id,
+              workspace: el.workspace.name,
+              inviter: el.inviter.name,
+              role: el.role,
+              expiresAt: el.expiresAt.toLocaleDateString(),
+            }}
+          />
+        ))}
       </section>
     </main>
   );
@@ -76,7 +89,8 @@ function InvitationCard({
     workspace: string;
     inviter: string;
     role: string;
-    expiresIn: string;
+    // expiresIn: string;
+    expiresAt: string;
   };
 }) {
   return (
@@ -106,7 +120,7 @@ function InvitationCard({
 
               <div className="flex items-center gap-2">
                 <CalendarClock className="h-4 w-4" />
-                Expires in {invitation.expiresIn}
+                Expires in {invitation.expiresAt}
               </div>
             </div>
           </div>
@@ -118,6 +132,7 @@ function InvitationCard({
           <button className="rounded-2xl bg-violet-600 px-6 py-3 font-semibold transition hover:bg-violet-500">
             Accept
           </button>
+          <InvitationAcceptButton invitationId={invitation.id} />
 
           <button className="rounded-2xl border border-white/10 bg-white/5 px-6 py-3 transition hover:bg-white/10">
             Decline

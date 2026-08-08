@@ -44,13 +44,15 @@ export default function SignInForm() {
 
       const result = await fetchUserPendingInvitationsCount(email);
       // const invitations = 0;
-      if (result.success) {
+      if (result.success && result.data >= 1) {
         console.log(result.data);
-        if (result.data > 0) {
-          router.push("/invitations");
-        } else {
-          router.push("/dashboard");
-        }
+        console.log("got to invitations");
+        router.push("/invitations");
+        // if (result.data > 0) {
+        // } else {
+        //   console.log("got to dashboard");
+        //   router.push("/dashboard");
+        // }
 
         // switch (result.data) {
         //   case 0:
@@ -64,7 +66,8 @@ export default function SignInForm() {
         //     router.push("/invitations");
         // }
       }
-      // router.push("/dashboard");
+      console.log("got to dashboard");
+      router.push("/dashboard");
     });
   };
 

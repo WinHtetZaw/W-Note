@@ -14,22 +14,27 @@ import { Invitation } from "../types";
 import { ensureNotWorkspaceMember } from "./ensure-not-workspace-member";
 import { requireAuth } from "@/lib/permissions";
 import { hashInvitationToken } from "./hash-invitation-token";
+import { getUserByEmail } from "@/features/auth/server/queries/get-user-by-email";
 
 type Meta = { emailSent: boolean; error: unknown };
 type InviteUserToWorkspace = Invitation & { emailSent: boolean };
 
 export async function inviteUserToWorkspace(
   input: CreateWorkspaceInviteInput,
-  user: User,
+  sender: User,
 ): Promise<Result<InviteUserToWorkspace>> {
   const { success, data } = createWorkspaceInviteSchema.safeParse(input);
   if (!success) return fail("Invalid invitation data.");
   const { workspaceId, email, role } = data;
 
   // todo already memeber?
-  const isNotAMember = await ensureNotWorkspaceMember(workspaceId, user.id);
-  if (!isNotAMember) {
-    return fail("User is already a workspace member.");
+  const user = await getUserByEmail(workspaceId, email);
+  if (user) {
+    const isNotAMember = await ensureNotWorkspaceMember(workspaceId, user.id);
+
+    if (!isNotAMember) {
+      return fail("User is already a workspace member.");
+    }
   }
 
   // Checking for existing invitation
@@ -44,7 +49,7 @@ export async function inviteUserToWorkspace(
   // mutation db
   const invitation = await createInvitation({
     workspaceId,
-    invitedBy: user.id,
+    invitedBy: sender.id,
     email,
     role,
     tokenHash,
@@ -56,7 +61,7 @@ export async function inviteUserToWorkspace(
   const emailResult = await sendInvitationEmail({
     to: email,
     workspaceName: "placeholder workspace name",
-    inviterName: user.name,
+    inviterName: sender.name,
     role,
     invitationLink,
     expiresAt: expiresAt.toLocaleDateString(),
