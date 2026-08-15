@@ -1,11 +1,17 @@
+import { ok, fail } from "../result";
 import { requireWorkspaceMember } from "./require-workspace-member";
 
 export async function requireWorkspaceOwner(workspaceId: string) {
-  const result = await requireWorkspaceMember(workspaceId);
-
-  if (result.role !== "owner") {
-    throw new Error("Owner access required");
+  const [error, result] = await requireWorkspaceMember(workspaceId);
+  if (error) {
+    return fail({ reason: "NotFound" });
   }
 
-  return result;
+  if (result.role !== "owner") {
+    if (error) {
+      return fail({ reason: "Forbidden" });
+    }
+  }
+
+  return ok(result);
 }

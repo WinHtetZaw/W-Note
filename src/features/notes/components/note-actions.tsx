@@ -19,7 +19,7 @@ type Props = { noteId: string; workspaceId: string };
 
 export default function NoteActions({ noteId, workspaceId }: Props) {
   const handleMoveToTrash = async () => {
-    const result = await moveToTrashAction(noteId);
+    const result = await moveToTrashAction(workspaceId, noteId);
 
     if (!result.success) {
       toast.error(result.message);

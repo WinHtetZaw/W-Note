@@ -8,6 +8,7 @@ import {
 import { updateNote } from "../mutations/update-note";
 import { fail, ok, Result } from "@/lib/types";
 import { Note } from "../queries/get-note";
+import { revalidateTag } from "next/cache";
 
 export async function editNote(
   input: UpdateNoteInput,
@@ -30,6 +31,7 @@ export async function editNote(
   if (!note) {
     return fail("Fail to update note");
   }
+  revalidateTag("hello", "max");
 
   // todo revalidate
   return ok(note, "Successfully updated note");

@@ -1,6 +1,7 @@
 import { eq } from "drizzle-orm";
 import { db } from "@/db";
 import { foldersTable, notesTable } from "@/db/schema";
+import { cacheTag } from "next/cache";
 
 export async function getFolder(folderId: string) {
   //! implement cache
@@ -10,6 +11,8 @@ export async function getFolder(folderId: string) {
 }
 
 export async function getFolders(workspaceId: string) {
+  "use cache";
+  cacheTag("trash");
   //! implement cache
   return db.query.foldersTable.findMany({
     where: eq(foldersTable.workspaceId, workspaceId),

@@ -6,8 +6,8 @@ import {
   createNoteSchema,
 } from "../../schemas/create-note-schema";
 import { insertNote } from "../mutations/insert-note";
-import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { revalidateTag } from "next/cache";
 
 type CreateNoteInput = {
   workspaceId: string;
@@ -16,7 +16,7 @@ type CreateNoteInput = {
 
 export async function createNote(input: CreateNoteInput) {
   // Auth and permission check
-  const { workspaceId, folderId = null } = input;
+  const { workspaceId, folderId } = input;
   const { user } = await requireWorkspaceMember(input.workspaceId);
 
   // validate incoming data
@@ -34,7 +34,8 @@ export async function createNote(input: CreateNoteInput) {
   //todo revalidate
 
   // return { success: true, data: note };
-  revalidatePath(`/dashboard/w/${workspaceId}`);
+  // revalidatePath(`/dashboard/w/${workspaceId}`);
+  revalidateTag("hello", "max");
   redirect(`/dashboard/w/${workspaceId}/notes/${note.id}`);
 }
 

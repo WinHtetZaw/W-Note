@@ -7,9 +7,11 @@ import {
   ArrowRight,
   Search,
 } from "lucide-react";
-import { listFolders } from "@/features/folders/server/actions";
+// import { listFolders } from "@/features/folders/server/actions";
 import { FolderswithNotes } from "@/features/folders/server/queries";
 import { pluralize, timeAgo } from "@/lib/utils";
+import { listFoldersWithNotes } from "@/features/folders/server/actions/list-folders-notes";
+import { FolderNotesView } from "@/features/folders/server/queries/get-folders-with-notes";
 
 type Props = {
   params: Promise<{
@@ -46,11 +48,13 @@ const dummyFolders = [
 
 export default async function FoldersPage({ params }: Props) {
   const { workspaceId } = await params;
-  const { data: folders } = await listFolders(workspaceId);
+  const result = await listFoldersWithNotes(workspaceId);
 
-  if (!folders) {
+  if (!result.data) {
     return <>Not found</>;
   }
+
+  const folders = result.data;
 
   return (
     <>
@@ -102,7 +106,7 @@ export default async function FoldersPage({ params }: Props) {
   );
 }
 
-function FolderCardLooping({ folders }: { folders: FolderswithNotes }) {
+function FolderCardLooping({ folders }: { folders: FolderNotesView[] }) {
   return (
     <>
       <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">

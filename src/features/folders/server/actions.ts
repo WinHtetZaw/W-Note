@@ -32,21 +32,21 @@ export async function fetchFolder(folderId: string, workspaceId: string) {
   return { success: true, data: folder };
 }
 
-export async function listFolders(workspaceId: string) {
-  // Validate Auth
-  await requireAuth();
+// export async function listFolders(workspaceId: string) {
+//   // Validate Auth
+//   await requireAuth();
 
-  // permission check
-  await requireWorkspaceMember(workspaceId);
+//   // permission check
+//   await requireWorkspaceMember(workspaceId);
 
-  // fetching folders
-  const folders = await getFolders(workspaceId);
-  if (!folders || folders.length <= 0) {
-    return { success: false, message: "No folders found!" };
-  }
+//   // fetching folders
+//   const folders = await getFolders(workspaceId);
+//   if (!folders || folders.length <= 0) {
+//     return { success: false, message: "No folders found!" };
+//   }
 
-  return { success: true, data: folders };
-}
+//   return { success: true, data: folders };
+// }
 
 // export async function listFoldersWithNotes() {
 //   // Validate Auth
@@ -84,31 +84,31 @@ export async function listFolderNotes(folderId: string, workspaceId: string) {
   return { success: true, data: folderNotes };
 }
 
-export async function createFolder(input: CreateFolderInput) {
-  // Validate Auth
-  await requireAuth();
+// export async function createFolder(input: CreateFolderInput) {
+//   // Validate Auth
+//   await requireAuth();
 
-  // validate incoming data
-  const { success, data } = createFolderSchema.safeParse(input);
-  if (!success) {
-    return { success, message: "Invalid folder data" };
-  }
+//   // validate incoming data
+//   const { success, data } = createFolderSchema.safeParse(input);
+//   if (!success) {
+//     return { success, message: "Invalid folder data" };
+//   }
 
-  // permission check
-  await requireWorkspaceAdmin(data.workspaceId);
+//   // permission check
+//   await requireWorkspaceAdmin(data.workspaceId);
 
-  // creating folder
-  const folder = await insertFolder(data);
-  if (!folder) {
-    return { success: false, message: "Fail to create folder" };
-  }
+//   // creating folder
+//   const folder = await insertFolder(data);
+//   if (!folder) {
+//     return { success: false, message: "Fail to create folder" };
+//   }
 
-  return {
-    success: true,
-    message: "Successfully folder created",
-    data: folder,
-  };
-}
+//   return {
+//     success: true,
+//     message: "Successfully folder created",
+//     data: folder,
+//   };
+// }
 
 export async function renameFolder(input: UpdateFolderInput) {
   // Validate Auth

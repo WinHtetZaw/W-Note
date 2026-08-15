@@ -8,10 +8,11 @@ import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useTransition } from "react";
-import { createFolder, renameFolder } from "../server/actions";
+import { renameFolder } from "../server/actions";
 import { useParams } from "next/navigation";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
+import { createFolder } from "../server/actions/create-folder";
 
 const formSchema = z.object({
   name: z.string().trim().min(2, "Folder name must be at least 2 characters"),
