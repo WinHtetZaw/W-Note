@@ -5,7 +5,7 @@ import { notesTable } from "@/db/schema";
 export async function duplicateNote(noteId: string) {
   const note = await getNote(noteId);
   if (!note) {
-    return null;
+    throw new Error("Not Found");
   }
 
   const [duplicated] = await db

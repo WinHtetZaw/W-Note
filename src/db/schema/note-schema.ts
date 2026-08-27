@@ -76,7 +76,7 @@ export const noteVersionsTable = pgTable(
     title: varchar("title", {
       length: 255,
     }).notNull(),
-    content: text("content").notNull(),
+    content: text("content"),
     version: integer("version").notNull(),
     createdAt,
   },

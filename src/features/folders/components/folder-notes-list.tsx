@@ -1,10 +1,11 @@
 import NoteActions from "@/features/notes/components/note-actions";
 import { FolderNote } from "@/features/notes/server/queries/get-folder-notes";
+import { NoteView } from "@/lib/types";
 import { timeAgo } from "@/lib/utils";
 import { ArrowRight, Clock3, FileText } from "lucide-react";
 import Link from "next/link";
 
-export default function FolderNotesList({ notes }: { notes: FolderNote[] }) {
+export default function FolderNotesList({ notes }: { notes: NoteView[] }) {
   return (
     <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
       {notes.map((note) => (
@@ -14,7 +15,7 @@ export default function FolderNotesList({ notes }: { notes: FolderNote[] }) {
   );
 }
 
-function NoteCard(note: FolderNote) {
+function NoteCard(note: NoteView) {
   const { id, title, updatedAt, workspaceId } = note;
 
   return (

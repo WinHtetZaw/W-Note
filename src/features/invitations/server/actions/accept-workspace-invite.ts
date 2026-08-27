@@ -1,40 +1,35 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
-import { auth } from "@/lib/auth";
-import { getInvitation } from "../queries/get-invitation";
-import { validateInvitation } from "../../services/validate-invitation";
-import { ensureEmailMatches } from "../../services/ensure-email-matches";
-import { ensureNotWorkspaceMember } from "../../services/ensure-not-workspace-member";
-import { acceptInvitation } from "../../services/accept-invitation";
-import { ok, Result } from "@/lib/types";
-import { getInvitationById } from "../queries/get-invitation-by-id";
-import { requireAuth } from "@/lib/permissions";
+import { cacheTags } from "@/lib/cache/tags";
+import { acceptWorkspaceInviteService } from "../../services/accept-workspace-invite-service";
+import { updateTag } from "next/cache";
+import { ErrorCode } from "@/lib/errors";
+import { redirect } from "next/navigation";
 
-export async function acceptWorkspaceInvite(
-  // token: string,
-  invitationId: string,
-): Promise<Result<string>> {
-  // Auth
-  const user = await requireAuth();
-  const { email, id: userId } = user;
+export async function acceptWorkspaceInvite(invitationId: string) {
+  const [error, member] = await acceptWorkspaceInviteService({
+    invitationId,
+  });
 
-  // const invitation = await getInvitation(invitationId);
-  const invitation = await getInvitationById(invitationId);
-  if (!invitation) {
-    throw new Error("Invitation not found.");
+  if (error == null) {
+    updateTag(cacheTags.invitation(invitationId));
+    updateTag(cacheTags.workspaceMembers(member.workspaceId));
+    return { data: member };
   }
 
-  validateInvitation(invitation);
-
-  ensureEmailMatches(invitation.email, email);
-
-  await ensureNotWorkspaceMember(invitation.workspaceId, userId);
-
-  await acceptInvitation({ invitation, userId });
-
-  // todo revalidate cache
-  //   revalidatePath(`/dashboard/w/${invitation.workspaceId}/members`);
-
-  return ok(invitation.workspaceId);
+  const reason = error.reason;
+  switch (reason) {
+    case "INVALID_INPUT":
+      return { code: ErrorCode.Validation, reason, details: error.details };
+    case "NOT_AUTHENTICATED":
+      redirect("/sign-in");
+    case "INVIATION_NOT_FOUND":
+      return { code: ErrorCode.NotFound, reason };
+    case "UNEXPECTED":
+      return { code: ErrorCode.Internal, reason };
+    default:
+      const _exhaustiveCheck: never = reason;
+      console.error("Unknown server error reason:", _exhaustiveCheck);
+      return { code: ErrorCode.Internal };
+  }
 }

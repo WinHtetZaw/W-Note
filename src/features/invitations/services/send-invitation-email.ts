@@ -10,7 +10,7 @@ type Props = {
   inviterName: string;
   role: "admin" | "member";
   invitationLink: string;
-  expiresAt: string;
+  expiresIn: string;
 };
 
 export async function sendInvitationEmail({
@@ -19,7 +19,7 @@ export async function sendInvitationEmail({
   inviterName,
   role,
   invitationLink,
-  expiresAt,
+  expiresIn,
 }: Props) {
   // const expiresInDays = getInvitationExpiration();
   return sendEmail({
@@ -30,7 +30,7 @@ export async function sendInvitationEmail({
       inviterName,
       role,
       invitationLink,
-      expiresAt,
+      expiresIn,
     }),
   });
 }

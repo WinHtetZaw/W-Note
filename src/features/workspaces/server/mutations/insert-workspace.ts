@@ -6,15 +6,16 @@ import {
   workspacesTable,
 } from "@/db/schema";
 
-export async function insertWorkspace(
-  validated: CreateWorkspaceInput,
-  userId: string,
-) {
+type IncomingData = CreateWorkspaceInput & { userId: string };
+
+export async function insertWorkspace(data: IncomingData) {
+  const { name, userId } = data;
+
   const workspace = await db.transaction(async (tx) => {
     const [createdWorkspace] = await tx
       .insert(workspacesTable)
       .values({
-        name: validated.name,
+        name,
         ownerId: userId,
       })
       .returning();
@@ -33,8 +34,6 @@ export async function insertWorkspace(
 
     return createdWorkspace;
   });
-
-  // ! revalidteTag for all related cache tags.
 
   return workspace;
 }

@@ -1,15 +1,12 @@
 import { db } from "@/db";
 import { workspaceMembersTable } from "@/db/schema";
+import { cacheTags } from "@/lib/cache/tags";
 import { eq } from "drizzle-orm";
+import { cacheTag } from "next/cache";
 
 export async function getUserWorkspaces(userId: string) {
   // "use cache";
-  // cacheTag(
-  //   "user-workspaces", // global fallback
-  //   `user-${userId}`, // per-user precision
-  //   "workspace-members", // table-level dependency
-  //   "subscriptions", // related data
-  // );
+  // cacheTag(cacheTags.userWorkspaces(userId));
 
   return db.query.workspaceMembersTable.findMany({
     where: eq(workspaceMembersTable.userId, userId),

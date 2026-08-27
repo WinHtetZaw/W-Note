@@ -1,6 +1,7 @@
 import { requireAuth } from "./require-auth";
 import { getUserWorkspaceRole } from "./get-user-workspace-role";
 import { fail, ok } from "../result";
+import { ErrorReason } from "../errors/error-reason";
 
 export async function requireWorkspaceMember(workspaceId: string) {
   //========= Authentication ========//
@@ -10,10 +11,9 @@ export async function requireWorkspaceMember(workspaceId: string) {
   }
 
   //========= Authorization ========//
-  const role = await getUserWorkspaceRole(workspaceId, user.id);
-  // if (!role) throw new Error("You do not have access to this workspace");
+  const role = await getUserWorkspaceRole({ workspaceId, userId: user.id });
   if (!role) {
-    return fail({ reason: "NotFound" });
+    return fail({ reason: ErrorReason.NotWorkspaceMember });
   }
 
   return ok({ user, role, workspaceId });

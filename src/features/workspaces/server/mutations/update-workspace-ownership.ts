@@ -2,13 +2,16 @@ import { db } from "@/db";
 import { workspaceMembersTable, workspacesTable } from "@/db/schema";
 import { and, eq } from "drizzle-orm";
 
-export async function updateWorkspaceOwnership(
-  workspaceId: string,
-  newOwnerId: string,
-  userId: string,
-) {
+type WorkspaceOwnerShip = {
+  workspaceId: string;
+  newOwnerId: string;
+  userId: string;
+};
+
+export async function updateWorkspaceOwnership(data: WorkspaceOwnerShip) {
+  const { workspaceId, newOwnerId, userId } = data;
   const result = await db.transaction(async (tx) => {
-    const updatedWorkspace = await tx
+    const [updatedWorkspaceId] = await tx
       .update(workspacesTable)
       .set({
         ownerId: newOwnerId,
@@ -36,10 +39,8 @@ export async function updateWorkspaceOwnership(
         ),
       );
 
-    return updatedWorkspace.length > 0;
+    return !!updatedWorkspaceId;
   });
-
-  // ! revalidteTag for all related cache tags.
 
   return result;
 }

@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { removeFolder } from "../server/actions";
+import { removeFolder } from "../server/actions/remove-folder";
 
 type Props = {
   folderId: string;
@@ -33,7 +33,7 @@ export default function DeleteFolderDialog(props: Props) {
     onOpenChange(true);
 
     startTransition(async () => {
-      const res = await removeFolder(folderId);
+      const res = await removeFolder({ workspaceId, folderId });
       if (!res.success) {
         toast.error("Something went wrong");
         return;

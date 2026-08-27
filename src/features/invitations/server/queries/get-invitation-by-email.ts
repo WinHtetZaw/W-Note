@@ -7,6 +7,7 @@ export async function getInvitationByEmail(workspaceId: string, email: string) {
     where: and(
       eq(workspaceInvitationsTable.workspaceId, workspaceId),
       eq(workspaceInvitationsTable.email, email),
+      eq(workspaceInvitationsTable.status, "pending"),
     ),
   });
 }

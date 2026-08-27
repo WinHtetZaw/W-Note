@@ -3,23 +3,26 @@ import { Brain } from "lucide-react";
 import { SidebarNavItem } from "./sidebar-nav-item";
 import { WorkspaceSwitcher } from "./workspace-switcher";
 import { AIUsageCard } from "./ai-usage-card";
-import {
-  aiLinks,
-  generalLinks,
-  workspaceLinks,
-} from "./dashboard-sidebar-data";
+import { aiLinks, workspaceLinks } from "./dashboard-sidebar-data";
 import AddNoteButton from "../ui/note-create-button";
 import { redirect } from "next/navigation";
-import { fetchUserWorkspace } from "@/features/workspaces/server/actions/fetch-user-workspace";
+import { fetchUserWorkspaces } from "@/features/workspaces/server/actions/fetch-user-workspaces";
+import { fetchWorkspace } from "@/features/workspaces/server/actions/fetch-workspace";
 
-export async function DashboardSidebar() {
-  const result = await fetchUserWorkspace();
+type Props = {
+  params: Promise<{ workspaceId: string }>;
+};
 
-  if (!result.success) {
+export async function DashboardSidebar({ params }: Props) {
+  const currentWsId = await params;
+  const currentWorkspace = await fetchWorkspace(currentWsId.workspaceId);
+  const workspaces = await fetchUserWorkspaces();
+
+  if (!currentWorkspace.data || !workspaces.data) {
     return redirect("/dashboard/w/new");
   }
 
-  const { workspaceId } = result.data;
+  const workspaceId = currentWorkspace.data.id;
 
   return (
     <aside className="hidden w-72 h-screen overflow-y-auto scrollbar-none border-r backdrop-blur-xl lg:block">
@@ -34,7 +37,10 @@ export async function DashboardSidebar() {
       </div>
 
       <div className="space-y-8 p-6">
-        <WorkspaceSwitcher />
+        <WorkspaceSwitcher
+          userWorkspaces={workspaces.data}
+          currentName={currentWorkspace.data.name}
+        />
         <AddNoteButton
           variant="outline"
           workspaceId={workspaceId}

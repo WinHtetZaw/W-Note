@@ -1,21 +1,36 @@
 "use server";
 
-import { requireWorkspaceMember } from "@/lib/permissions";
-import { stringEquals } from "@/lib/utils";
-import { deleteWorkspaceMember } from "../mutations/delete-workspace-member";
+import { deleteWorkspaceMemberService } from "../../services/delete-workspace-member-service";
+import { updateTag } from "next/cache";
+import { cacheTags } from "@/lib/cache/tags";
+import { redirect } from "next/navigation";
+import { ErrorCode } from "@/lib/errors";
 
 export async function leaveWorkspace(workspaceId: string) {
-  const { user, role } = await requireWorkspaceMember(workspaceId);
+  const [error, isDeleted] = await deleteWorkspaceMemberService(workspaceId);
 
-  if (stringEquals(role, "owner")) {
-    return {
-      success: false,
-      message:
-        "Owners cannot leave the workspace without transferring ownership",
-    };
+  if (error == null) {
+    updateTag(cacheTags.workspace(workspaceId));
+    return { success: isDeleted };
   }
 
-  const result = await deleteWorkspaceMember(workspaceId, user.id);
-
-  return { success: result };
+  const reason = error.reason;
+  switch (reason) {
+    case "INVALID_INPUT":
+      return { code: ErrorCode.Validation, reason, details: error.details };
+    case "NOT_AUTHENTICATED":
+      redirect("/sign-in");
+    case "OWNER_CANNOT_LEAVE_WORKSPACE":
+      return { code: ErrorCode.Conflict, reason };
+    case "NOT_WORKSPACE_MEMBER":
+      return { code: ErrorCode.Forbidden, reason };
+    case "INSUFFICIENT_PERMISSION":
+      return { code: ErrorCode.Forbidden, reason };
+    case "UNEXPECTED":
+      return { code: ErrorCode.Internal, reason };
+    default:
+      const _exhaustiveCheck: never = reason;
+      console.error("Unknown server error reason:", _exhaustiveCheck);
+      return { code: ErrorCode.Internal };
+  }
 }

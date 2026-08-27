@@ -1,14 +1,21 @@
 import { db } from "@/db";
 import { notesTable } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 
-export async function deleteNote(noteId: string) {
-  const result = await db
+type IncomingData = {
+  workspaceId: string;
+  noteId: string;
+};
+
+export async function deleteNote(data: IncomingData) {
+  const { workspaceId, noteId } = data;
+
+  const [deletedId] = await db
     .delete(notesTable)
-    .where(eq(notesTable.id, noteId))
+    .where(
+      and(eq(notesTable.workspaceId, workspaceId), eq(notesTable.id, noteId)),
+    )
     .returning({ id: notesTable.id });
 
-  // todo revalidate
-
-  return result.length > 0;
+  return !!deletedId;
 }

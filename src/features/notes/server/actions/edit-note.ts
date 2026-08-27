@@ -1,38 +1,38 @@
 "use server";
 
-import { requireNoteEdit } from "@/lib/permissions";
-import {
-  UpdateNoteInput,
-  updateNoteSchema,
-} from "../../schemas/update-note-schema";
-import { updateNote } from "../mutations/update-note";
-import { fail, ok, Result } from "@/lib/types";
-import { Note } from "../queries/get-note";
-import { revalidateTag } from "next/cache";
+import { UpdateNoteInput } from "../../schemas/update-note-schema";
+import { editNoteService } from "../../services/edit-note-service";
+import { redirect } from "next/navigation";
+import { updateTag } from "next/cache";
+import { cacheTags } from "@/lib/cache/tags";
+import { ErrorCode } from "@/lib/errors";
 
-export async function editNote(
-  input: UpdateNoteInput,
-): Promise<Result<unknown>> {
-  // auth and permission
-  const user = await requireNoteEdit(input.noteId);
-
-  // validate incoming data
-  const { success, data } = updateNoteSchema.safeParse(input);
-  if (!success) {
-    return fail("Invalid input data");
+export async function editNote(rawData: UpdateNoteInput) {
+  const [error, note] = await editNoteService(rawData);
+  if (error == null) {
+    updateTag(
+      note.folderId
+        ? cacheTags.folderNotes(note.folderId)
+        : cacheTags.workspaceNotes(note.workspaceId),
+    );
+    return { success: true, data: note };
   }
 
-  // updating note
-  const note = await updateNote(
-    { title: data.title, content: data.content },
-    data.noteId,
-    user.authorId,
-  );
-  if (!note) {
-    return fail("Fail to update note");
+  const reason = error.reason;
+  switch (reason) {
+    case "INVALID_INPUT":
+      return { code: ErrorCode.Validation, reason, details: error.details };
+    case "NOT_AUTHENTICATED":
+      redirect("/sign-in");
+    case "NOT_WORKSPACE_MEMBER":
+      return { code: ErrorCode.Forbidden, reason };
+    case "INSUFFICIENT_PERMISSION":
+      return { code: ErrorCode.Forbidden, reason };
+    case "UNEXPECTED":
+      return { code: ErrorCode.Internal, reason };
+    default:
+      const _exhaustiveCheck: never = reason;
+      console.error("Unknown server error reason:", _exhaustiveCheck);
+      return { code: ErrorCode.Internal };
   }
-  revalidateTag("hello", "max");
-
-  // todo revalidate
-  return ok(note, "Successfully updated note");
 }

@@ -13,16 +13,48 @@ type InvitationEmailProps = {
   inviterName: string;
   role: "admin" | "member";
   invitationLink: string;
-  expiresAt: string;
+  expiresIn: string;
 };
 
-export function InvitationEmail({
-  workspaceName,
-  inviterName,
-  role,
-  invitationLink,
-  expiresAt,
-}: InvitationEmailProps) {
+const tableStyle = {
+  border: "1px solid #e4e4e7",
+  borderRadius: "12px",
+  padding: "24px",
+  backgroundColor: "#fafafa",
+};
+
+const workspaceStyle = {
+  paddingBottom: "12px",
+  color: "#71717a",
+  fontSize: "14px",
+};
+
+const workspaceNameStyle = {
+  fontSize: "18px",
+  fontWeight: 600,
+  paddingBottom: "24px",
+};
+
+const inviterStyle = {
+  paddingBottom: "12px",
+  color: "#71717a",
+  fontSize: "14px",
+};
+
+const inviterNameStyle = {
+  paddingBottom: "24px",
+  fontWeight: 600,
+};
+
+const roleStyle = {
+  paddingBottom: "12px",
+  color: "#71717a",
+  fontSize: "14px",
+};
+
+export function InvitationEmail(props: InvitationEmailProps) {
+  const { workspaceName, inviterName, role, invitationLink, expiresIn } = props;
+
   return (
     <EmailLayout preview={`You've been invited to join ${workspaceName}`}>
       <EmailHeading>You're invited! 🎉</EmailHeading>
@@ -33,92 +65,37 @@ export function InvitationEmail({
       </EmailText>
 
       <EmailSection>
-        <table
-          width="100%"
-          cellPadding={0}
-          cellSpacing={0}
-          style={{
-            border: "1px solid #e4e4e7",
-            borderRadius: "12px",
-            padding: "24px",
-            backgroundColor: "#fafafa",
-          }}
-        >
+        <table width="100%" cellPadding={0} cellSpacing={0} style={tableStyle}>
           <tbody>
             <tr>
-              <td
-                style={{
-                  paddingBottom: "12px",
-                  color: "#71717a",
-                  fontSize: "14px",
-                }}
-              >
-                Workspace
-              </td>
+              <td style={workspaceStyle}>Workspace</td>
             </tr>
 
             <tr>
-              <td
-                style={{
-                  fontSize: "18px",
-                  fontWeight: 600,
-                  paddingBottom: "24px",
-                }}
-              >
-                {workspaceName}
-              </td>
+              <td style={workspaceNameStyle}>{workspaceName}</td>
             </tr>
 
             <tr>
-              <td
-                style={{
-                  paddingBottom: "12px",
-                  color: "#71717a",
-                  fontSize: "14px",
-                }}
-              >
-                Invited by
-              </td>
+              <td style={inviterStyle}>Invited by</td>
             </tr>
 
             <tr>
-              <td
-                style={{
-                  paddingBottom: "24px",
-                  fontWeight: 600,
-                }}
-              >
-                {inviterName}
-              </td>
+              <td style={inviterNameStyle}>{inviterName}</td>
             </tr>
 
             <tr>
-              <td
-                style={{
-                  paddingBottom: "12px",
-                  color: "#71717a",
-                  fontSize: "14px",
-                }}
-              >
-                Role
-              </td>
+              <td style={roleStyle}>Role</td>
             </tr>
 
             <tr>
-              <td
-                style={{
-                  fontWeight: 600,
-                }}
-              >
-                {role}
-              </td>
+              <td style={{ fontWeight: 600 }}>{role}</td>
             </tr>
           </tbody>
         </table>
       </EmailSection>
 
       <EmailText>
-        This invitation expires in <strong>{expiresAt} days</strong>.
+        This invitation expires in <strong>{expiresIn}</strong>.
       </EmailText>
 
       <EmailSection>

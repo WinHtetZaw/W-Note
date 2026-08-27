@@ -1,61 +1,48 @@
-"use server";
-
-import { notesTable, noteVersionsTable } from "@/db/schema";
+import { notesTable } from "@/db/schema";
 import { db } from "@/db";
 import { eq } from "drizzle-orm";
-import { getNote } from "../queries/get-note";
-import { createNoteVersion } from "../../services/create-note-version";
-import { JSONContent } from "@tiptap/react";
 import { getNoteForVersion } from "../queries/get-note-for-version";
+import { getNoteVersion } from "../queries/get-note-version";
+import { insertNoteVersion } from "../../services/insert-note-version";
 
-export async function updateNote(
-  // data: Pick<typeof notesTable.$inferInsert, "title" | "content">,
-  data: { title?: string; content?: string | null },
-  noteId: string,
-  userId: string,
-) {
-  // const note = (await getNote(noteId)) as typeof notesTable.$inferSelect;
+type UpdateNoteInput = {
+  noteId: string;
+  userId: string;
+  title: string;
+  content: string | null;
+};
 
+export async function updateNote(data: UpdateNoteInput) {
+  const { noteId, userId, title, content } = data;
+
+  //========= Checking updating note is existed or not ========//
   const noteForVersion = await getNoteForVersion(noteId);
-  const lastest = await db.query.noteVersionsTable.findFirst({
-    columns: { version: true },
-    where: eq(noteVersionsTable.noteId, noteId),
-    orderBy: (table, { desc }) => [desc(table.version)],
-  });
-
-  const version = lastest?.version ?? 0 + 1;
-
   if (!noteForVersion) {
-    return false;
+    throw new Error("Note for version is not found");
   }
 
-  // await createNoteVersion(note);
+  const lastest = await getNoteVersion(noteId);
+  const version = lastest?.version ?? 0 + 1;
 
-  // const [updated] = await db
-  //   .update(notesTable)
-  //   .set({ title: data.title, content: data.content })
-  //   .where(eq(notesTable.id, noteId))
-  //   .returning();
+  const dataForNoteVersion = {
+    noteId: noteForVersion.id,
+    editedBy: userId,
+    title: noteForVersion.title,
+    content: noteForVersion.content ?? "",
+    version,
+  };
 
   const updated = await db.transaction(async (tx) => {
-    await tx.insert(noteVersionsTable).values({
-      noteId: noteForVersion.id,
-      editedBy: userId,
-      title: "noteForVersion.title",
-      content: noteForVersion.content ?? "{}",
-      version,
-    });
+    await insertNoteVersion(tx, dataForNoteVersion);
 
-    const updatedNote = await tx
+    const [updatedNote] = await tx
       .update(notesTable)
-      .set({ title: data.title, content: data.content })
+      .set({ title, content })
       .where(eq(notesTable.id, noteId))
       .returning();
 
     return updatedNote;
   });
-
-  // todo revalidate
 
   return updated;
 }

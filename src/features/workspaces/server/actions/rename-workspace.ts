@@ -1,19 +1,36 @@
 "use server";
 
-import { requireWorkspaceAdmin } from "@/lib/permissions";
-import {
-  UpdateWorkspaceInput,
-  updateWorkspaceSchema,
-} from "../../schemas/update-workspace-schema";
-import { updateWorkspace } from "../mutations/update-workspace";
+import { UpdateWorkspaceInput } from "../../schemas/update-workspace-schema";
+import { renameWorkspaceService } from "../../services/rename-workspace-service";
+import { updateTag } from "next/cache";
+import { cacheTags } from "@/lib/cache/tags";
+import { redirect } from "next/navigation";
+import { ErrorCode } from "@/lib/errors";
 
-export async function renameWorkspace(input: UpdateWorkspaceInput) {
-  await requireWorkspaceAdmin(input.workspaceId);
-  const { success, data } = updateWorkspaceSchema.safeParse(input);
-  if (!success) {
-    return { success, message: "Invalid workspace data" };
+export async function renameWorkspace(rawData: UpdateWorkspaceInput) {
+  const [error, workspace] = await renameWorkspaceService(rawData);
+
+  if (error == null) {
+    updateTag(cacheTags.workspace(workspace.id));
+    updateTag(cacheTags.userWorkspaces(workspace.ownerId));
+    return { success: true, data: workspace };
   }
-  await requireWorkspaceAdmin(data.workspaceId);
-  const result = await updateWorkspace(data);
-  return { success: result, message: "Successfully renamed workspace" };
+
+  const reason = error.reason;
+  switch (reason) {
+    case "INVALID_INPUT":
+      return { code: ErrorCode.Validation, reason, details: error.details };
+    case "NOT_AUTHENTICATED":
+      redirect("/sign-in");
+    case "NOT_WORKSPACE_MEMBER":
+      return { code: ErrorCode.Forbidden, reason };
+    case "INSUFFICIENT_PERMISSION":
+      return { code: ErrorCode.Forbidden, reason };
+    case "UNEXPECTED":
+      return { code: ErrorCode.Internal, reason };
+    default:
+      const _exhaustiveCheck: never = reason;
+      console.error("Unknown server error reason:", _exhaustiveCheck);
+      return { code: ErrorCode.Internal };
+  }
 }

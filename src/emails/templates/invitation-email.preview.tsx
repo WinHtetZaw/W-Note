@@ -7,7 +7,7 @@ export default function Preview() {
       inviterName="Alex Johnson"
       role="member"
       //   expiresInDays={7}
-      expiresAt="2/2/2027"
+      expiresIn="7"
       invitationLink="https://localhost:3000/invitations/demo-token"
     />
   );

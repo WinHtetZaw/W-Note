@@ -1,16 +1,23 @@
 import { requireWorkspaceMember } from "@/lib/permissions";
 import { fail, ok } from "@/lib/result";
 import { getFoldersWithNotes } from "../server/queries/get-folders-with-notes";
-import { idSchema } from "../schemas";
+import z from "zod";
+import { ErrorReason } from "@/lib/errors";
 
-export async function foldersNotesService(incomingId: string) {
+const incomingDataSchema = z.object({
+  workspaceId: z.string(),
+  q: z.string().optional(),
+});
+
+type IncomingData = z.infer<typeof incomingDataSchema>;
+
+export async function foldersNotesService(rawData: IncomingData) {
   //========== Validating incoming data ==========//
-  const result = idSchema.safeParse({ id: incomingId });
+  const result = incomingDataSchema.safeParse(rawData);
   if (!result.success) {
-    return fail({ reason: "Invalid data", details: result.error });
+    return fail({ reason: ErrorReason.InvalidInput, details: result.error });
   }
-  const workspaceId = result.data.id;
-  console.log("fetching in try catsh");
+  const { workspaceId, q } = result.data;
 
   //========== Auth ==========//
   const [error] = await requireWorkspaceMember(workspaceId);
@@ -20,9 +27,9 @@ export async function foldersNotesService(incomingId: string) {
 
   //========== DB Fetching ==========//
   try {
-    const res = await getFoldersWithNotes(workspaceId);
-    return ok(res);
+    const folders = await getFoldersWithNotes({ workspaceId, q });
+    return ok(folders);
   } catch {
-    return fail({ reason: "Unexpected" });
+    return fail({ reason: ErrorReason.UnexpectedError });
   }
 }

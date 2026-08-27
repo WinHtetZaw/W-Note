@@ -13,9 +13,8 @@ import { redirect } from "next/navigation";
 
 export default async function DashboardPage() {
   const result = await fetchUserWorkspace();
-  console.log("result --->", result);
 
-  if (!result.success) {
+  if (!result.data) {
     redirect("/dashboard/w/new");
   }
 

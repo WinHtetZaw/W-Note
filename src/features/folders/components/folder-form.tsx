@@ -1,18 +1,18 @@
 "use client";
 
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Folder, Save } from "lucide-react";
+import { Save } from "lucide-react";
 import z from "zod";
-import { Field, FieldError, FieldLabel } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { useTransition } from "react";
-import { renameFolder } from "../server/actions";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
 import { createFolder } from "../server/actions/create-folder";
+import { useCreateFolder } from "../hooks/use-create-folder";
+import { FormInput, FormSubmitButton } from "@/components/form";
+import { renameFolder } from "../server/actions/rename-folder";
+import { errorMessages } from "@/lib/errors/error-messages";
 
 const formSchema = z.object({
   name: z.string().trim().min(2, "Folder name must be at least 2 characters"),
@@ -33,84 +33,63 @@ export default function FolderForm({ isEditForm, oldFolder }: Props) {
   const [isPending, startTransition] = useTransition();
   const { workspaceId, folderId }: { workspaceId: string; folderId: string } =
     useParams();
-  // isEditForm && console.log(oldFolder);
+  const router = useRouter();
+  // const mutation = useCreateFolder(workspaceId);
 
-  const handleCreate = async (data: z.infer<typeof formSchema>) => {
-    const { data: session, error } = await authClient.getSession();
-    if (error || !session) return;
+  const handleCreate = async ({ name }: z.infer<typeof formSchema>) => {
     const result = await createFolder({
-      ...data,
+      name,
       workspaceId,
-      createdBy: session.user.id,
     });
-    if (!result.success) {
-      toast.error(result.message);
-    } else {
-      toast.success("Folder created successfully.");
+    // const result = await mutation.mutateAsync({
+    //   ...data,
+    //   workspaceId,
+    //   createdBy: session.user.id,
+    // });
+    if (result.code) {
+      toast.error(errorMessages[result.code]);
+      return;
     }
-    return result;
+    toast.success("Folder created successfully.");
+    router.push(`/dashboard/w/${workspaceId}/folders`);
   };
 
-  const handleRename = async (data: z.infer<typeof formSchema>) => {
-    const { data: session, error } = await authClient.getSession();
-    if (error || !session) return;
+  const handleRename = async ({ name }: z.infer<typeof formSchema>) => {
     const result = await renameFolder({
-      ...data,
+      name,
       workspaceId,
       folderId,
-      createdBy: session.user.id,
     });
     if (!result.success) {
-      toast.error(result.message);
+      toast.error(result.code);
     } else {
       toast.success("Folder renamed successfully.");
     }
     return result;
   };
 
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
+  const onSubmit = (formData: z.infer<typeof formSchema>) => {
     startTransition(async () => {
       if (isEditForm) {
-        await handleRename(data);
+        await handleRename(formData);
       } else {
-        await handleCreate(data);
+        await handleCreate(formData);
       }
     });
   };
 
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-      <Controller
-        name="name"
+      <FormInput
         control={form.control}
-        render={({ field, fieldState }) => (
-          <Field data-invalid={fieldState.invalid}>
-            <FieldLabel
-              htmlFor="name"
-              className="mb-3 flex items-center gap-2 text-sm text-zinc-400"
-            >
-              <Folder className="size-4" />
-              Folder Name
-            </FieldLabel>
-            <Input
-              {...field}
-              id="name"
-              aria-invalid={fieldState.invalid}
-              placeholder="Enter folder name"
-              autoComplete="off"
-            />
-            {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-          </Field>
-        )}
+        name="name"
+        label="Folder Name"
+        placeholder="Enter name . . ."
       />
-      <Button
-        disabled={isPending}
-        className="ml-auto flex disabled:bg-green-500"
-      >
+      <FormSubmitButton isPending={isPending} className="flex ml-auto">
         <Save className="size-5" />
-
         {isEditForm ? "Save Changes" : "Create Folder"}
-      </Button>
+      </FormSubmitButton>
     </form>
   );
 }

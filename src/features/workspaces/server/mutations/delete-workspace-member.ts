@@ -2,11 +2,15 @@ import { db } from "@/db";
 import { workspaceMembersTable } from "@/db/schema";
 import { and, eq } from "drizzle-orm";
 
-export async function deleteWorkspaceMember(
-  workspaceId: string,
-  userId: string,
-) {
-  const result = await db
+type IncomingData = {
+  workspaceId: string;
+  userId: string;
+};
+
+export async function deleteWorkspaceMember(data: IncomingData) {
+  const { workspaceId, userId } = data;
+
+  const [deletedId] = await db
     .delete(workspaceMembersTable)
     .where(
       and(
@@ -16,7 +20,5 @@ export async function deleteWorkspaceMember(
     )
     .returning({ id: workspaceMembersTable.workspaceId });
 
-  // ! revalidteTag for all related cache tags.
-
-  return result.length > 0;
+  return !!deletedId;
 }

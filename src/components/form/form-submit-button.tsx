@@ -14,7 +14,7 @@ export function FormSubmitButton(props: FormSubmitButtonProps) {
     <Button
       type="submit"
       disabled={isPending}
-      className={cn("w-full disabled:opacity-70", className)}
+      className={cn("disabled:opacity-70", className)}
     >
       {children}
     </Button>

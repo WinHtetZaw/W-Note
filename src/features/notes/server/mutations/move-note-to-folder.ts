@@ -2,12 +2,19 @@ import { db } from "@/db";
 import { notesTable } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
-export async function moveNoteToFolder(noteId: string, folderId: string) {
-  const result = await db
+type IncomingData = { noteId: string; folderId: string };
+
+export async function moveNoteToFolder(data: IncomingData) {
+  const { folderId, noteId } = data;
+  const [note] = await db
     .update(notesTable)
     .set({ folderId })
     .where(eq(notesTable.id, noteId))
-    .returning({ id: notesTable.id });
+    .returning({
+      id: notesTable.id,
+      workspaceId: notesTable.workspaceId,
+      folderId: notesTable.folderId,
+    });
 
-  return result.length > 0;
+  return note;
 }

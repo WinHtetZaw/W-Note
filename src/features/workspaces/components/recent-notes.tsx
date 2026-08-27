@@ -11,9 +11,9 @@ type Props = {
 
 export default async function RecentNotes({ params, className }: Props) {
   const { workspaceId } = await params;
-  const result = await fetchNotes(workspaceId, 5);
+  const result = await fetchNotes({ workspaceId, limit: 3 });
 
-  if (!result.success) {
+  if (!result.data) {
     // todo implement not found UI
     return <p>notes not found</p>;
   }

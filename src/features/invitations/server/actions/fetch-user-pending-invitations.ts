@@ -1,22 +1,26 @@
 "use server";
 
-import { requireAuth } from "@/lib/permissions";
-import { fail, ok, Result } from "@/lib/types";
-import {
-  getUserPendingInvitations,
-  UserPendingInvitations,
-} from "../queries/get-user-pending-invitations";
+import { userPendingInvitationsService } from "../../services/user-pending-invitations-service";
+import { ErrorCode } from "@/lib/errors";
+import { redirect } from "next/navigation";
 
-export async function fetchUserPendingInvitations(): Promise<
-  Result<UserPendingInvitations[]>
-> {
-  const user = await requireAuth();
+export async function fetchUserPendingInvitations() {
+  const [error, invitations] = await userPendingInvitationsService();
 
-  const invitations = await getUserPendingInvitations(user.email);
-
-  if (!invitations) {
-    return fail("No invitations found");
+  if (error == null) {
+    // updateTag(cacheTags.workspaceFolders(folder.workspaceId));
+    return { data: invitations };
   }
 
-  return ok(invitations);
+  const reason = error.reason;
+  switch (reason) {
+    case "NOT_AUTHENTICATED":
+      redirect("/sign-in");
+    case "UNEXPECTED":
+      return { code: ErrorCode.Internal, reason };
+    default:
+      const _exhaustiveCheck: never = reason;
+      console.error("Unknown server error reason:", _exhaustiveCheck);
+      return { code: ErrorCode.Internal };
+  }
 }

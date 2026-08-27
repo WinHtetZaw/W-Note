@@ -20,7 +20,3 @@ export async function getWorkspaceMember(workspaceId: string, userId: string) {
     },
   });
 }
-
-export type WorkspaceMember = NonNullable<
-  Awaited<ReturnType<typeof getWorkspaceMember>>
->;

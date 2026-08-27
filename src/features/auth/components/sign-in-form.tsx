@@ -7,7 +7,7 @@ import { ArrowRight, Mail } from "lucide-react";
 import { useTransition } from "react";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import {
   FormInput,
   FormPasswordInput,
@@ -22,10 +22,10 @@ export default function SignInForm() {
   });
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
-  const { token } = useParams();
 
   const onSubmit = (formData: SignInFormValues) => {
     const { email, password } = formData;
+
     startTransition(async () => {
       const { data, error } = await authClient.signIn.email({
         email,
@@ -38,35 +38,11 @@ export default function SignInForm() {
 
       toast.success("Signed in successfully.");
 
-      // if (!token) {
-      //   return router.push("/dashboard");
-      // }
-
-      const result = await fetchUserPendingInvitationsCount(email);
-      // const invitations = 0;
-      if (result.success && result.data >= 1) {
-        console.log(result.data);
-        console.log("got to invitations");
+      const invitations = await fetchUserPendingInvitationsCount(email);
+      if (invitations.success && invitations.data >= 1) {
         router.push("/invitations");
-        // if (result.data > 0) {
-        // } else {
-        //   console.log("got to dashboard");
-        //   router.push("/dashboard");
-        // }
-
-        // switch (result.data) {
-        //   case 0:
-        //     router.push("/dashboard/w/new");
-        //     break;
-        //   case 1:
-        //     router.push("/pricing");
-        //     // router.push(`/invitations/[$]`);
-        //     break;
-        //   default:
-        //     router.push("/invitations");
-        // }
       }
-      console.log("got to dashboard");
+
       router.push("/dashboard");
     });
   };
@@ -81,7 +57,7 @@ export default function SignInForm() {
         icon={<Mail className="size-5 text-zinc-500" />}
       />
       <FormPasswordInput control={form.control} name="password" />
-      <FormSubmitButton isPending={isPending}>
+      <FormSubmitButton isPending={isPending} className="w-full">
         Sign In
         <ArrowRight className="size-4" />
       </FormSubmitButton>

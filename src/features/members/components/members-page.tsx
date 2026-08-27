@@ -1,24 +1,32 @@
 "use client";
 
-import { ReactNode, useMemo, useState } from "react";
+import { ReactNode, use, useMemo, useState } from "react";
 
 import { Sparkles, UserPlus } from "lucide-react";
 
 import MemberSearch from "./member-search";
 import MemberCard from "./member-card";
 // import InviteMemberDialog from "./invite-member-dialog";
-import { members } from "../constant";
+// import { members } from "../constant";
+import { Member } from "../utils/types";
+import { pendingInvitations } from "@/features/invitations/constant";
 
 interface Props {
   workspaceId: string;
   currentUserRole: "owner" | "admin" | "member";
   invitationList: ReactNode;
   invitationButton: ReactNode;
+  members: Member[];
 }
 
 export default function MembersPage(props: Props) {
-  const { workspaceId, currentUserRole, invitationList, invitationButton } =
-    props;
+  const {
+    workspaceId,
+    currentUserRole,
+    invitationList,
+    invitationButton,
+    members,
+  } = props;
   const [search, setSearch] = useState("");
 
   const [inviteOpen, setInviteOpen] = useState(false);
@@ -28,18 +36,19 @@ export default function MembersPage(props: Props) {
 
     return members.filter(
       (member) =>
-        member.name.toLowerCase().includes(value) ||
-        member.email.toLowerCase().includes(value),
+        member.user.name.toLowerCase().includes(value) ||
+        member.user.email.toLowerCase().includes(value),
     );
   }, [search]);
 
-  // const filteredInvitations = useMemo(() => {
-  //   const value = search.toLowerCase();
+  const filteredInvitations = useMemo(() => {
+    const value = search.toLowerCase();
 
-  //   return pendingInvitations.filter((invite) =>
-  //     invite.email.toLowerCase().includes(value),
-  //   );
-  // }, [search]);
+    return pendingInvitations.filter((invite) =>
+      invite.email.toLowerCase().includes(value),
+    );
+  }, [search]);
+  console.log(members);
 
   return (
     <>
@@ -92,7 +101,7 @@ export default function MembersPage(props: Props) {
           ) : (
             filteredMembers.map((member) => (
               <MemberCard
-                key={member.id}
+                key={member.userId}
                 workspaceId={workspaceId}
                 member={member}
                 currentUserRole={currentUserRole}

@@ -1,39 +1,43 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
-import { requireWorkspaceAdmin } from "@/lib/permissions";
-
-import { createInvitation } from "../mutations/create-invitation";
-import { fail, ok, Result } from "@/lib/types";
-import { getInvitationByEmail } from "../queries/get-invitation-by-email";
-import { sendInvitationEmail } from "../../services/send-invitation-email";
-import { generateInviteLink } from "../../services/generate-invite-link";
-import { generateInvitationToken } from "../../services/generate-token";
-import { getInvitationExpiration } from "../../services/get-invitation-expiration";
-import { Invitation } from "../../types";
-import {
-  CreateWorkspaceInviteInput,
-  createWorkspaceInviteSchema,
-} from "../../schemas/create-workspace-invite-schema";
+import { updateTag } from "next/cache";
+import { CreateWorkspaceInviteInput } from "../../schemas/create-workspace-invite-schema";
 import { inviteUserToWorkspace } from "../../services/invite-user-to-workspace";
-
-// import { sendInvitationEmail } from "../services/send-invitation-email";
+import { ErrorCode } from "@/lib/errors";
+import { redirect } from "next/navigation";
+import { cacheTags } from "@/lib/cache/tags";
 
 export async function createWorkspaceInvite(
-  input: CreateWorkspaceInviteInput,
-): Promise<Result<Invitation>> {
-  // incoming data vadalidation
-  // const { success, data } = createWorkspaceInviteSchema.safeParse(input);
-  // if (!success) return fail("Invalid invitation data.");
-  // const { workspaceId, email, role } = data;
+  rawData: CreateWorkspaceInviteInput,
+) {
+  const [error, invitation] = await inviteUserToWorkspace(rawData);
 
-  // Auth and Authzi validation
-  const { user } = await requireWorkspaceAdmin(input.workspaceId);
+  if (error == null) {
+    updateTag(cacheTags.invitation(invitation.id));
+    return { data: invitation };
+  }
 
-  const invitation = await inviteUserToWorkspace(input, user);
-
-  // todo revalidate cache
-  // revalidatePath(`/dashboard/w/${workspaceId}/members`);
-
-  return invitation;
+  const reason = error.reason;
+  switch (reason) {
+    case "INVALID_INPUT":
+      return { code: ErrorCode.Validation, reason, details: error.details };
+    case "NOT_AUTHENTICATED":
+      redirect("/sign-in");
+    case "WORKSPACE_NOT_FOUND":
+      return { code: ErrorCode.Forbidden, reason };
+    case "NOT_WORKSPACE_MEMBER":
+      return { code: ErrorCode.Forbidden, reason };
+    case "NOT_WORKSPACE_ADMIN_OR_OWNER":
+      return { code: ErrorCode.Forbidden, reason };
+    case "INVITATION_ALREADY_EXISTS":
+      return { code: ErrorCode.Conflict, reason };
+    case "USER_ALREADY_A_WORKSPACE_MEMBER":
+      return { code: ErrorCode.Conflict, reason };
+    case "UNEXPECTED":
+      return { code: ErrorCode.Internal, reason };
+    default:
+      const _exhaustiveCheck: never = reason;
+      console.error("Unknown server error reason:", _exhaustiveCheck);
+      return { code: ErrorCode.Internal };
+  }
 }

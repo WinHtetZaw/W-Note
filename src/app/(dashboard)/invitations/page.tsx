@@ -1,6 +1,7 @@
 import InvitationAcceptButton from "@/features/invitations/components/invitation-accept-button";
 import { fetchUserPendingInvitations } from "@/features/invitations/server/actions/fetch-user-pending-invitations";
 import { auth } from "@/lib/auth";
+import { formatExpiryInDays } from "@/utils";
 import { CalendarClock, Crown, Sparkles, Users } from "lucide-react";
 
 const invitations = [
@@ -24,7 +25,7 @@ const invitations = [
 export default async function InvitationsPage() {
   // const user = await auth.api.getSession()
   const res = await fetchUserPendingInvitations();
-  if (!res.success) {
+  if (!res.data) {
     return <p>not found invitations</p>;
   }
   console.log("res data --->", res.data);
@@ -70,9 +71,10 @@ export default async function InvitationsPage() {
             invitation={{
               id: el.id,
               workspace: el.workspace.name,
+              workspaceId: el.workspace.id,
               inviter: el.inviter.name,
               role: el.role,
-              expiresAt: el.expiresAt.toLocaleDateString(),
+              expiresAt: formatExpiryInDays(el.expiresAt),
             }}
           />
         ))}
@@ -87,6 +89,7 @@ function InvitationCard({
   invitation: {
     id: string;
     workspace: string;
+    workspaceId: string;
     inviter: string;
     role: string;
     // expiresIn: string;
@@ -132,7 +135,10 @@ function InvitationCard({
           <button className="rounded-2xl bg-violet-600 px-6 py-3 font-semibold transition hover:bg-violet-500">
             Accept
           </button>
-          <InvitationAcceptButton invitationId={invitation.id} />
+          <InvitationAcceptButton
+            invitationId={invitation.id}
+            workspaceId={invitation.workspaceId}
+          />
 
           <button className="rounded-2xl border border-white/10 bg-white/5 px-6 py-3 transition hover:bg-white/10">
             Decline

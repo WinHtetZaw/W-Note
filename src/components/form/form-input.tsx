@@ -25,9 +25,12 @@ export function FormInput<T extends FieldValues>(props: FormInputProps<T>) {
       control={control}
       name={name}
       render={({ field, fieldState }) => (
-        <Field data-invalid={fieldState.invalid}>
+        <Field data-invalid={fieldState.invalid} className="group">
           {label && (
-            <FieldLabel htmlFor={name} className="mb-1 text-sm text-zinc-400">
+            <FieldLabel
+              htmlFor={name}
+              className="mb-1 text-sm text-muted group-focus-within:text-zinc-200"
+            >
               {label}
             </FieldLabel>
           )}
@@ -35,6 +38,7 @@ export function FormInput<T extends FieldValues>(props: FormInputProps<T>) {
           <InputGroup>
             <InputGroupInput
               {...field}
+              className="placeholder:text-muted"
               id={name}
               type={type}
               placeholder={placeholder}

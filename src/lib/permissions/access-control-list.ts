@@ -1,4 +1,3 @@
-import { keyof } from "zod";
 import { WorkspaceRole } from "./types";
 
 export const Permissions = {
@@ -6,6 +5,11 @@ export const Permissions = {
   WorkspaceUpdate: "workspace:update",
   WorkspaceDelete: "workspace:delete",
   WorkspaceInvite: "workspace:invite",
+  WorkspaceTransfer: "workspace:transfer",
+  WorkspaceLeave: "workspace:leave",
+
+  MemberRemove: "member:remove",
+  MemberRoleUpdate: "member:roleUpdate",
 
   FolderCreate: "folder:create",
   FolderUpdate: "folder:update",
@@ -31,6 +35,10 @@ export const RolePermissions: Record<WorkspaceRole, readonly Permission[]> = {
     Permissions.WorkspaceUpdate,
     Permissions.WorkspaceDelete,
     Permissions.WorkspaceInvite,
+    Permissions.WorkspaceTransfer,
+
+    Permissions.MemberRemove,
+    Permissions.MemberRoleUpdate,
 
     Permissions.FolderCreate,
     Permissions.FolderUpdate,
@@ -52,6 +60,10 @@ export const RolePermissions: Record<WorkspaceRole, readonly Permission[]> = {
     Permissions.WorkspaceView,
     Permissions.WorkspaceUpdate,
     Permissions.WorkspaceInvite,
+    Permissions.WorkspaceLeave,
+
+    Permissions.MemberRemove,
+    Permissions.MemberRoleUpdate,
 
     Permissions.FolderCreate,
     Permissions.FolderUpdate,
@@ -69,6 +81,7 @@ export const RolePermissions: Record<WorkspaceRole, readonly Permission[]> = {
 
   member: [
     Permissions.WorkspaceView,
+    Permissions.WorkspaceLeave,
 
     Permissions.FolderCreate,
 

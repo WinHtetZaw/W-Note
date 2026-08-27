@@ -1,15 +1,25 @@
 "use server";
 
-import { requireAuth } from "@/lib/permissions";
-import { getUserWorkspaces } from "../queries/get-user-workspaces";
+import { redirect } from "next/navigation";
+import { userWorkspacesService } from "../../services/user-workspaces-service";
+import { ErrorCode } from "@/lib/errors";
 
 export async function fetchUserWorkspaces() {
-  const user = await requireAuth();
+  const [error, data] = await userWorkspacesService();
 
-  const workspaces = await getUserWorkspaces(user.id);
-  if (!workspaces) {
-    return { success: false, message: "No workspaces found" };
+  if (error == null) {
+    return { data };
   }
 
-  return { success: true, data: workspaces };
+  const reason = error.reason;
+  switch (reason) {
+    case "NOT_AUTHENTICATED":
+      redirect("/sign-in");
+    case "UNEXPECTED":
+      return { code: ErrorCode.Internal, reason };
+    default:
+      const _exhaustiveCheck: never = reason;
+      console.error("Unknown server error reason:", _exhaustiveCheck);
+      return { code: ErrorCode.Internal };
+  }
 }

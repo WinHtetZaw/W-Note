@@ -129,7 +129,8 @@
 
 .dark {
   --background: oklch(0.13 0.02 280);
-  --foreground: oklch(0.98 0 0);
+  /* --foreground: oklch(0.98 0 0); */
+  --foreground: var(--color-zinc-200);
 
   --card: oklch(0.18 0.02 280);
   --card-foreground: oklch(0.98 0 0);
@@ -192,7 +193,7 @@
   }
 
   .card {
-    @apply border rounded-3xl border-border bg-card hover:bg-white/10 transition;
+    @apply border rounded-[32px] border-border hover:bg-white/10 bg-white/5 transition backdrop-blur-2xl;
   }
 
   /* .icon {

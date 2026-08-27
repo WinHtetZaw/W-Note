@@ -1,52 +1,30 @@
 import { db } from "@/db";
 import { notesTable } from "@/db/schema";
+import { checkingFolderExist } from "../../services/checking-folder-exist";
 
-export async function insertNote(
-  workspaceId: string,
-  authorId: string,
-  folderId?: string | null,
-) {
+type InsertNote = {
+  workspaceId: string;
+  authorId: string;
+  folderId?: string | null;
+};
+
+export async function insertNote(data: InsertNote) {
+  const { workspaceId, authorId, folderId } = data;
+
   if (folderId) {
-    const folder = await db.query.foldersTable.findFirst({
-      where: (table, { and, eq }) =>
-        and(eq(table.id, folderId), eq(table.workspaceId, workspaceId)),
-    });
-    if (!folder) {
-      // throw new Error("Invalid folder");
-      return false;
+    const isExisted = await checkingFolderExist({ workspaceId, folderId });
+    if (!isExisted) {
+      throw new Error("Folder not found");
     }
   }
 
-  const [note] = await db
-    .insert(notesTable)
-    .values({
-      workspaceId,
-      folderId,
-      title: "New Note",
-      authorId,
-      content: "",
-    })
-    .returning();
-
-  //todo revalidate
-
+  const noteData = {
+    workspaceId,
+    folderId,
+    title: "New Note",
+    authorId,
+    content: "",
+  };
+  const [note] = await db.insert(notesTable).values(noteData).returning();
   return note;
 }
-
-// export async function insertNote(data: typeof notesTable.$inferInsert) {
-//   const { workspaceId, folderId, title, content, authorId } = data;
-//   const [note] = await db
-//     .insert(notesTable)
-//     .values({
-//       workspaceId,
-//       folderId,
-//       title,
-//       authorId,
-//       content: content ?? "",
-//     })
-//     .returning();
-
-//   //todo revalidate
-
-//   return note;
-// }

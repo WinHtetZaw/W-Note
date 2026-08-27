@@ -8,7 +8,7 @@ import {
   index,
   uniqueIndex,
 } from "drizzle-orm/pg-core";
-import { relations } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 import { user as usersTable } from "./auth-schema";
 import { notesTable } from "./note-schema";
 import { createdAt, timeAt, updatedAt } from "./db-schema-helper";
@@ -107,7 +107,10 @@ export const workspaceInvitationsTable = pgTable(
     index("workspace_invites_email_idx").on(table.email),
     // index("workspace_invites_token_unique").on(table.token),
     index("workspace_invites_token_hash_idx").on(table.tokenHash),
-    uniqueIndex("workspace_invite_unique").on(table.workspaceId, table.email),
+    // uniqueIndex("workspace_invite_unique").on(table.workspaceId, table.email),
+    uniqueIndex("workspace_invite_pending_unique")
+      .on(table.workspaceId, table.email)
+      .where(sql`${table.status} = 'pending'`),
     uniqueIndex("workspace_invites_token_hash_unique").on(table.tokenHash),
   ],
 );

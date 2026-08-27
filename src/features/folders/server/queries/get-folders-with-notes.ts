@@ -1,18 +1,23 @@
 import { db } from "@/db";
 import { foldersTable } from "@/db/schema";
 import { cacheTags } from "@/lib/cache/tags";
-import { eq } from "drizzle-orm";
+import { and, eq, ilike } from "drizzle-orm";
 import { cacheTag } from "next/cache";
 
-export async function getFoldersWithNotes(workspaceId: string) {
-  // Caching
-  "use cache";
-  // cacheTag(cacheTags.workspaceFolders(workspaceId));
-  cacheTag("folders");
+type IncomingData = {
+  workspaceId: string;
+  q?: string;
+};
 
-  // Quering Database
+export async function getFoldersWithNotes(data: IncomingData) {
+  "use cache";
+  cacheTag(cacheTags.workspaceFolders(data.workspaceId));
+
   return db.query.foldersTable.findMany({
-    where: eq(foldersTable.workspaceId, workspaceId),
+    where: and(
+      eq(foldersTable.workspaceId, data.workspaceId),
+      data.q ? ilike(foldersTable.name, `%${data.q}%`) : undefined,
+    ),
     columns: {
       id: true,
       name: true,

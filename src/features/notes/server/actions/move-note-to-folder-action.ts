@@ -9,7 +9,7 @@ export async function moveNoteToFolderAction(
   workspaceId: string,
 ) {
   await requireWorkspaceMember(workspaceId);
-  const note = await moveNoteToFolder(noteId, folderId);
+  const note = await moveNoteToFolder({ noteId, folderId });
   if (!note) {
     return { success: false, message: "Fail to move note" };
   }

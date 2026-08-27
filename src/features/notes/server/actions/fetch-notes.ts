@@ -1,21 +1,35 @@
 "use server";
 
-import { requireWorkspaceMember } from "@/lib/permissions";
-import { getNotes, Notes } from "../queries/get-notes";
-import { fail, ok, Result } from "@/lib/types";
+import { fetchNotesService } from "@/features/folders/services/fetch-notes-service";
+import { ErrorCode } from "@/lib/errors";
+import { redirect } from "next/navigation";
 
-export async function fetchNotes(
-  workspaceId: string,
-  limit?: number,
-): Promise<Result<Notes>> {
-  // auth and permission
-  await requireWorkspaceMember(workspaceId);
+type IncomingData = {
+  workspaceId: string;
+  q?: string;
+  limit?: number;
+};
 
-  // fetching notes
-  const notes = await getNotes(workspaceId, limit);
-  if (!notes) {
-    return fail("Fail to get notes");
+export async function fetchNotes(rawData: IncomingData) {
+  const [error, data] = await fetchNotesService(rawData);
+
+  if (error == null) {
+    return { data };
   }
 
-  return ok(notes);
+  const reason = error.reason;
+  switch (reason) {
+    case "INVALID_INPUT":
+      return { code: ErrorCode.Validation, reason, details: error.details };
+    case "NOT_AUTHENTICATED":
+      redirect("/sign-in");
+    case "NOT_WORKSPACE_MEMBER":
+      return { code: ErrorCode.Forbidden, reason };
+    case "UNEXPECTED":
+      return { code: ErrorCode.Internal, reason };
+    default:
+      const _exhaustiveCheck: never = reason;
+      console.error("Unknown server error reason:", _exhaustiveCheck);
+      return { code: ErrorCode.Internal };
+  }
 }

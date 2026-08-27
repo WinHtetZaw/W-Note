@@ -6,11 +6,11 @@ import { createNote } from "../server/actions/create-note";
 
 type Props = {
   workspaceId: string;
-  folderId?: string | null;
+  folderId?: string;
 };
 
 export default function CreateNoteButton(props: Props) {
-  const { workspaceId, folderId = null } = props;
+  const { workspaceId, folderId } = props;
   const [isPending, startTransition] = useTransition();
   const handleCreate = () => {
     startTransition(async () => {

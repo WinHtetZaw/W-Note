@@ -8,17 +8,21 @@ export async function restoreNoteVersion(versionId: string) {
   });
 
   if (!version) {
-    throw new Error("Version not found");
+    throw new Error("NotFound");
   }
 
-  const result = await db
+  const [restoredNote] = await db
     .update(notesTable)
     .set({
       title: version.title,
       content: version.content ?? "", // update noteVersionTable's content to notNull()
     })
     .where(eq(notesTable.id, version.noteId))
-    .returning({ id: notesTable.id });
+    .returning({
+      id: notesTable.id,
+      workspaceId: notesTable.workspaceId,
+      folderId: notesTable.folderId,
+    });
 
-  return result.length > 0;
+  return restoredNote;
 }

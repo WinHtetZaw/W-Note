@@ -12,8 +12,8 @@ import PageHead from "@/components/dashboard/page-head";
 import NoteCreateButton from "@/components/ui/note-create-button";
 import { Suspense } from "react";
 import CreateNoteButton from "@/features/notes/components/create-note-button";
-import { fetchFolderNotes } from "@/features/notes/server/actions/fetch-folder-notes";
 import FolderNotesList from "@/features/folders/components/folder-notes-list";
+import { fetchFolderNotes } from "@/features/folders/server/actions/fetch-folder-notes";
 
 const notes = [
   {
@@ -49,32 +49,9 @@ type Props = {
 
 export default async function FolderPage({ params }: Props) {
   return (
-    <>
-      {/* <PageHead
-        pageLabel="Folder View"
-        labelIcon={<Folder className="size-4 text-icon" />}
-        title="Product Folder"
-        subTitle=" All notes inside this folder."
-        link={
-          <div className="flex gap-3">
-            <NoteCreateButton workspaceId="12234" />
-            <CreateNoteButton workspaceId={workspaceId} folderId={folderId} />
-            <Suspense fallback={<p>loading</p>}>
-              <FolderActionsMenu />
-            </Suspense>
-          </div>
-        }
-      />
-
-      <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-        {notes.map((note) => (
-          <NoteCard key={note.id} {...note} />
-        ))}
-      </div> */}
-      <Suspense fallback={<p>folder detail page loading...</p>}>
-        <FolderDetailContent params={params} />
-      </Suspense>
-    </>
+    <Suspense fallback={<p>folder detail page loading...</p>}>
+      <FolderDetailContent params={params} />
+    </Suspense>
   );
 }
 
@@ -82,13 +59,14 @@ async function FolderDetailContent({ params }: Props) {
   const { workspaceId, folderId } = await params;
   // const { q } = await searchParams;
 
-  const result = await fetchFolderNotes(workspaceId, folderId);
+  // const result = await fetchFolderNotes(workspaceId, folderId);
+  const result = await fetchFolderNotes({ workspaceId, folderId });
 
   // const result = q
   //   ? await searchNotesAction(workspaceId, q)
   //   : await fetchNotes(workspaceId);
 
-  if (!result.success) {
+  if (!result.data) {
     return <p>Notes not found</p>;
   }
 
@@ -109,12 +87,12 @@ async function FolderDetailContent({ params }: Props) {
         }
       />
 
-      {result.data.length === 0 ? (
-        <div className="mt-10 text-center text-zinc-400">
+      {result.data.notes.length === 0 ? (
+        <div className="mt-10 text-center text-muted">
           No notes found in this folder.
         </div>
       ) : (
-        <FolderNotesList notes={result.data} />
+        <FolderNotesList notes={result.data.notes} />
       )}
     </>
   );

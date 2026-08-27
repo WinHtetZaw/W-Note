@@ -1,12 +1,16 @@
 import { and, eq } from "drizzle-orm";
 import { db } from "@/db";
 import { workspaceMembersTable } from "@/db/schema";
-import { WorkspaceRole } from "./types";
 
-export async function getUserWorkspaceRole(
-  workspaceId: string,
-  userId: string,
-): Promise<WorkspaceRole> {
+type IncomingData = {
+  workspaceId: string;
+  userId: string;
+};
+
+export async function getUserWorkspaceRole({
+  workspaceId,
+  userId,
+}: IncomingData) {
   const member = await db.query.workspaceMembersTable.findFirst({
     where: and(
       eq(workspaceMembersTable.workspaceId, workspaceId),
@@ -15,5 +19,5 @@ export async function getUserWorkspaceRole(
     columns: { role: true },
   });
 
-  return member ? member.role : "member";
+  return member?.role;
 }

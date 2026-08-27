@@ -23,6 +23,7 @@ import {
 } from "../schemas/send-invitation-schema";
 import { createWorkspaceInvite } from "../server/actions/create-workspace-invite";
 import { toast } from "sonner";
+import { errorMessages } from "@/lib/errors";
 
 interface Props {
   open: boolean;
@@ -43,12 +44,14 @@ export default function InviteMemberDialog({ open, onOpenChange }: Props) {
 
     startTransition(async () => {
       // await wait(5000);
-      console.log(values);
+      // console.log(values);
       const result = await createWorkspaceInvite({ workspaceId, ...values });
-      if (!result.success) {
-        toast.error(result.message);
+      if (!result.data) {
+        toast.error(errorMessages[result.code]);
+        console.log(result);
+        return;
       }
-      toast.success(result.message);
+      toast.success("Successfully invitation sent.");
       console.dir(result);
       onOpenChange(false);
     });
@@ -89,11 +92,7 @@ export default function InviteMemberDialog({ open, onOpenChange }: Props) {
               Cancel
             </Button>
 
-            <Button
-              disabled={pending}
-              type="submit"
-              className=" disabled:bg-amber-400"
-            >
+            <Button disabled={pending} type="submit">
               Send Invitation
             </Button>
           </DialogFooter>

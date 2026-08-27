@@ -31,9 +31,9 @@ export default function NoteEditor({
         class: "min-h-[700px] outline-none text-lg leading-8 text-zinc-200",
       },
     },
-    onUpdate({ editor }) {
-      console.log(editor.getJSON());
-    },
+    // onUpdate({ editor }) {
+    //   console.log(editor.getJSON());
+    // },
   });
   const [pending, startTransition] = useTransition();
 
@@ -45,11 +45,11 @@ export default function NoteEditor({
   // }, [editor]);
 
   const handleSave = () => {
-    console.log(
-      JSON.stringify(editor.getJSON()),
-      "---",
-      editor.getText().length,
-    );
+    // console.log(
+    //   JSON.stringify(editor.getJSON()),
+    //   "---",
+    //   editor.getText().length,
+    // );
     startTransition(async () => {
       const res = await editNote({
         workspaceId,
@@ -63,7 +63,7 @@ export default function NoteEditor({
         return;
       }
 
-      toast.success(res.message);
+      toast.success("Successfully saved.");
     });
   };
 
@@ -94,7 +94,9 @@ export default function NoteEditor({
         </div>
 
         {/* your existing AI sidebar */}
-        <Button onClick={handleSave}>Save</Button>
+        <Button onClick={handleSave} disabled={pending}>
+          Save
+        </Button>
       </div>
     </>
   );

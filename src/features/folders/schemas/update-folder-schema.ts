@@ -4,7 +4,6 @@ export const updateFolderSchema = z.object({
   folderId: z.uuid(),
   workspaceId: z.uuid(),
   name: z.string().trim().min(1).max(255),
-  createdBy: z.uuid(),
 });
 
 export type UpdateFolderInput = z.infer<typeof updateFolderSchema>;

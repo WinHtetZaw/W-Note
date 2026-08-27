@@ -1,61 +1,41 @@
 "use server";
 
-import { requireWorkspaceMember } from "@/lib/permissions";
-import {
-  // CreateNoteInput,
-  createNoteSchema,
-} from "../../schemas/create-note-schema";
-import { insertNote } from "../mutations/insert-note";
 import { redirect } from "next/navigation";
-import { revalidateTag } from "next/cache";
+import { updateTag } from "next/cache";
+import { createNoteService } from "../../services/create-note-service";
+import { cacheTags } from "@/lib/cache/tags";
+import { ErrorCode } from "@/lib/errors";
 
 type CreateNoteInput = {
   workspaceId: string;
-  folderId?: string | null;
+  folderId?: string;
 };
 
-export async function createNote(input: CreateNoteInput) {
-  // Auth and permission check
-  const { workspaceId, folderId } = input;
-  const { user } = await requireWorkspaceMember(input.workspaceId);
-
-  // validate incoming data
-  // const { success, data } = createNoteSchema.safeParse(input);
-  // if (!success) {
-  //   return { success, message: "Invalid folder data" };
-  // }
-
-  // creating note
-  const note = await insertNote(workspaceId, user.id, folderId);
-  if (!note) {
-    return { success: false, message: "Fail to create note" };
+export async function createNote(rawData: CreateNoteInput) {
+  const [error, note] = await createNoteService(rawData);
+  if (error == null) {
+    if (note.folderId) {
+      updateTag(cacheTags.folderNotes(note.folderId));
+    }
+    updateTag(cacheTags.workspaceNotes(note.workspaceId));
+    redirect(`/dashboard/w/${note.workspaceId}/notes/${note.id}`);
   }
 
-  //todo revalidate
-
-  // return { success: true, data: note };
-  // revalidatePath(`/dashboard/w/${workspaceId}`);
-  revalidateTag("hello", "max");
-  redirect(`/dashboard/w/${workspaceId}/notes/${note.id}`);
+  const reason = error.reason;
+  switch (reason) {
+    case "INVALID_INPUT":
+      return { code: ErrorCode.Validation, reason, details: error.details };
+    case "NOT_AUTHENTICATED":
+      redirect("/sign-in");
+    case "NOT_WORKSPACE_MEMBER":
+      return { code: ErrorCode.Forbidden, reason };
+    case "INSUFFICIENT_PERMISSION":
+      return { code: ErrorCode.Forbidden, reason };
+    case "UNEXPECTED":
+      return { code: ErrorCode.Internal, reason };
+    default:
+      const _exhaustiveCheck: never = reason;
+      console.error("Unknown server error reason:", _exhaustiveCheck);
+      return { code: ErrorCode.Internal };
+  }
 }
-
-// export async function createNote(input: CreateNoteInput) {
-//   // Auth and permission check
-//   const { user } = await requireWorkspaceMember(input.workspaceId);
-
-//   // validate incoming data
-//   const { success, data } = createNoteSchema.safeParse(input);
-//   if (!success) {
-//     return { success, message: "Invalid folder data" };
-//   }
-
-//   // creating note
-//   const note = await insertNote({ ...data, authorId: user.id });
-//   if (!note) {
-//     return { success: false, message: "Fail to create note" };
-//   }
-
-//   //todo revalidate
-
-//   return { success: true, data: note };
-// }

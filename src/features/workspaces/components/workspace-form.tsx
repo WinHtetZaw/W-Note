@@ -11,7 +11,8 @@ import {
   WorkspaceFormValues,
   workspaceSchema,
 } from "../schemas/form-workspace-schema";
-import { handleToast } from "@/lib/utils";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 type Props = {
   initialValues?: WorkspaceFormValues;
@@ -19,23 +20,41 @@ type Props = {
 };
 
 export default function WorkspaceForm({ initialValues, workspaceId }: Props) {
-  const isEditForm = !!workspaceId;
   const form = useForm<WorkspaceFormValues>({
     resolver: zodResolver(workspaceSchema),
     defaultValues: !!workspaceId ? initialValues : { name: "" },
   });
   const [isPending, startTransition] = useTransition();
+  const router = useRouter();
 
-  const submitWorkspace = async (values: WorkspaceFormValues) => {
-    const result = isEditForm
-      ? await renameWorkspace({ ...values, workspaceId })
-      : await createWorkspace(values);
-    handleToast(result.success, result.message);
+  const handleCreate = async (values: WorkspaceFormValues) => {
+    const result = await createWorkspace(values);
+    if (!result.success) {
+      toast.error("Fail to create workspace.");
+    } else {
+      toast.success("Workspace created successfully.");
+      router.push(`/dashboard/w/${result.data.id}`);
+    }
+  };
+
+  const handleRename = async (
+    values: WorkspaceFormValues,
+    workspaceId: string,
+  ) => {
+    const result = await renameWorkspace({ name: values.name, workspaceId });
+    if (!result.success) {
+      toast.error("Fail to rename workspace.");
+    } else {
+      toast.success("Workspace renamed successfully.");
+      router.back();
+    }
   };
 
   const onSubmit = async (values: WorkspaceFormValues) => {
-    // console.log("Form submitted with values:", values);
-    startTransition(() => submitWorkspace(values));
+    startTransition(() => {
+      if (!workspaceId) handleCreate(values);
+      else handleRename(values, workspaceId);
+    });
   };
 
   return (
@@ -53,7 +72,7 @@ export default function WorkspaceForm({ initialValues, workspaceId }: Props) {
           isPending={isPending}
         >
           <Save className="size-5" />
-          {isEditForm ? "Save Changes" : "Create Workspace"}
+          {workspaceId ? "Save Changes" : "Create Workspace"}
         </FormSubmitButton>
       </form>
     </>

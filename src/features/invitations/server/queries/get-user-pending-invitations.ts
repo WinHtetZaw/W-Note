@@ -1,5 +1,5 @@
 import { db } from "@/db";
-import { workspaceInvitationsTable } from "@/db/schema";
+import { workspaceInvitationsTable, workspaceMembersTable } from "@/db/schema";
 
 import { and, desc, eq, gt, isNull } from "drizzle-orm";
 
@@ -10,6 +10,7 @@ export async function getUserPendingInvitations(email: string) {
       //   isNull(workspaceInvitationsTable.acceptedAt),
       //   isNull(workspaceInvitationsTable.revokedAt),
       gt(workspaceInvitationsTable.expiresAt, new Date()),
+      eq(workspaceInvitationsTable.status, "pending"),
     ),
 
     with: {

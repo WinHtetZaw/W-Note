@@ -3,14 +3,12 @@ import { UpdateWorkspaceInput } from "../../schemas/update-workspace-schema";
 import { workspacesTable } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
-export async function updateWorkspace(validated: UpdateWorkspaceInput) {
-  const result = await db
+export async function updateWorkspace(data: UpdateWorkspaceInput) {
+  const [updated] = await db
     .update(workspacesTable)
-    .set({ name: validated.name })
-    .where(eq(workspacesTable.id, validated.workspaceId))
+    .set({ name: data.name })
+    .where(eq(workspacesTable.id, data.workspaceId))
     .returning();
 
-  // ! revalidteTag for all related cache tags.
-
-  return result.length > 0;
+  return updated;
 }

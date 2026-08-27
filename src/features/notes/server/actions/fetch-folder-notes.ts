@@ -1,3 +1,5 @@
+"user server";
+
 import { requireWorkspaceMember } from "@/lib/permissions";
 import { FolderNote, getFolderNotes } from "../queries/get-folder-notes";
 import { fail, ok, Result } from "@/lib/types";

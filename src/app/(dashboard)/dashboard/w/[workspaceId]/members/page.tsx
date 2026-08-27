@@ -1,6 +1,9 @@
 import InvitationButton from "@/features/invitations/components/invitation-button";
 import InvitationList from "@/features/invitations/components/invitation-list";
 import MembersPage from "@/features/members/components/members-page";
+import { fetchMembers } from "@/features/members/server/actions/fetch-members";
+import { fetchUserWorkspace } from "@/features/workspaces/server/actions/fetch-user-workspace";
+import { fetchUserWorkspaceRole } from "@/features/workspaces/server/actions/fetch-usre-workspace-role";
 import { Suspense } from "react";
 
 type Props = {
@@ -20,14 +23,24 @@ async function MembersPageWrapper({ params }: Props) {
 
   // Later:
   // const session = await auth()
-  // const role = await getWorkspaceRole(...)
+  const userRoleResult = await fetchUserWorkspaceRole(workspaceId);
+  if (!userRoleResult.data) {
+    console.log(userRoleResult);
+    return <p>fail to fetch uer role</p>;
+  }
+
+  const membersResult = await fetchMembers(workspaceId);
+  if (!membersResult.data) {
+    return <p>fail to fetch members</p>;
+  }
 
   return (
     <MembersPage
       workspaceId={workspaceId}
-      currentUserRole="owner"
+      currentUserRole={userRoleResult.data}
       invitationButton={<InvitationButton />}
       invitationList={<InvitationList />}
+      members={membersResult.data}
     />
   );
 }
