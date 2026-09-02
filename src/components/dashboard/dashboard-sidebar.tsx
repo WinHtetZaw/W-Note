@@ -8,6 +8,7 @@ import AddNoteButton from "../ui/note-create-button";
 import { redirect } from "next/navigation";
 import { fetchUserWorkspaces } from "@/features/workspaces/server/actions/fetch-user-workspaces";
 import { fetchWorkspace } from "@/features/workspaces/server/actions/fetch-workspace";
+import CreateNoteButton from "@/features/notes/components/create-note-button";
 
 type Props = {
   params: Promise<{ workspaceId: string }>;
@@ -41,21 +42,7 @@ export async function DashboardSidebar({ params }: Props) {
           userWorkspaces={workspaces.data}
           currentName={currentWorkspace.data.name}
         />
-        <AddNoteButton
-          variant="outline"
-          workspaceId={workspaceId}
-          className="w-full"
-        />
-        {/* <div className="space-y-2">
-          {generalLinks.map((item) => (
-            <SidebarNavItem
-              key={item.label}
-              label={item.label}
-              icon={item.icon}
-              href={`/dashboard/w/${workspaceId}`}
-            />
-          ))}
-        </div> */}
+        <CreateNoteButton workspaceId={workspaceId} className="w-full" />
 
         <div>
           <p className="mb-3 px-4 text-xs font-semibold tracking-wider text-zinc-500 uppercase">

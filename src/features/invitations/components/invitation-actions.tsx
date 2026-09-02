@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { Copy, Mail, MoreVertical, XCircle } from "lucide-react";
 
 import {
@@ -12,41 +12,56 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { toast } from "sonner";
+import { resendWorkspaceInvite } from "../server/actions/resend-workspace-invite";
+import { errorMessages } from "@/lib/errors";
+import { useRouter } from "next/navigation";
+import { revokeWorkspaceInvite } from "../server/actions/revoke-workspace-invite";
 
 interface Props {
   invitationId: string;
+  workspaceId: string;
 }
 
-export default function InvitationActions({ invitationId }: Props) {
-  const [loading, setLoading] = useState(false);
+export default function InvitationActions(props: Props) {
+  const { invitationId, workspaceId } = props;
+  const [isPending, startTransition] = useTransition();
+  const router = useRouter();
 
-  async function handleCopy() {
+  const handleCopy = async () => {
     await navigator.clipboard.writeText(
-      `https://your-app.com/invite/${invitationId}`,
+      `https://your-app.com/invitations/${invitationId}`,
     );
 
     toast.success("Invite link copied");
-  }
+  };
 
-  async function handleResend() {
-    setLoading(true);
+  const handleResend = () => {
+    startTransition(async () => {
+      const result = await resendWorkspaceInvite({ invitationId, workspaceId });
 
-    // await resendInvitation(invitationId);
+      if (result.code) {
+        console.log(result);
+        toast.error(errorMessages[result.code]);
+      }
 
-    setLoading(false);
+      toast.success("Successfully invitation resent");
+      router.refresh();
+    });
+  };
 
-    toast.success("Invitation resent");
-  }
+  const handleCancel = () => {
+    startTransition(async () => {
+      const result = await revokeWorkspaceInvite({ invitationId, workspaceId });
 
-  async function handleCancel() {
-    setLoading(true);
+      if (result.code) {
+        console.log(result);
+        toast.error(errorMessages[result.code]);
+      }
 
-    // await cancelInvitation(invitationId);
-
-    setLoading(false);
-
-    toast.success("Invitation cancelled");
-  }
+      toast.success("Successfully invitation cancelled");
+      router.refresh();
+    });
+  };
 
   return (
     <DropdownMenu>
@@ -69,7 +84,7 @@ export default function InvitationActions({ invitationId }: Props) {
         </DropdownMenuItem>
 
         <DropdownMenuItem
-          disabled={loading}
+          disabled={isPending}
           onClick={handleResend}
           className="cursor-pointer rounded-xl"
         >
@@ -80,7 +95,7 @@ export default function InvitationActions({ invitationId }: Props) {
         <DropdownMenuSeparator />
 
         <DropdownMenuItem
-          disabled={loading}
+          disabled={isPending}
           onClick={handleCancel}
           className="cursor-pointer rounded-xl text-red-400 focus:bg-red-500/10"
         >

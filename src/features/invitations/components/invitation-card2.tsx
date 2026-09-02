@@ -1,16 +1,15 @@
 import { CalendarClock, Clock3, Mail } from "lucide-react";
 
+import type { PendingInvitation } from "../types";
+
 import RoleBadge from "./role-badge";
 import InvitationActions from "./invitation-actions";
-import { PendingInvitations } from "../server/queries/get-user-pending-invitations";
-import { timeAgo } from "@/lib/utils";
-import { formatExpiryInDays } from "@/utils";
 
 interface Props {
-  invitation: PendingInvitations;
+  invitation: PendingInvitation;
 }
 
-export default function InvitationCard({ invitation }: Props) {
+export default function InvitationCard2({ invitation }: Props) {
   return (
     <div className="rounded-[32px] border border-white/10 bg-white/5 p-6 backdrop-blur-2xl">
       <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
@@ -25,12 +24,12 @@ export default function InvitationCard({ invitation }: Props) {
             <div className="mt-2 flex flex-wrap gap-5 text-sm text-zinc-400">
               <div className="flex items-center gap-2">
                 <Clock3 className="h-4 w-4" />
-                Invited {timeAgo(invitation.updatedAt)}
+                Invited {invitation.invitedAt}
               </div>
 
               <div className="flex items-center gap-2">
                 <CalendarClock className="h-4 w-4" />
-                Expires in {formatExpiryInDays(invitation.expiresAt)}
+                Expires in {invitation.expiresAt}
               </div>
             </div>
           </div>
@@ -39,10 +38,7 @@ export default function InvitationCard({ invitation }: Props) {
         <div className="flex items-center gap-3">
           <RoleBadge role={invitation.role} />
 
-          <InvitationActions
-            invitationId={invitation.id}
-            workspaceId={invitation.workspace.id}
-          />
+          <InvitationActions invitationId={invitation.id} />
         </div>
       </div>
     </div>

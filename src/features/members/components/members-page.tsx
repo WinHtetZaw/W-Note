@@ -1,8 +1,8 @@
 "use client";
 
-import { ReactNode, use, useMemo, useState } from "react";
+import { ReactNode, useMemo, useState } from "react";
 
-import { Sparkles, UserPlus } from "lucide-react";
+import { Sparkles } from "lucide-react";
 
 import MemberSearch from "./member-search";
 import MemberCard from "./member-card";
@@ -48,7 +48,7 @@ export default function MembersPage(props: Props) {
       invite.email.toLowerCase().includes(value),
     );
   }, [search]);
-  console.log(members);
+  // console.log(members);
 
   return (
     <>
@@ -57,7 +57,7 @@ export default function MembersPage(props: Props) {
       <section className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
         <div>
           <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 backdrop-blur-xl">
-            <Sparkles className="h-4 w-4 text-violet-400" />
+            <Sparkles className="size-4 text-icon" />
 
             <span className="text-sm">Team Collaboration</span>
           </div>

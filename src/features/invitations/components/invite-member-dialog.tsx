@@ -16,7 +16,7 @@ import { FormInput } from "@/components/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import FormSelect from "@/components/form/form-select";
 import { useTransition } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import {
   InvitationFormValues,
   sendInvitationSchema,
@@ -37,14 +37,11 @@ export default function InviteMemberDialog({ open, onOpenChange }: Props) {
   });
 
   const [pending, startTransition] = useTransition();
+  const router = useRouter();
   const { workspaceId }: { workspaceId: string } = useParams();
 
   function onSubmit(values: InvitationFormValues) {
-    // reset();
-
     startTransition(async () => {
-      // await wait(5000);
-      // console.log(values);
       const result = await createWorkspaceInvite({ workspaceId, ...values });
       if (!result.data) {
         toast.error(errorMessages[result.code]);
@@ -52,7 +49,8 @@ export default function InviteMemberDialog({ open, onOpenChange }: Props) {
         return;
       }
       toast.success("Successfully invitation sent.");
-      console.dir(result);
+      router.refresh();
+      form.reset();
       onOpenChange(false);
     });
   }

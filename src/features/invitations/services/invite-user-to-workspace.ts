@@ -74,10 +74,10 @@ export async function inviteUserToWorkspace(
 
     const expiresIn = formatExpiryInDays(expiresAt);
     const invitationLink = generateInviteLink({ token });
-    console.log("reach here7");
+
     const emailResult = await sendInvitationEmail({
       to: email,
-      workspaceName: "placeholder",
+      workspaceName,
       inviterName,
       role,
       invitationLink,
@@ -86,7 +86,7 @@ export async function inviteUserToWorkspace(
 
     if (!emailResult.success) {
       // logger.error(emailResult.error);
-      fail({ reason: ErrorReason.EmailDoesNoteSent });
+      fail({ reason: ErrorReason.EmailDoesNotSent });
     }
 
     return ok({ ...invitation, emailSent: true });

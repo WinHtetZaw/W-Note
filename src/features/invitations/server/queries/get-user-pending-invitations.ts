@@ -1,17 +1,25 @@
 import { db } from "@/db";
-import { workspaceInvitationsTable, workspaceMembersTable } from "@/db/schema";
+import { workspaceInvitationsTable } from "@/db/schema";
 
-import { and, desc, eq, gt, isNull } from "drizzle-orm";
+import { and, eq, gt } from "drizzle-orm";
 
 export async function getUserPendingInvitations(email: string) {
   return db.query.workspaceInvitationsTable.findMany({
     where: and(
-      eq(workspaceInvitationsTable.email, email.toLowerCase()),
+      // eq(workspaceInvitationsTable.workspaceId, workspaceId),
+      eq(workspaceInvitationsTable.email, email),
       //   isNull(workspaceInvitationsTable.acceptedAt),
       //   isNull(workspaceInvitationsTable.revokedAt),
       gt(workspaceInvitationsTable.expiresAt, new Date()),
       eq(workspaceInvitationsTable.status, "pending"),
     ),
+    columns: {
+      id: true,
+      email: true,
+      expiresAt: true,
+      role: true,
+      updatedAt: true,
+    },
 
     with: {
       workspace: {
@@ -87,6 +95,6 @@ export async function getUserPendingInvitations(email: string) {
   //   .orderBy(desc(workspaceInvitationsTable.createdAt));
 }
 
-export type UserPendingInvitations = NonNullable<
+export type PendingInvitations = NonNullable<
   Awaited<ReturnType<typeof getUserPendingInvitations>>
 >[number];

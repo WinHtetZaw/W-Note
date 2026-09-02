@@ -36,6 +36,10 @@ export const ErrorReason = {
   InvitationAlreadyExists: "INVITATION_ALREADY_EXISTS",
   OwnerCannotLeaveWorkspace: "OWNER_CANNOT_LEAVE_WORKSPACE",
   UserAlreadyAWorkspaceMember: "USER_ALREADY_A_WORKSPACE_MEMBER",
+  InvitatioAlreadyAccepted: "INVITATION_ALREADY_ACCEPTED",
+  InvitationAlreadyDeclined: "INVITATION_ALREADY_DECLINED",
+  InvitationAlreadyRevoked: "INVITATION_ALREADY_REVOKED",
+  InvitationExpired: "INVITATION_EXPIRED",
 
-  EmailDoesNoteSent: "EMAIL_DOES_NOT_SENT",
+  EmailDoesNotSent: "EMAIL_DOES_NOT_SENT",
 } as const;

@@ -4,22 +4,18 @@ import { workspaceInvitationsTable } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
 type UpdateInvitationData = {
+  invitationId: string;
   tokenHash: string;
   expiresAt: Date;
 };
 
-export async function updateInvitation(
-  invitationId: string,
-  data: UpdateInvitationData,
-) {
-  const [invitation] = await db
+export async function updateInvitation(data: UpdateInvitationData) {
+  const { invitationId, tokenHash, expiresAt } = data;
+  const [updatedInvitation] = await db
     .update(workspaceInvitationsTable)
-    .set({
-      tokenHash: data.tokenHash,
-      expiresAt: data.expiresAt,
-    })
+    .set({ tokenHash, expiresAt })
     .where(eq(workspaceInvitationsTable.id, invitationId))
-    .returning();
+    .returning({ id: workspaceInvitationsTable.id });
 
-  return invitation;
+  return !!updatedInvitation;
 }

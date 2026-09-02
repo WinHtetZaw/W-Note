@@ -24,11 +24,11 @@ const invitations = [
 
 export default async function InvitationsPage() {
   // const user = await auth.api.getSession()
-  const res = await fetchUserPendingInvitations();
-  if (!res.data) {
+  const userPendingInvitations = await fetchUserPendingInvitations();
+  if (!userPendingInvitations.data) {
     return <p>not found invitations</p>;
   }
-  console.log("res data --->", res.data);
+  // console.log("res data --->", res.data);
   return (
     <main className="mx-auto max-w-5xl px-6 py-16">
       {/* Header */}
@@ -56,28 +56,27 @@ export default async function InvitationsPage() {
       </section>
 
       {/* Invitations */}
-
       <section className="mt-12 space-y-6">
         {invitations.length === 0 ? (
           <EmptyState />
         ) : (
-          invitations.map((invitation) => (
-            <InvitationCard key={invitation.id} invitation={invitation} />
+          // invitations.map((invitation) => (
+          //   <InvitationCard key={invitation.id} invitation={invitation} />
+          // ))
+          userPendingInvitations.data.map((invitation) => (
+            <InvitationCard
+              key={invitation.id}
+              invitation={{
+                id: invitation.id,
+                workspace: invitation.workspace.name,
+                workspaceId: invitation.workspace.id,
+                inviter: invitation.inviter.name,
+                role: invitation.role,
+                expiresAt: formatExpiryInDays(invitation.expiresAt),
+              }}
+            />
           ))
         )}
-        {res.data.map((el) => (
-          <InvitationCard
-            key={el.id}
-            invitation={{
-              id: el.id,
-              workspace: el.workspace.name,
-              workspaceId: el.workspace.id,
-              inviter: el.inviter.name,
-              role: el.role,
-              expiresAt: formatExpiryInDays(el.expiresAt),
-            }}
-          />
-        ))}
       </section>
     </main>
   );

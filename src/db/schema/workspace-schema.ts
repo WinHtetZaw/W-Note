@@ -101,6 +101,7 @@ export const workspaceInvitationsTable = pgTable(
     declinedAt: timeAt("declined_at"),
     revokedAt: timeAt("revoked_at"),
     createdAt,
+    updatedAt,
   },
   (table) => [
     index("workspace_invites_workspace_idx").on(table.workspaceId),

@@ -25,7 +25,6 @@ async function MembersPageWrapper({ params }: Props) {
   // const session = await auth()
   const userRoleResult = await fetchUserWorkspaceRole(workspaceId);
   if (!userRoleResult.data) {
-    console.log(userRoleResult);
     return <p>fail to fetch uer role</p>;
   }
 
@@ -39,7 +38,7 @@ async function MembersPageWrapper({ params }: Props) {
       workspaceId={workspaceId}
       currentUserRole={userRoleResult.data}
       invitationButton={<InvitationButton />}
-      invitationList={<InvitationList />}
+      invitationList={<InvitationList workspaceId={workspaceId} />}
       members={membersResult.data}
     />
   );

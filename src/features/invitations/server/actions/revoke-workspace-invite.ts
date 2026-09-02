@@ -1,27 +1,47 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
-import { requireWorkspaceAdmin } from "@/lib/permissions";
-import { getInvitationById } from "../queries/get-invitation-by-id";
-import { validateRevocableInvitation } from "../../services/validate-revocable-invitation";
-import { revokeInvitation } from "../mutations/revoke-invitation";
-import { fail, ok, Result } from "@/lib/types";
-import { Invitation } from "../../types";
+import { updateTag } from "next/cache";
+import { revokeWorkspaceInviteService } from "../../services/revoke-workspace-invite-service";
+import { cacheTags } from "@/lib/cache/tags";
+import { ErrorCode } from "@/lib/errors";
+import { redirect } from "next/navigation";
 
-export async function revokeWorkspaceInvite(
-  invitationId: string,
-): Promise<Result<Invitation>> {
-  const invitation = await getInvitationById(invitationId);
+type IncomingData = { invitationId: string; workspaceId: string };
 
-  if (!invitation) return fail("Invitation not found.");
+export async function revokeWorkspaceInvite(rawData: IncomingData) {
+  const [error, isRevoked] = await revokeWorkspaceInviteService(rawData);
 
-  await requireWorkspaceAdmin(invitation.workspaceId);
+  if (error == null) {
+    updateTag(cacheTags.invitation(rawData.invitationId));
+    return { success: isRevoked };
+  }
 
-  validateRevocableInvitation(invitation);
-
-  const revokedInvitation = await revokeInvitation(invitationId);
-
-  revalidatePath(`/dashboard/w/${invitation.workspaceId}/members`);
-
-  return ok(revokedInvitation);
+  const reason = error.reason;
+  switch (reason) {
+    case "INVALID_INPUT":
+      return { code: ErrorCode.Validation, reason, details: error.details };
+    case "NOT_AUTHENTICATED":
+      redirect("/sign-in");
+    case "INVIATION_NOT_FOUND":
+      return { code: ErrorCode.NotFound, reason };
+    case "NOT_WORKSPACE_MEMBER":
+    case "INVITATION_ALREADY_ACCEPTED":
+      return { code: ErrorCode.Conflict, reason };
+    case "INVITATION_ALREADY_DECLINED":
+      return { code: ErrorCode.Conflict, reason };
+    case "INVITATION_ALREADY_REVOKED":
+      return { code: ErrorCode.Conflict, reason };
+    case "INVITATION_EXPIRED":
+      return { code: ErrorCode.Conflict, reason };
+    case "NOT_WORKSPACE_MEMBER":
+      return { code: ErrorCode.Forbidden, reason };
+    case "NOT_WORKSPACE_ADMIN_OR_OWNER":
+      return { code: ErrorCode.Forbidden, reason };
+    case "UNEXPECTED":
+      return { code: ErrorCode.Internal, reason };
+    default:
+      const _exhaustiveCheck: never = reason;
+      console.error("Unknown server error reason:", _exhaustiveCheck);
+      return { code: ErrorCode.Internal };
+  }
 }

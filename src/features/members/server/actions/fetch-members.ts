@@ -5,7 +5,6 @@ import { ErrorCode } from "@/lib/errors";
 import { fetchMembersService } from "../services/fetch-members-service";
 
 export async function fetchMembers(workspaceId: string) {
-  console.log("ins server");
   const [error, data] = await fetchMembersService(workspaceId);
 
   if (error == null) {

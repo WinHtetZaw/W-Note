@@ -41,15 +41,17 @@ export default function MemberCard({
               {member.user.name}
             </h2>
 
-            <div className="mt-2 flex items-center gap-2 text-zinc-400">
-              <Mail className="h-4 w-4" />
-              {member.user.email}
-            </div>
+            <div className="mt-2 flex flex-wrap gap-5 text-sm">
+              <div className=" flex items-center gap-2 text-zinc-400">
+                <Mail className="h-4 w-4" />
+                {member.user.email}
+              </div>
 
-            <div className="mt-2 flex items-center gap-2 text-sm text-zinc-500">
-              <Clock3 className="h-4 w-4" />
-              {/* Last active {member.lastActive} */}
-              Last active {timeAgo(member.joinedAt)}
+              <div className=" flex items-center gap-2 text-sm text-zinc-500">
+                <Clock3 className="h-4 w-4" />
+                {/* Last active {member.lastActive} */}
+                Last active {timeAgo(member.joinedAt)}
+              </div>
             </div>
           </div>
         </Link>

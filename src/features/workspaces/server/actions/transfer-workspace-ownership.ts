@@ -16,6 +16,7 @@ export async function transferWorkspaceOwnership(rawData: IncomingData) {
     await transferWorkspaceOwnershipService(rawData);
 
   if (error == null) {
+    updateTag(cacheTags.workspaceMembers(rawData.workspaceId));
     updateTag(cacheTags.workspace(rawData.workspaceId));
     return { success: isTransfered };
   }

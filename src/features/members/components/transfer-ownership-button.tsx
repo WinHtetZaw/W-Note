@@ -1,7 +1,10 @@
+"use client";
+
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { transferWorkspaceOwnership } from "@/features/workspaces/server/actions/transfer-workspace-ownership";
 import { errorMessages } from "@/lib/errors";
 import { Crown } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { toast } from "sonner";
 
@@ -13,6 +16,7 @@ type Props = {
 export default function TransferOwnershipButton(props: Props) {
   const { workspaceId, newOwnerId } = props;
   const [isPending, startTransition] = useTransition();
+  const router = useRouter();
 
   const handleClick = () => {
     startTransition(async () => {
@@ -27,6 +31,15 @@ export default function TransferOwnershipButton(props: Props) {
         return;
       }
 
+      // router.refresh() sometimes doesn't re-run server data fetching reliably
+      // Use replace to force a full route revalidation and update server props.
+      //   if (typeof window !== "undefined") {
+      //     router.replace(window.location.pathname);
+      //   } else {
+      //     router.refresh();
+      //   }
+
+      window.location.reload();
       toast.success("Successfully transfered owner.");
     });
   };

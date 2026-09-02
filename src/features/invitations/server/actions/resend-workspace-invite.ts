@@ -1,52 +1,49 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
-import { requireWorkspaceAdmin } from "@/lib/permissions";
-import { getInvitationById } from "../queries/get-invitation-by-id";
-import { updateInvitation } from "../mutations/update-invitation";
-import { validateRevocableInvitation } from "../../services/validate-revocable-invitation";
-import { generateInvitationToken } from "../../services/generate-token";
-import { getInvitationExpiration } from "../../services/get-invitation-expiration";
-import { generateInviteLink } from "../../services/generate-invite-link";
-import { fail, ok, Result } from "@/lib/types";
-import { InvitationWithInviteLink } from "../../types";
-import { hashInvitationToken } from "../../services/hash-invitation-token";
+import { updateTag } from "next/cache";
+import { resendWorkspaceInviteService } from "../../services/resend-workspace-invite-service";
+import { cacheTags } from "@/lib/cache/tags";
+import { ErrorCode } from "@/lib/errors";
+import { redirect } from "next/navigation";
 
-// import { sendInvitationEmail } from "../services/send-invitation-email";
+type IncomingData = { invitationId: string; workspaceId: string };
 
-export async function resendWorkspaceInvite(
-  invitationId: string,
-): Promise<Result<InvitationWithInviteLink>> {
-  const invitation = await getInvitationById(invitationId);
-  if (!invitation) return fail("Invitation not found.");
+export async function resendWorkspaceInvite(rawData: IncomingData) {
+  const [error, isUpdated] = await resendWorkspaceInviteService(rawData);
 
-  // Auth & Authz
-  await requireWorkspaceAdmin(invitation.workspaceId);
+  if (error == null) {
+    updateTag(cacheTags.invitation(rawData.invitationId));
+    return { success: isUpdated };
+  }
 
-  validateRevocableInvitation(invitation);
-
-  const token = generateInvitationToken();
-  const tokenHash = hashInvitationToken(token);
-  const expiresAt = getInvitationExpiration();
-  const updatedInvitation = await updateInvitation(invitation.id, {
-    tokenHash,
-    expiresAt,
-  });
-
-  const inviteLink = generateInviteLink({ token });
-
-  /**
-   * todo Later
-   */
-  // await sendInvitationEmail({
-  //   email: invitation.email!,
-  //   inviteLink,
-  //   workspaceName: "...",
-  //   inviterName: "...",
-  // });
-
-  // todo implement revalidate cache
-  //   revalidatePath(`/dashboard/w/${invitation.workspaceId}/members`);
-
-  return ok({ ...updatedInvitation, inviteLink });
+  const reason = error.reason;
+  switch (reason) {
+    case "INVALID_INPUT":
+      return { code: ErrorCode.Validation, reason, details: error.details };
+    case "NOT_AUTHENTICATED":
+      redirect("/sign-in");
+    case "WORKSPACE_NOT_FOUND":
+      return { code: ErrorCode.NotFound, reason };
+    case "INVIATION_NOT_FOUND":
+      return { code: ErrorCode.NotFound, reason };
+    case "NOT_WORKSPACE_MEMBER":
+    case "INVITATION_ALREADY_ACCEPTED":
+      return { code: ErrorCode.Conflict, reason };
+    case "INVITATION_ALREADY_DECLINED":
+      return { code: ErrorCode.Conflict, reason };
+    case "INVITATION_ALREADY_REVOKED":
+      return { code: ErrorCode.Conflict, reason };
+    case "INVITATION_EXPIRED":
+      return { code: ErrorCode.Conflict, reason };
+    case "NOT_WORKSPACE_MEMBER":
+      return { code: ErrorCode.Forbidden, reason };
+    case "NOT_WORKSPACE_ADMIN_OR_OWNER":
+      return { code: ErrorCode.Forbidden, reason };
+    case "UNEXPECTED":
+      return { code: ErrorCode.Internal, reason };
+    default:
+      const _exhaustiveCheck: never = reason;
+      console.error("Unknown server error reason:", _exhaustiveCheck);
+      return { code: ErrorCode.Internal };
+  }
 }
