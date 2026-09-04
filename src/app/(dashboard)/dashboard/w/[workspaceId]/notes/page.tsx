@@ -1,10 +1,9 @@
 import PageHead from "@/components/dashboard/page-head";
+import CardSkeletonList from "@/components/ui/card-skeleton-list";
 import InputSearch from "@/components/ui/input-search";
 import MainLoaing from "@/components/ui/main-loaing";
-import NoteCreateButton from "@/components/ui/note-create-button";
 import CreateNoteButton from "@/features/notes/components/create-note-button";
 import NotesList from "@/features/notes/components/notes-list";
-import { fetchNotes } from "@/features/notes/server/actions/fetch-notes";
 import { Suspense } from "react";
 
 type Props = {
@@ -22,13 +21,6 @@ export default async function NotesPage(props: Props) {
 
 async function NotesContent(props: Props) {
   const { workspaceId } = await props.params;
-  // const { q } = await searchParams;
-
-  // const result = await fetchNotes({ workspaceId });
-
-  // if (result.code) {
-  //   return <p>Notes not found</p>;
-  // }
 
   return (
     <>
@@ -38,9 +30,8 @@ async function NotesContent(props: Props) {
         subTitle="Manage and organize your AI-enhanced notes."
         link={<CreateNoteButton workspaceId={workspaceId} />}
       />
-      {/* <NotesSearchBar /> */}
       <InputSearch />
-      <Suspense fallback={<p>notes loaing</p>}>
+      <Suspense fallback={<CardSkeletonList />}>
         <NotesList {...props} />
       </Suspense>
     </>

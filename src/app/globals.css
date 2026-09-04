@@ -180,6 +180,10 @@
 }
 
 @layer utilities {
+  .custom-scroll {
+    @apply overflow-y-auto scrollbar-thin scrollbar-thumb-white/50 scrollbar-track-transparent
+  }
+  
   .glass {
     @apply border border-white/10 bg-white/5 backdrop-blur-2xl;
   }

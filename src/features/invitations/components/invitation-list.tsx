@@ -1,6 +1,4 @@
-import { pendingInvitations } from "../constant";
 import InvitationCard from "./invitation-card";
-import InvitationCard2 from "./invitation-card2";
 import { fetchWorkspacePendingInvitations } from "../server/actions/fetch-workspace-pending-invitations";
 
 export default async function InvitationList({

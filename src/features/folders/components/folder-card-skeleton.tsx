@@ -16,13 +16,6 @@ export function NoteCardSkeleton() {
       <div className="mt-6 mb-auto">
         {/* Title */}
         <Skeleton className="h-7 w-3/4 rounded-md" />
-
-        {/* Optional description */}
-        <div className="mt-4 space-y-2">
-          <Skeleton className="h-4 w-full rounded-md" />
-          <Skeleton className="h-4 w-5/6 rounded-md" />
-          <Skeleton className="h-4 w-2/3 rounded-md" />
-        </div>
       </div>
 
       {/* Bottom metadata */}

@@ -53,7 +53,7 @@ export async function getWorkspaceOverview(workspaceId: string) {
     columns: { id: true, name: true },
   });
 
-  if (!workspace) return null;
+  if (!workspace) return;
 
   const [memberCount, noteCount, folderCount] = await Promise.all([
     db.$count(

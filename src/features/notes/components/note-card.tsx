@@ -5,7 +5,7 @@ import { Notes } from "../server/queries/get-notes";
 import NoteActions from "./note-actions";
 
 export default function NoteCard(props: Notes[0]) {
-  const { id, title, content, updatedAt, workspaceId } = props;
+  const { id, title, content, updatedAt, workspaceId, folder } = props;
   return (
     <div className="group relative overflow-hidden flex flex-col p-6 card">
       <Link href={`notes/${id}`} className="absolute inset-0" />
@@ -22,12 +22,14 @@ export default function NoteCard(props: Notes[0]) {
       </div>
 
       <div className="mt-8 flex items-center justify-between">
-        <div className="flex items-center gap-2 rounded-full border border-border bg-secondary px-3 py-1 text-sm">
-          <FolderTree className="size-4 text-icon" />
-          {"folder"}
-        </div>
+        {folder?.name && (
+          <div className="flex items-center gap-2 rounded-full border border-border bg-secondary px-3 py-1 text-sm">
+            <FolderTree className="size-4 text-icon" />
+            {folder?.name}
+          </div>
+        )}
 
-        <div className="flex items-center gap-2 text-sm text-zinc-500">
+        <div className="flex ml-auto items-center gap-2 text-sm text-zinc-500">
           <Clock3 className="size-4" />
           {timeAgo(updatedAt)}
         </div>

@@ -2,7 +2,9 @@ import WorkspaceDetailActions from "@/features/workspaces/components/workspace-d
 import { Suspense } from "react";
 import PageHead from "@/components/dashboard/page-head";
 import RecentNotes from "@/features/workspaces/components/recent-notes";
-import WorkspaceStats from "@/features/workspaces/components/wokspace-stats";
+import WorkspaceStats, {
+  WorkspaceStatsLoading,
+} from "@/features/workspaces/components/wokspace-stats";
 import CreateNoteButton from "@/features/notes/components/create-note-button";
 
 type Props = {
@@ -29,13 +31,11 @@ async function WorkspaceDetailContent({ params }: Props) {
         link={<PageHeadLink workspaceId={workspaceId} />}
       />
 
-      <Suspense fallback={<p>workspace stats loading</p>}>
-        <WorkspaceStats params={params} />
+      <Suspense fallback={<WorkspaceStatsLoading />}>
+        <WorkspaceStats workspaceId={workspaceId} />
       </Suspense>
 
-      <Suspense fallback={<>recent notes loading</>}>
-        <RecentNotes params={params} className="mb-10" />
-      </Suspense>
+      <RecentNotes params={params} className="mb-10" />
 
       <div className="grid gap-6 md:grid-cols-3">
         <QuickAction label="Manage Members" />

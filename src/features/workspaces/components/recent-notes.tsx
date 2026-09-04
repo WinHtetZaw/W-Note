@@ -1,22 +1,16 @@
-import { Button } from "@/components/ui/button";
-import { fetchNotes } from "@/features/notes/server/actions/fetch-notes";
 import { cn } from "@/lib/utils";
-import { ArrowRight, FileText } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { Suspense } from "react";
+import RecentNotesList, { RecentNotesListLoading } from "./recent-notes-lits";
 
 type Props = {
   params: Promise<{ workspaceId: string }>;
-  className: string;
+  className?: string;
 };
 
 export default async function RecentNotes({ params, className }: Props) {
   const { workspaceId } = await params;
-  const result = await fetchNotes({ workspaceId, limit: 3 });
-
-  if (!result.data) {
-    // todo implement not found UI
-    return <p>notes not found</p>;
-  }
 
   return (
     <div className={cn("p-8 glass rounded-4xl", className)}>
@@ -31,22 +25,9 @@ export default async function RecentNotes({ params, className }: Props) {
         </Link>
       </div>
 
-      <div className="mt-8 space-y-4">
-        {result.data.map((note) => (
-          <Button
-            key={note.id}
-            asChild
-            variant={"outline"}
-            className="flex w-full items-center justify-between"
-          >
-            <Link href={`/dashboard/w/${workspaceId}/notes/${note.id}`}>
-              <span className="font-medium">{note.title}</span>
-
-              <FileText className="size-4 icon" />
-            </Link>
-          </Button>
-        ))}
-      </div>
+      <Suspense fallback={<RecentNotesListLoading />}>
+        <RecentNotesList workspaceId={workspaceId} />
+      </Suspense>
     </div>
   );
 }

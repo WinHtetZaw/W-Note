@@ -9,6 +9,7 @@ const schema = z.object({ workspaceId: z.string() });
 export async function fetchWorkspaceOverviewService(workspaceId: string) {
   //========== Validating incoming data ==========//
   const result = schema.safeParse({ workspaceId });
+
   if (!result.success) {
     return fail({ reason: ErrorReason.InvalidInput, details: result.error });
   }
@@ -21,8 +22,13 @@ export async function fetchWorkspaceOverviewService(workspaceId: string) {
 
   //========== DB Fetching ==========//
   try {
-    const res = await getWorkspaceOverview(workspaceId);
-    return ok(res);
+    const workspaceOverview = await getWorkspaceOverview(workspaceId);
+
+    if (!workspaceOverview) {
+      return fail({ reason: ErrorReason.WorkspaceNotFound });
+    }
+
+    return ok(workspaceOverview);
   } catch {
     return fail({ reason: ErrorReason.UnexpectedError });
   }

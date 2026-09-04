@@ -16,7 +16,7 @@ export default async function WorkspaceLayout({ children, params }: Props) {
           <DashboardSidebar params={params} />
         </Suspense>
 
-        <div className="flex-1 flex flex-col overflow-y-auto scrollbar-thin scrollbar-thumb-white/50 scrollbar-track-transparent">
+        <div className="flex-1 flex flex-col custom-scroll">
           <DashboardHeader />
 
           <div className="p-6 relative flex-1">
