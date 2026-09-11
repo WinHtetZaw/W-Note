@@ -10,6 +10,7 @@ import { relations } from "drizzle-orm";
 import { user as usersTable } from "./auth-schema";
 import { workspacesTable } from "./workspace-schema";
 import { createdAt } from "./db-schema-helper";
+import { AIRequestType, AIProvider } from "@/features/ai/types/ai.types";
 
 /* =========================================================
    AI USAGE
@@ -30,18 +31,31 @@ export const aiUsageTable = pgTable(
       }),
     requestType: varchar("request_type", {
       length: 100,
-    }).notNull(),
+    })
+      .$type<AIRequestType>()
+      .notNull(),
+    provider: varchar("provider", {
+      length: 50,
+    })
+      .$type<AIProvider>()
+      .notNull(),
     model: varchar("model", {
       length: 100,
     }),
-    tokensUsed: integer("tokens_used").notNull().default(0),
+    inputTokens: integer("input_tokens").notNull().default(0),
+    outputTokens: integer("output_tokens").notNull().default(0),
     costInCents: integer("cost_in_cents"),
     createdAt,
   },
   (table) => [
-    index("ai_usage_workspace_idx").on(table.workspaceId),
-    index("ai_usage_user_idx").on(table.userId),
-    index("ai_usage_created_at_idx").on(table.createdAt),
+    // index("ai_usage_workspace_idx").on(table.workspaceId),
+    // index("ai_usage_user_idx").on(table.userId),
+    // index("ai_usage_created_at_idx").on(table.createdAt),
+    index("ai_usage_workspace_created_at_idx").on(
+      table.workspaceId,
+      table.createdAt,
+    ),
+    index("ai_usage_user_created_at_idx").on(table.userId, table.createdAt),
   ],
 );
 

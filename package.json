@@ -9,10 +9,12 @@
     "lint": "eslint",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
+    "db:push": "drizzle-kit push",
     "email:dev": "email dev --dir src/emails"
   },
   "dependencies": {
     "@better-auth/drizzle-adapter": "^1.6.11",
+    "@google/genai": "^2.21.0",
     "@hookform/resolvers": "^5.4.0",
     "@neondatabase/serverless": "^1.1.0",
     "@react-email/components": "^1.0.12",
@@ -31,6 +33,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "drizzle-orm": "^0.45.2",
+    "groq-sdk": "^1.6.0",
     "ldrs": "^1.1.9",
     "lucide-react": "^1.16.0",
     "next": "16.2.6",

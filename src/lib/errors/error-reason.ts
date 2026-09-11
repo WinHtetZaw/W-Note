@@ -42,4 +42,8 @@ export const ErrorReason = {
   InvitationExpired: "INVITATION_EXPIRED",
 
   EmailDoesNotSent: "EMAIL_DOES_NOT_SENT",
+  AIGenerationFailed: "AI_GENERATION_FAILED",
+  AIRateLimited: "AI_RATE_LIMITED",
+
+  FailToCreateAIUsageRecord: "FAIL_TO_CREATE_AI_RECORD",
 } as const;

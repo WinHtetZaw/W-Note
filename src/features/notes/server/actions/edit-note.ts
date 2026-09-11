@@ -10,11 +10,10 @@ import { ErrorCode } from "@/lib/errors";
 export async function editNote(rawData: UpdateNoteInput) {
   const [error, note] = await editNoteService(rawData);
   if (error == null) {
-    updateTag(
-      note.folderId
-        ? cacheTags.folderNotes(note.folderId)
-        : cacheTags.workspaceNotes(note.workspaceId),
-    );
+    if (note.folderId) {
+      updateTag(cacheTags.folderNotes(note.folderId));
+    }
+    updateTag(cacheTags.workspaceNotes(note.workspaceId));
     return { success: true, data: note };
   }
 

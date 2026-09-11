@@ -1,8 +1,8 @@
 "use server";
 
-import { fetchNotesService } from "@/features/folders/services/fetch-notes-service";
 import { ErrorCode } from "@/lib/errors";
 import { redirect } from "next/navigation";
+import { fetchNotesService } from "../../services/fetch-notes-service";
 
 type IncomingData = {
   workspaceId: string;

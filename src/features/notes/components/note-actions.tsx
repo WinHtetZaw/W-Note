@@ -3,7 +3,6 @@
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -11,24 +10,18 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { EditIcon, MoreHorizontal, Trash } from "lucide-react";
 import Link from "next/link";
-import { moveToTrashAction } from "../server/actions/move-to-trash-action";
-import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import MoveToTrashButton from "./move-to-trash-button";
+import { useState } from "react";
+import DuplicateNoteButton from "./duplicate-note-button";
 
 type Props = { noteId: string; workspaceId: string };
 
 export default function NoteActions({ noteId, workspaceId }: Props) {
-  const handleMoveToTrash = async () => {
-    const result = await moveToTrashAction({ workspaceId, noteId });
+  const [open, setOpen] = useState(false);
 
-    if (!result.success) {
-      toast.error(result.message);
-      return;
-    }
-    toast.success("Successfully moved to trash.");
-  };
   return (
-    <DropdownMenu>
+    <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild className="relative z-10">
         <Button size={"icon"} className="bg-transparent hover:bg-transparent">
           <MoreHorizontal className="size-5 text-muted" />
@@ -52,12 +45,16 @@ export default function NoteActions({ noteId, workspaceId }: Props) {
           </Link>
         </DropdownMenuItem>
 
-        <DropdownMenuItem variant="destructive" asChild>
-          <button className="w-full cursor-pointer" onClick={handleMoveToTrash}>
-            <Trash className="mr-1 size-4" />
-            Move to trash
-          </button>
-        </DropdownMenuItem>
+        <DuplicateNoteButton
+          workspaceId={workspaceId}
+          noteId={noteId}
+          setOpen={setOpen}
+        />
+        <MoveToTrashButton
+          workspaceId={workspaceId}
+          noteId={noteId}
+          setOpen={setOpen}
+        />
       </DropdownMenuContent>
     </DropdownMenu>
   );

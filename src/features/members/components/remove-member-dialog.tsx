@@ -1,5 +1,3 @@
-// features/workspace/members/components/remove-member-dialog.tsx
-
 "use client";
 
 import { MouseEvent, useTransition } from "react";
@@ -16,18 +14,14 @@ import {
 } from "@/components/ui/alert-dialog";
 
 import { Trash2 } from "lucide-react";
-
-import type { WorkspaceMember } from "../types";
 import { Member } from "../utils/types";
 import { removeMember } from "../server/actions/remove-member";
 import { errorMessages } from "@/lib/errors";
 import { toast } from "sonner";
-import { wait } from "@/lib/utils";
 
 interface Props {
   open: boolean;
   onOpenChange: (value: boolean) => void;
-  // member: WorkspaceMember;
   member: Member;
 }
 
@@ -40,15 +34,10 @@ export default function RemoveMemberDialog(props: Props) {
     e.preventDefault();
 
     startTransition(async () => {
-      // await wait(2000);
-      // onOpenChange(false);
-      // return;
-
       const data = { workspaceId: member.workspaceId, memberId: member.userId };
       const result = await removeMember(data);
       if (result.code) {
         toast.error(errorMessages[result.code]);
-        console.log(result);
         return;
       }
 

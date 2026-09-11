@@ -10,18 +10,22 @@ import {
 } from "lucide-react";
 
 import { Editor } from "@tiptap/react";
+import { cn } from "@/lib/utils";
 
 type Props = {
   editor: Editor | null;
+  className?: string;
 };
 
-export default function EditorToolbar({ editor }: Props) {
+export default function EditorToolbar({ editor, className }: Props) {
   if (!editor) {
     return null;
   }
 
   return (
-    <div className="mb-6 flex gap-2 border-b border-white/10 pb-4">
+    <div
+      className={cn(`mb-6 flex gap-2 border-b border-white/10 pb-4`, className)}
+    >
       <button
         onClick={() => editor.chain().focus().toggleBold().run()}
         className="rounded-lg p-2 hover:bg-white/10"

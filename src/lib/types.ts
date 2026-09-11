@@ -28,7 +28,6 @@ export function fail(message: string): Result<never> {
 
 export type Transaction = Parameters<Parameters<typeof db.transaction>[0]>[0];
 
-// export type Note = Note
 export type NoteView = {
   id: string;
   workspaceId: string;

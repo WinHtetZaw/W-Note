@@ -1,12 +1,23 @@
 import { db } from "@/db";
-import { getNote } from "../queries/get-note";
 import { notesTable } from "@/db/schema";
+import { getNoteById } from "../queries/get-note-by-id";
 
-export async function duplicateNote(noteId: string) {
-  const note = await getNote(noteId);
+type IncomingData = {
+  workspaceId: string;
+  noteId: string;
+};
+
+export async function duplicateNote(data: IncomingData) {
+  const { workspaceId, noteId } = data;
+  const note = await getNoteById({ workspaceId, noteId });
+
   if (!note) {
-    throw new Error("Not Found");
+    throw new Error("Note not found.");
   }
+
+  const title = note.title.includes("(Copy)")
+    ? note.title
+    : note.title + " (Copy)";
 
   const [duplicated] = await db
     .insert(notesTable)
@@ -14,7 +25,7 @@ export async function duplicateNote(noteId: string) {
       workspaceId: note.workspaceId,
       folderId: note.folderId,
       authorId: note.authorId,
-      title: note.title + " (Copy)",
+      title,
       content: note.content,
     })
     .returning();

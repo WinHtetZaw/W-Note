@@ -1,7 +1,7 @@
 "use server";
 
 import { requireAuth, requireWorkspaceMember } from "@/lib/permissions";
-import { getNote, Note } from "../queries/get-note";
+import { getNote, Note } from "../queries/get-note-by-id";
 import { fail, ok, Result } from "@/lib/types";
 
 export async function fetchNote(
