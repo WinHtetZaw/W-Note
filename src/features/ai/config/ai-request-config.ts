@@ -1,11 +1,13 @@
-import { AIRequestType } from "../types/ai.types";
+import { AIRequestInput, AIRequestType } from "../types/ai.types";
 
-type AIRequestConfig = {
+type AIRequestConfig<K extends AIRequestType> = {
   systemPrompt: string;
-  buildUserPrompt: (input: Record<string, string>) => string;
+  buildUserPrompt: (input: AIRequestInput[K]) => string;
 };
 
-export const AI_REQUEST_CONFIG: Record<AIRequestType, AIRequestConfig> = {
+export const AI_REQUEST_CONFIG: {
+  [K in AIRequestType]: AIRequestConfig<K>;
+} = {
   summarize_note: {
     systemPrompt: `
         You are an AI assistant for a note-taking application.

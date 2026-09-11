@@ -51,26 +51,22 @@ export async function summarizeNoteService(rawData: IncomingData) {
     return fail({ reason: aiError.reason });
   }
 
+  const { requestType, usage, text: summary } = generatedData;
+  const inputTokens = usage?.prompt_tokens ?? 0;
+  const outputTokens = usage?.completion_tokens ?? 0;
+
   try {
-    const aiUsage = await recordAIUsage({
+    await recordAIUsage({
       userId,
-      workspaceId: workspaceId,
-      requestType: "summarize_note",
+      workspaceId,
+      requestType,
       provider: "groq",
-      model: "...",
-      inputTokens: generatedData.usage?.prompt_tokens ?? 0,
-      outputTokens: generatedData.usage?.completion_tokens ?? 0,
+      model: "openai/gpt-oss-20b",
+      inputTokens,
+      outputTokens,
     });
 
-    // if (!aiUsage) {
-    //   return fail({ reason: ErrorReason.FailToCreateAIUsageRecord });
-    // }
-
-    return ok({
-      summary: generatedData.text,
-      usage: generatedData.usage,
-      requestType: "summarize_note",
-    });
+    return ok({ summary, usage, requestType });
   } catch {
     return fail({ reason: ErrorReason.UnexpectedError });
   }

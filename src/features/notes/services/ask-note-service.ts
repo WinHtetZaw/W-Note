@@ -59,7 +59,7 @@ export async function askNoteService(rawData: IncomingData) {
     await recordAIUsage({
       userId,
       workspaceId: workspaceId,
-      requestType: "ask_note",
+      requestType: generatedData.requestType,
       provider: "groq",
       model: "openai/gpt-oss-20b",
       inputTokens: generatedData.usage?.prompt_tokens ?? 0,

@@ -14,3 +14,27 @@ export type GenerateTextResult = {
   inputTokens?: number;
   outputTokens?: number;
 };
+
+export type AIRequestInput = {
+  summarize_note: {
+    content: string;
+  };
+
+  generate_title: {
+    content: string;
+  };
+
+  improve_writing: {
+    content: string;
+  };
+
+  rewrite_text: {
+    text: string;
+    instruction: string;
+  };
+
+  ask_note: {
+    content: string;
+    question: string;
+  };
+};

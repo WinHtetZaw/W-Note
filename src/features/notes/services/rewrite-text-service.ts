@@ -48,28 +48,32 @@ export async function rewriteTextService(rawData: IncomingData) {
 
   const [aiError, generatedData] = await generateTextService({
     requestType: "rewrite_text",
-    variables: { content: note.content, instruction },
+    variables: { text: note.content, instruction },
   });
 
   if (aiError) {
     return fail({ reason: aiError.reason });
   }
 
+  const { requestType, usage, text } = generatedData;
+  const inputTokens = usage?.prompt_tokens ?? 0;
+  const outputTokens = usage?.completion_tokens ?? 0;
+
   try {
     await recordAIUsage({
       userId,
-      workspaceId: workspaceId,
-      requestType: "rewrite_text",
+      workspaceId,
+      requestType,
       provider: "groq",
       model: "openai/gpt-oss-20b",
-      inputTokens: generatedData.usage?.prompt_tokens ?? 0,
-      outputTokens: generatedData.usage?.completion_tokens ?? 0,
+      inputTokens,
+      outputTokens,
     });
 
     return ok({
-      title: generatedData.text.trim(),
-      usage: generatedData.usage,
-      requestType: "generate_title",
+      text: text.trim(),
+      usage,
+      requestType,
     });
   } catch {
     return fail({ reason: ErrorReason.UnexpectedError });

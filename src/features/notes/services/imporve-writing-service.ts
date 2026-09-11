@@ -51,26 +51,22 @@ export async function improveWritingService(rawData: IncomingData) {
     return fail({ reason: aiError.reason });
   }
 
+  const { requestType, usage, text: content } = generatedData;
+  const inputTokens = usage?.prompt_tokens ?? 0;
+  const outputTokens = usage?.completion_tokens ?? 0;
+
   try {
-    const aiUsage = await recordAIUsage({
+    await recordAIUsage({
       userId,
-      workspaceId: workspaceId,
-      requestType: "improve_writing",
+      workspaceId,
+      requestType,
       provider: "groq",
       model: "openai/gpt-oss-20b",
-      inputTokens: generatedData.usage?.prompt_tokens ?? 0,
-      outputTokens: generatedData.usage?.completion_tokens ?? 0,
+      inputTokens,
+      outputTokens,
     });
 
-    // if (!aiUsage) {
-    //   return fail({ reason: ErrorReason.FailToCreateAIUsageRecord });
-    // }
-
-    return ok({
-      content: generatedData.text,
-      usage: generatedData.usage,
-      requestType: "improve_writing",
-    });
+    return ok({ content, usage, requestType });
   } catch {
     return fail({ reason: ErrorReason.UnexpectedError });
   }
