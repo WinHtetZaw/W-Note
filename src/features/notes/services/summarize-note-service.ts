@@ -5,6 +5,7 @@ import { getNoteById } from "../server/queries/get-note-by-id";
 import z from "zod";
 import { generateTextService } from "@/features/ai/services/generate-text-service";
 import { recordAIUsage } from "@/features/ai/server/mutations/record-ai-usage";
+import { checkAIUsageService } from "@/features/ai/services/check-ai-usage-service";
 
 const schema = z.object({ workspaceId: z.uuid(), noteId: z.uuid() });
 
@@ -18,6 +19,7 @@ export async function summarizeNoteService(rawData: IncomingData) {
   }
   const { workspaceId, noteId } = validated.data;
 
+  //========== Auth and permisssion ==========//
   const [permissionError, member] = await requirePermission(
     workspaceId,
     "ai:use",
@@ -27,6 +29,13 @@ export async function summarizeNoteService(rawData: IncomingData) {
   }
   const userId = member.user.id;
 
+  //========= Check AI quota ========//
+  const [usageError] = await checkAIUsageService(workspaceId);
+  if (usageError) {
+    return fail({ reason: usageError.reason });
+  }
+
+  //========= Get Note form db ========//
   const note = await getNoteById({ workspaceId, noteId });
   if (!note) {
     return fail({ reason: ErrorReason.NoteNotFound });
@@ -42,6 +51,7 @@ export async function summarizeNoteService(rawData: IncomingData) {
     });
   }
 
+  //========= Generate With AI ========//
   const [aiError, generatedData] = await generateTextService({
     requestType: "summarize_note",
     variables: { content: note.content },
@@ -55,6 +65,7 @@ export async function summarizeNoteService(rawData: IncomingData) {
   const inputTokens = usage?.prompt_tokens ?? 0;
   const outputTokens = usage?.completion_tokens ?? 0;
 
+  //========= Record usage in db ========//
   try {
     await recordAIUsage({
       userId,
@@ -64,6 +75,8 @@ export async function summarizeNoteService(rawData: IncomingData) {
       model: "openai/gpt-oss-20b",
       inputTokens,
       outputTokens,
+      // costInCents:
+      //     input.costInCents ?? null,
     });
 
     return ok({ summary, usage, requestType });

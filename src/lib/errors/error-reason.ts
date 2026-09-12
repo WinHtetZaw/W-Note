@@ -19,6 +19,8 @@ export const ErrorReason = {
   WorkspaceNotFound: "WORKSPACE_NOT_FOUND",
   WorkspaceMemberNotFound: "WORKSPACE_MEMBER_NOT_FOUND",
   InvitationNotFound: "INVIATION_NOT_FOUND",
+  StripeCustomerNotFound: "STRIPE_CUSTOMER_N0T_FOUND",
+  SubscriptionNotFound: "SUBSCRIPTION_N0T_FOUND",
 
   NoteCreateNotAllowed: "NOTE_CREATE_NOT_ALLOWED",
   NoteUpdateNotAllowed: "NOTE_UPDATE_NOT_ALLOWED",
@@ -44,6 +46,9 @@ export const ErrorReason = {
   EmailDoesNotSent: "EMAIL_DOES_NOT_SENT",
   AIGenerationFailed: "AI_GENERATION_FAILED",
   AIRateLimited: "AI_RATE_LIMITED",
+  AIUsageLimitReached: "AI_USAGE_LIMIT_REACHED",
 
   FailToCreateAIUsageRecord: "FAIL_TO_CREATE_AI_RECORD",
+
+  SubscriberAlreadyExists: "SUBSCRIBER_ALREADY_EXISTS",
 } as const;

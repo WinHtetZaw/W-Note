@@ -10,6 +10,10 @@ export const env = createEnv({
     EMAIL_FROM: z.string().min(1),
     GEMINI_API_KEY: z.string().min(1),
     GROQ_API_KEY: z.string().min(1),
+    STRIPE_SECRET_KEY: z.string().min(1),
+    STRIPE_WEBHOOK_SECRET: z.string().min(1),
+    STRIPE_PRO_PRICE_ID: z.string().min(1),
+    STRIPE_TEAM_PRICE_ID: z.string().min(1),
   },
   // If you're using Next.js < 13.4.4, you'll need to specify the runtimeEnv manually
   // runtimeEnv: {
