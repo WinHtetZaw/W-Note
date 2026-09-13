@@ -1,5 +1,5 @@
 import { fail, ok } from "@/lib/result";
-import { requirePermission } from "@/lib/authz";
+import { requirePermission } from "@/lib/permissions";
 import { deleteNote } from "../server/mutations/delete-note";
 import z from "zod";
 import { restoreNoteVersion } from "../server/mutations/restore-note-version";

@@ -1,4 +1,4 @@
-import { requirePermission } from "@/lib/authz";
+import { requirePermission } from "@/lib/permissions";
 import { fail, ok } from "@/lib/result";
 import z from "zod";
 import { updateWorkspaceOwnership } from "../server/mutations/update-workspace-ownership";

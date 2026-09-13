@@ -7,7 +7,7 @@ import z from "zod";
 import { useTransition } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { authClient } from "@/lib/auth-client";
+import { authClient } from "@/lib/auth/auth-client";
 import { createFolder } from "../server/actions/create-folder";
 import { useCreateFolder } from "../hooks/use-create-folder";
 import { FormInput, FormSubmitButton } from "@/components/form";

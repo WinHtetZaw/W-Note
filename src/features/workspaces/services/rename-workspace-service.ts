@@ -3,7 +3,7 @@ import {
   UpdateWorkspaceInput,
   updateWorkspaceSchema,
 } from "../schemas/update-workspace-schema";
-import { requirePermission } from "@/lib/authz";
+import { requirePermission } from "@/lib/permissions";
 import { updateWorkspace } from "../server/mutations/update-workspace";
 import { ErrorReason } from "@/lib/errors";
 

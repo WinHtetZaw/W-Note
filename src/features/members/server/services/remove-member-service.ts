@@ -1,4 +1,4 @@
-import { requirePermission } from "@/lib/authz";
+import { requirePermission } from "@/lib/permissions";
 import { fail, ok } from "@/lib/result";
 import { ErrorReason } from "@/lib/errors";
 import z from "zod";

@@ -5,7 +5,7 @@ import AccountInfoCard, {
 import PersonalInfoCard, {
   PersonalInfoCardLoading,
 } from "@/features/profile/components/personal-info-card";
-import { authClient } from "@/lib/auth-client";
+import { authClient } from "@/lib/auth/auth-client";
 import {
   Bell,
   CalendarDays,

@@ -1,4 +1,4 @@
-import { WorkspaceRole } from "./types";
+type WorkspaceRole = "owner" | "admin" | "member";
 
 export const Permissions = {
   WorkspaceView: "workspace:view",

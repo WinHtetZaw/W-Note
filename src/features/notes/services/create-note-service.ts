@@ -3,7 +3,7 @@ import {
   CreateNoteInput,
   createNoteSchema,
 } from "../schemas/create-note-schema";
-import { requirePermission } from "@/lib/authz";
+import { requirePermission } from "@/lib/permissions";
 import { insertNote } from "../server/mutations/insert-note";
 import { ErrorReason } from "@/lib/errors";
 

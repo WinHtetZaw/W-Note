@@ -1,7 +1,7 @@
 import SectionHeader from "@/components/dashboard/section-header";
 import { Skeleton } from "@/components/ui/skeleton";
 import { fetchMemberById } from "@/features/members/server/actions/fetch-member-by-id";
-import { getSessionSerever } from "@/lib/better-auth/session-server";
+import { getSessionSerever } from "@/lib/auth/session-server";
 import { formatMonthYear } from "@/utils/formatting/format-month-year";
 import { CalendarDays, Mail, Shield } from "lucide-react";
 

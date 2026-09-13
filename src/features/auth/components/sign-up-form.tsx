@@ -12,7 +12,7 @@ import {
   InputGroupInput,
 } from "@/components/ui/input-group";
 import { SignUpFormValues, signUpSchema } from "../schemas/sign-up-schema";
-import { authClient } from "@/lib/auth-client";
+import { authClient } from "@/lib/auth/auth-client";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import {

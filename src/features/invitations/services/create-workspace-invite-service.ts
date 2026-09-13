@@ -1,4 +1,4 @@
-import { requirePermission } from "@/lib/authz";
+import { requirePermission } from "@/lib/permissions";
 import {
   CreateFolderInput,
   createFolderSchema,

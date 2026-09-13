@@ -1,5 +1,5 @@
 import { fail, ok } from "@/lib/result";
-import { requirePermission } from "@/lib/authz";
+import { requirePermission } from "@/lib/permissions";
 import z from "zod";
 import { deleteWorkspace } from "../server/mutations/delete-workspace";
 import { ErrorReason } from "@/lib/errors";

@@ -1,5 +1,5 @@
 import { fail, ok } from "@/lib/result";
-import { requirePermission } from "@/lib/authz";
+import { requirePermission } from "@/lib/permissions";
 import { insertNote } from "../server/mutations/insert-note";
 import { ErrorReason } from "@/lib/errors";
 import z from "zod";

@@ -1,7 +1,7 @@
 "use client";
 
 import { FormInput, FormSubmitButton } from "@/components/form";
-import { authClient } from "@/lib/auth-client";
+import { authClient } from "@/lib/auth/auth-client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTransition } from "react";
 import { useForm } from "react-hook-form";

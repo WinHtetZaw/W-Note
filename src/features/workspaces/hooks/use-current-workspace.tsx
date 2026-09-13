@@ -3,7 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { queryKeys } from "@/lib/cache/keys";
 import { fetchWorkspace } from "../server/actions/fetch-workspace";
-import { authClient } from "@/lib/auth-client";
+import { authClient } from "@/lib/auth/auth-client";
 
 async function getWorkspace(workspaceId: string) {
   const res = await fetchWorkspace(workspaceId);

@@ -1,4 +1,4 @@
-import { requirePermission } from "@/lib/authz";
+import { requirePermission } from "@/lib/permissions";
 import { ErrorReason } from "@/lib/errors";
 import { fail, ok } from "@/lib/result";
 import { getNoteById } from "../server/queries/get-note-by-id";

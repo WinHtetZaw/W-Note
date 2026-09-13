@@ -2,7 +2,7 @@ import UserEditForm from "./user-edit-form";
 import { User } from "lucide-react";
 import SectionHeader from "@/components/dashboard/section-header";
 import { Skeleton } from "@/components/ui/skeleton";
-import { getSessionSerever } from "@/lib/better-auth/session-server";
+import { getSessionSerever } from "@/lib/auth/session-server";
 
 export default async function PersonalInfoCard() {
   const session = await getSessionSerever();

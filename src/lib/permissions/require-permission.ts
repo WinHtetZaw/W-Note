@@ -1,3 +1,4 @@
+import { ErrorReason } from "../errors";
 import { ok, fail } from "../result";
 import { Permission } from "./access-control-list";
 import { hasRolePermission } from "./has-role-permission";
@@ -8,13 +9,10 @@ export async function requirePermission(
   permission: Permission,
 ) {
   const [error, member] = await requireWorkspaceMember(workspaceId);
-  if (error) {
-    return fail({ reason: "NotFound" });
-  }
+  if (error) return fail({ reason: error.reason });
 
-  if (!hasRolePermission(member.role, permission)) {
-    return fail({ reason: "Forbidden" });
-  }
+  const allowed = hasRolePermission(member.role, permission);
+  if (!allowed) return fail({ reason: ErrorReason.InsufficientPermission });
 
   return ok(member);
 }
