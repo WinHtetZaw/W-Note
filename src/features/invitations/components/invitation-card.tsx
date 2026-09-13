@@ -4,7 +4,7 @@ import RoleBadge from "./role-badge";
 import InvitationActions from "./invitation-actions";
 import { PendingInvitations } from "../server/queries/get-user-pending-invitations";
 import { timeAgo } from "@/lib/utils";
-import { formatExpiryInDays } from "@/utils";
+import { formatExpiryInDays } from "@/utils/formatting";
 
 interface Props {
   invitation: PendingInvitations;

@@ -28,8 +28,9 @@ async function NotesContent(props: Props) {
         pageLabel="AI Powered Notes"
         title="Notes Workspace"
         subTitle="Manage and organize your AI-enhanced notes."
-        link={<CreateNoteButton workspaceId={workspaceId} />}
-      />
+      >
+        <CreateNoteButton workspaceId={workspaceId} />
+      </PageHead>
       <InputSearch />
       <Suspense fallback={<CardSkeletonList />}>
         <NotesList {...props} />

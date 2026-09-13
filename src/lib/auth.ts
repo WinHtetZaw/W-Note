@@ -7,12 +7,26 @@ import { nextCookies } from "better-auth/next-js";
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
-    provider: "pg", // or "mysql", "sqlite"
+    provider: "pg",
   }),
   emailAndPassword: {
     enabled: true,
     autoSignIn: false, // disable auto sign-in after sign-up
   },
+  user: { changeEmail: { enabled: true } },
+  emailVerification: {
+    sendVerificationEmail: async ({ user, url }) => {
+      // Send email using your email provider
+      // Example:
+      //
+      // await sendEmail({
+      //   to: user.email,
+      //   subject: "Verify your new email",
+      //   url,
+      // });
+    },
+  },
+
   session: {
     cookieCache: {
       enabled: true,

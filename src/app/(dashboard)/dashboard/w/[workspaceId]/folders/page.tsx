@@ -26,8 +26,9 @@ async function FoldersContent(props: Props) {
         pageLabel="Organize Your Knowledge"
         title="Folders"
         subTitle="Structure and organize your workspace notes."
-        link={<FolderCreateLink />}
-      />
+      >
+        <FolderCreateLink />
+      </PageHead>
 
       <InputSearch />
 

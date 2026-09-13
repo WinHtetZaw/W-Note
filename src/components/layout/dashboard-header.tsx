@@ -1,7 +1,13 @@
 import { Bell, Search } from "lucide-react";
 import Link from "next/link";
 
-export default async function DashboardHeader() {
+type Props = {
+  params: Promise<{ workspaceId: string }>;
+};
+
+export default async function DashboardHeader({ params }: Props) {
+  const { workspaceId } = await params;
+
   return (
     <header className="sticky top-0 z-40 border-b border-white/10 bg-zinc-950/70 backdrop-blur-xl">
       <div className="flex h-20 items-center justify-between px-6">
@@ -23,7 +29,7 @@ export default async function DashboardHeader() {
             <div className="absolute right-2 top-2 h-2 w-2 rounded-full bg-violet-500" />
           </button>
 
-          <Link href={`profile`}>
+          <Link href={`/dashboard/w/${workspaceId}/profile`}>
             <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-3 py-2">
               <div className="flex h-10 w-10 items-center justify-center rounded-full bg-violet-600 font-bold">
                 Z

@@ -11,7 +11,7 @@ import { updateInvitation } from "../server/mutations/update-invitation";
 import { generateInviteLink } from "./generate-invite-link";
 import { getWorkspace } from "@/features/workspaces/server/queries/get-workspace";
 import { sendInvitationEmail } from "./send-invitation-email";
-import { formatExpiryInDays } from "@/utils";
+import { formatExpiryInDays } from "@/utils/formatting";
 
 const schema = z.object({ invitationId: z.uuid(), workspaceId: z.uuid() });
 

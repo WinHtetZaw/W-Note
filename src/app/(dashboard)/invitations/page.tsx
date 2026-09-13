@@ -1,7 +1,7 @@
 import InvitationAcceptButton from "@/features/invitations/components/invitation-accept-button";
 import { fetchUserPendingInvitations } from "@/features/invitations/server/actions/fetch-user-pending-invitations";
 import { auth } from "@/lib/auth";
-import { formatExpiryInDays } from "@/utils";
+import { formatExpiryInDays } from "@/utils/formatting";
 import { CalendarClock, Crown, Sparkles, Users } from "lucide-react";
 
 const invitations = [

@@ -1,3 +1,11 @@
+import PageHead from "@/components/dashboard/page-head";
+import AccountInfoCard, {
+  AccountInfoCardLoading,
+} from "@/features/profile/components/account-info-card";
+import PersonalInfoCard, {
+  PersonalInfoCardLoading,
+} from "@/features/profile/components/personal-info-card";
+import { authClient } from "@/lib/auth-client";
 import {
   Bell,
   CalendarDays,
@@ -5,109 +13,31 @@ import {
   Mail,
   Moon,
   Shield,
-  Sparkles,
-  Sun,
   Trash2,
   User,
 } from "lucide-react";
+import { Suspense } from "react";
 
-export default function ProfilePage() {
+type Props = {
+  params: Promise<{ workspaceId: string }>;
+};
+
+export default async function ProfilePage({ params }: Props) {
   return (
-    <main className="mx-auto max-w-5xl px-6 pt=6 pb-16">
-      {/* Header */}
+    <div className="space-y-8">
+      <PageHead
+        pageLabel="Account Settings"
+        title="Your Profile"
+        subTitle="Manage your personal information, preferences, and account settings."
+      />
 
-      <section>
-        <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 backdrop-blur-xl">
-          <Sparkles className="h-4 w-4 text-violet-400" />
+      <Suspense fallback={<PersonalInfoCardLoading />}>
+        <PersonalInfoCard />
+      </Suspense>
 
-          <span className="text-sm">Account Settings</span>
-        </div>
-
-        <h1 className="text-5xl font-black">Your Profile</h1>
-
-        <p className="mt-4 max-w-2xl text-lg text-zinc-400">
-          Manage your personal information, preferences, and account settings.
-        </p>
-      </section>
-
-      {/* Profile */}
-
-      <section className="mt-12 rounded-[32px] border border-white/10 bg-white/5 p-8 backdrop-blur-2xl">
-        <SectionHeader
-          icon={<User className="h-5 w-5" />}
-          title="Personal Information"
-          description="Update the information associated with your account."
-        />
-
-        <div className="mt-8 flex flex-col gap-8">
-          {/* Avatar */}
-
-          <div className="flex items-center gap-5">
-            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-violet-600 text-2xl font-black">
-              Z
-            </div>
-
-            <div>
-              <h3 className="font-semibold">Profile Photo</h3>
-
-              <p className="mt-1 text-sm text-zinc-500">
-                JPG, PNG or WebP. Maximum 5MB.
-              </p>
-
-              <button className="mt-3 rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm transition hover:bg-white/10">
-                Change Photo
-              </button>
-            </div>
-          </div>
-
-          {/* Name */}
-
-          <div className="grid gap-6 md:grid-cols-2">
-            <FormField
-              label="Full Name"
-              defaultValue="Zeed"
-              placeholder="Your name"
-            />
-
-            <FormField
-              label="Email Address"
-              defaultValue="zeed@example.com"
-              placeholder="you@example.com"
-              type="email"
-            />
-          </div>
-
-          <div className="flex justify-end">
-            <button className="rounded-2xl bg-violet-600 px-6 py-3 font-semibold transition hover:bg-violet-500">
-              Save Changes
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* Account */}
-
-      <section className="mt-8 rounded-[32px] border border-white/10 bg-white/5 p-8 backdrop-blur-2xl">
-        <SectionHeader
-          icon={<Shield className="h-5 w-5" />}
-          title="Account"
-          description="Information about your account."
-        />
-
-        <div className="mt-8 grid gap-4 md:grid-cols-2">
-          <InfoCard
-            icon={<Mail className="h-5 w-5" />}
-            label="Email"
-            value="zeed@example.com"
-          />
-
-          <InfoCard
-            icon={<CalendarDays className="h-5 w-5" />}
-            label="Member Since"
-            value="January 2026"
-          />
-        </div>
-      </section>
+      <Suspense fallback={<AccountInfoCardLoading />}>
+        <AccountInfoCard params={params} />
+      </Suspense>
 
       {/* Preferences */}
 
@@ -180,7 +110,7 @@ export default function ProfilePage() {
           </div>
         </div>
       </section>
-    </main>
+    </div>
   );
 }
 

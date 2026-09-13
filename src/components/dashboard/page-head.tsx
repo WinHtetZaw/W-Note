@@ -6,11 +6,11 @@ type Props = {
   labelIcon?: ReactNode;
   title: string;
   subTitle: string;
-  link: ReactNode;
+  children?: ReactNode;
 };
 
 export default function PageHead(props: Props) {
-  const { title, subTitle, link, pageLabel, labelIcon } = props;
+  const { title, subTitle, children, pageLabel, labelIcon } = props;
   return (
     <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
       <div>
@@ -24,7 +24,7 @@ export default function PageHead(props: Props) {
         <p className="mt-4 text-lg text-muted">{subTitle}</p>
       </div>
 
-      {link}
+      {children}
     </div>
   );
 }

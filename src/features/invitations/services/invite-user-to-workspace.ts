@@ -16,7 +16,7 @@ import { hashInvitationToken } from "./hash-invitation-token";
 import { getUserByEmail } from "@/features/auth/server/queries/get-user-by-email";
 import { fail, ok } from "@/lib/result";
 import { ErrorReason } from "@/lib/errors";
-import { formatExpiryInDays } from "@/utils";
+import { formatExpiryInDays } from "@/utils/formatting";
 import { getWorkspace } from "@/features/workspaces/server/queries/get-workspace";
 
 type Meta = { emailSent: boolean; error: unknown };

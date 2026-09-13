@@ -7,6 +7,7 @@ import {
   InputGroupAddon,
   InputGroupInput,
 } from "@/components/ui/input-group";
+import { cn } from "@/lib/utils";
 
 type FormInputProps<T extends FieldValues> = {
   control: Control<T>;
@@ -15,10 +16,21 @@ type FormInputProps<T extends FieldValues> = {
   placeholder?: string;
   icon?: React.ReactNode;
   type?: string;
+  inputClassName?: string;
+  inputGroupClassName?: string;
 };
 
 export function FormInput<T extends FieldValues>(props: FormInputProps<T>) {
-  const { control, name, label, placeholder, icon, type = "text" } = props;
+  const {
+    control,
+    name,
+    label,
+    placeholder,
+    icon,
+    type = "text",
+    inputClassName,
+    inputGroupClassName,
+  } = props;
 
   return (
     <Controller
@@ -35,10 +47,10 @@ export function FormInput<T extends FieldValues>(props: FormInputProps<T>) {
             </FieldLabel>
           )}
 
-          <InputGroup>
+          <InputGroup className={inputGroupClassName}>
             <InputGroupInput
               {...field}
-              className="placeholder:text-muted"
+              className={cn("placeholder:text-muted", inputClassName)}
               id={name}
               type={type}
               placeholder={placeholder}

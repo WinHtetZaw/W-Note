@@ -1,6 +1,6 @@
 import { FileText, FolderTree, Users } from "lucide-react";
 import { fetchWorkspaceOverview } from "../server/actions/fetch-workspace-overview";
-import { formatNumber } from "@/utils";
+import { formatNumber } from "@/utils/formatting";
 import { wait } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 
