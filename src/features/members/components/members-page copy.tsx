@@ -8,7 +8,6 @@ import MemberSearch from "./member-search";
 import MemberCard from "./member-card";
 // import InviteMemberDialog from "./invite-member-dialog";
 import { members } from "../constant";
-import { fetchMembers } from "../server/actions/fetch-members";
 
 interface Props {
   workspaceId: string;

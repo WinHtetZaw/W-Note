@@ -56,7 +56,11 @@ export default function SignInForm() {
         placeholder="you@example.com"
         icon={<Mail className="size-5 text-zinc-500" />}
       />
-      <FormPasswordInput control={form.control} name="password" />
+      <FormPasswordInput
+        control={form.control}
+        name="password"
+        label="Password"
+      />
       <FormSubmitButton isPending={isPending} className="w-full">
         Sign In
         <ArrowRight className="size-4" />

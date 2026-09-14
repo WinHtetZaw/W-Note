@@ -19,7 +19,7 @@ export default async function WorkspaceLayout({ children, params }: Props) {
         <div className="flex-1 flex flex-col custom-scroll">
           <DashboardHeader params={params} />
 
-          <div className="p-6 relative flex-1 max-w-5xl mx-auto">
+          <div className="p-6 relative flex-1">
             <div className="pointer-events-none w-full md:w-[calc(100%-18rem)] h-full fixed top-0 right-0 overflow-hidden">
               <div className="absolute left-1/2 top-0 h-100 w-100 -translate-x-1/2 rounded-full bg-violet-600/20 blur-[140px]" />
             </div>

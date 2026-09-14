@@ -42,6 +42,7 @@ export const ErrorReason = {
   InvitationAlreadyDeclined: "INVITATION_ALREADY_DECLINED",
   InvitationAlreadyRevoked: "INVITATION_ALREADY_REVOKED",
   InvitationExpired: "INVITATION_EXPIRED",
+  UserHasOwnWorkspaces: "USER_HAS_OWN_WORKSPACES",
 
   EmailDoesNotSent: "EMAIL_DOES_NOT_SENT",
   AIGenerationFailed: "AI_GENERATION_FAILED",
@@ -49,6 +50,7 @@ export const ErrorReason = {
   AIUsageLimitReached: "AI_USAGE_LIMIT_REACHED",
 
   FailToCreateAIUsageRecord: "FAIL_TO_CREATE_AI_RECORD",
+  FailToDeleteUser: "FAIL_TO_DELETE_USER",
 
   SubscriberAlreadyExists: "SUBSCRIBER_ALREADY_EXISTS",
 } as const;

@@ -1,6 +1,5 @@
 "use client";
 
-import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
@@ -17,41 +16,44 @@ import {
 import { Trash } from "lucide-react";
 import { removeWorkspace } from "../server/actions/remove-workspace";
 import { Button } from "@/components/ui/button";
+import { errorMessages } from "@/lib/errors";
 
 type Props = {
   workspaceId: string;
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  isDeletePending: boolean;
+  startDeleteTransition: (callback: () => void) => void;
 };
 
-export default function DeleteWorkspaceDialog({
-  workspaceId,
-  open,
-  onOpenChange,
-}: Props) {
+export default function DeleteWorkspaceDialog(props: Props) {
+  const {
+    workspaceId,
+    open,
+    onOpenChange,
+    isDeletePending,
+    startDeleteTransition,
+  } = props;
   const router = useRouter();
-  const [isPending, startTransition] = useTransition();
-  const handleDelete = () => {
-    // 🔥 optimistic UI
-    onOpenChange(false);
-    toast.loading("Deleting workspace...");
 
-    startTransition(async () => {
+  const handleDelete = () => {
+    onOpenChange(false);
+    const loadingToast = toast.loading("Deleting workspace...");
+
+    startDeleteTransition(async () => {
       const res = await removeWorkspace(workspaceId);
-      if (!res.success) {
-        // toast.error(res.error || "Something went wrong");
-        toast.error("Something went wrong");
+      if (res.code) {
+        toast.dismiss(loadingToast);
+        toast.error(errorMessages[res.code]);
         return;
       }
 
-      // ✅ success
+      toast.dismiss(loadingToast);
       toast.success("Workspace deleted");
-
-      // 🔁 refresh or redirect
-      router.push("/dashboard");
       router.refresh();
     });
   };
+
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent className="min-w-124 rounded-3xl p-8 glass">
@@ -65,8 +67,11 @@ export default function DeleteWorkspaceDialog({
           </AlertDialogTitle>
 
           <AlertDialogDescription className="mt-4 text-base leading-7 text-muted">
-            This action cannot be undone. All notes, folders, AI usage history,
-            and workspace members will be permanently removed.
+            <span className="block text-lg">
+              <strong>This action cannot be undone.</strong>
+            </span>{" "}
+            All notes, folders, AI usage history, and workspace members will be
+            permanently removed.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <div className="mt-6 rounded-2xl border border-red-500/20 bg-red-500/5 p-5">
@@ -85,10 +90,10 @@ export default function DeleteWorkspaceDialog({
 
           <AlertDialogAction
             onClick={handleDelete}
-            disabled={isPending}
+            disabled={isDeletePending}
             className="h-12 rounded-2xl bg-red-500 hover:bg-red-400"
           >
-            {isPending ? "Deleting..." : "Delete Workspace"}
+            {isDeletePending ? "Deleting..." : "Delete Workspace"}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

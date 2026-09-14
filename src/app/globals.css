@@ -188,6 +188,10 @@
     @apply border border-white/10 bg-white/5 backdrop-blur-2xl;
   }
 
+  .glass-red {
+    @apply border border-red-500/20 bg-red-500/3;
+  }
+
   .glass-violet {
     @apply border border-violet-500/20 bg-violet-500/10;
   }

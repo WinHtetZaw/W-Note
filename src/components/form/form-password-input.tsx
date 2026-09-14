@@ -20,7 +20,7 @@ export function FormPasswordInput<T extends FieldValues>(
   props: FormPasswordInputProps<T>,
 ) {
   const [showPassword, setShowPassword] = useState(false);
-  const { control, name, label = "Password" } = props;
+  const { control, name, label } = props;
 
   return (
     <Controller
@@ -28,9 +28,14 @@ export function FormPasswordInput<T extends FieldValues>(
       name={name}
       render={({ field, fieldState }) => (
         <Field data-invalid={fieldState.invalid}>
-          <FieldLabel htmlFor={name} className="mb-1 text-sm text-zinc-400">
-            {label}
-          </FieldLabel>
+          {label && (
+            <FieldLabel
+              htmlFor={name}
+              className="mb-1 text-sm text-zinc-400 capitalize"
+            >
+              {label}
+            </FieldLabel>
+          )}
 
           <InputGroup>
             <InputGroupInput

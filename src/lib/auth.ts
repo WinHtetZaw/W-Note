@@ -13,7 +13,12 @@ export const auth = betterAuth({
     enabled: true,
     autoSignIn: false, // disable auto sign-in after sign-up
   },
-  user: { changeEmail: { enabled: true } },
+  user: {
+    changeEmail: { enabled: true, updateEmailWithoutVerification: true },
+    deleteUser: {
+      enabled: true,
+    },
+  },
   emailVerification: {
     sendVerificationEmail: async ({ user, url }) => {
       // Send email using your email provider

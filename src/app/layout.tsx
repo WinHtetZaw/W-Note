@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
-import { Toaster } from "sonner";
 import { ReactQueryProvider } from "@/providers/react-query-provider";
+import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -40,10 +40,8 @@ export default function RootLayout({
       )}
     >
       <body className="min-h-full flex flex-col">
-        <ReactQueryProvider>
-          {children}
-          <Toaster />
-        </ReactQueryProvider>
+        <Toaster closeButton richColors />
+        <ReactQueryProvider>{children}</ReactQueryProvider>
       </body>
     </html>
   );

@@ -1,5 +1,7 @@
 // features/workspace/members/types.ts
 
+import { getAllMembers } from "./server/queries/get-all-members";
+
 export type WorkspaceRole = "owner" | "admin" | "member";
 
 export type MemberStatus = "active" | "offline";
@@ -14,3 +16,7 @@ export interface WorkspaceMember {
   joinedAt: string;
   lastActive: string;
 }
+
+export type MemberWithDetail = NonNullable<
+  Awaited<ReturnType<typeof getAllMembers>>
+>[number];
