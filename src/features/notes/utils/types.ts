@@ -1,6 +1,6 @@
-import { getNote } from "../server/queries/get-note-by-id";
+import { getNoteById } from "../server/queries/get-note-by-id";
 
 export type Note = Omit<
-  NonNullable<Awaited<ReturnType<typeof getNote>>>,
+  NonNullable<Awaited<ReturnType<typeof getNoteById>>>,
   "folder" | "author"
 >;

@@ -104,11 +104,11 @@ export default function WorkspaceDetailActions() {
         </DropdownMenuContent>
       </DropdownMenu>
       {/* 🔥 Dialog */}
-      <DeleteWorkspaceDialog
+      {/* <DeleteWorkspaceDialog
         workspaceId={workspaceId as string}
         open={deleteOpen}
         onOpenChange={setDeleteOpen}
-      />
+      /> */}
     </>
   );
 }

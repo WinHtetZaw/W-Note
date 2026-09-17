@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Plus, Sparkles } from "lucide-react";
 import { Suspense } from "react";
-import WorkspaceOverviewCard from "@/features/workspaces/components/workdspace-overview-card";
+// import WorkspaceOverviewCard from "@/features/workspaces/components/workdspace-overview-card";
 
 export default async function WorkspacePage() {
   return (
@@ -31,9 +31,9 @@ export default async function WorkspacePage() {
       </div>
 
       {/* Grid */}
-      <Suspense fallback={<p>loading</p>}>
+      {/* <Suspense fallback={<p>loading</p>}>
         <WorkspaceOverviewCard />
-      </Suspense>
+      </Suspense> */}
     </>
   );
 }

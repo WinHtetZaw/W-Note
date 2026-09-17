@@ -1,6 +1,6 @@
 import FormWrapper from "@/components/layout/form-wrapper";
 import FolderForm from "@/features/folders/components/folder-form";
-import { fetchFolder } from "@/features/folders/server/actions";
+import { fetchFolderNotes } from "@/features/folders/server/actions/fetch-folder-notes";
 import { Suspense } from "react";
 
 type Props = {
@@ -10,7 +10,7 @@ type Props = {
 export default async function Page({ params }: Props) {
   const { folderId, workspaceId } = await params;
 
-  const folder = await fetchFolder(folderId, workspaceId);
+  const folder = await fetchFolderNotes({ folderId, workspaceId });
 
   if (!folder) {
     return <p>folder not found</p>;

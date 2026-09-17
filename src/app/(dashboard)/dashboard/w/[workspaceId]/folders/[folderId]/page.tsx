@@ -77,15 +77,14 @@ async function FolderDetailContent({ params }: Props) {
         labelIcon={<Folder className="size-4 text-icon" />}
         title="Product Folder"
         subTitle=" All notes inside this folder."
-        link={
-          <div className="flex gap-3">
-            <CreateNoteButton workspaceId={workspaceId} folderId={folderId} />
-            <Suspense fallback={<p>loading</p>}>
-              <FolderActionsMenu />
-            </Suspense>
-          </div>
-        }
-      />
+      >
+        <div className="flex gap-3">
+          <CreateNoteButton workspaceId={workspaceId} folderId={folderId} />
+          <Suspense fallback={<p>loading</p>}>
+            <FolderActionsMenu />
+          </Suspense>
+        </div>
+      </PageHead>
 
       {result.data.notes.length === 0 ? (
         <div className="mt-10 text-center text-muted">

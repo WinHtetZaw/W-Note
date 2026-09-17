@@ -2,10 +2,10 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { queryKeys } from "@/lib/cache/keys";
-import { fetchFoldersWithNotes } from "../server/actions/fetch-folders-notes";
+import { fetchFoldersNotes } from "../server/actions/fetch-folders-notes";
 
 async function getFolders(workspaceId: string) {
-  const res = await fetchFoldersWithNotes({ workspaceId });
+  const res = await fetchFoldersNotes({ workspaceId });
   if (!res.data) {
     throw new Error("Fail to fetch folders");
   }

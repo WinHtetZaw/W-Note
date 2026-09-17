@@ -2,7 +2,7 @@
 
 import { ErrorCode } from "@/lib/errors";
 import { notFound, redirect } from "next/navigation";
-import { fetchNoteByIdService } from "../../services/fetch-note-by-id-service copy";
+import { fetchNoteByIdService } from "../../services/fetch-note-by-id-service";
 
 type IncomingData = {
   workspaceId: string;

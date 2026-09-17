@@ -1,5 +1,5 @@
 import NoteEditor from "@/features/notes/components/editor/note-editor";
-import { fetchNote } from "@/features/notes/server/actions/fetch-note";
+import { fetchNoteById } from "@/features/notes/server/actions/fetch-note-by-id";
 
 type Props = {
   params: Promise<{
@@ -10,13 +10,13 @@ type Props = {
 
 export default async function NoteDetailPage({ params }: Props) {
   const { workspaceId, noteId } = await params;
-  const result = await fetchNote(workspaceId, noteId);
+  const result = await fetchNoteById({ workspaceId, noteId });
 
-  if (!result.success) {
+  if (result.code) {
     return (
       <div className="flex h-full items-center justify-center">
         <p>someee</p>
-        <p className="text-sm text-zinc-400">{result.message}</p>
+        <p className="text-sm text-zinc-400">{result.code}</p>
       </div>
     );
   }
@@ -65,7 +65,7 @@ export default async function NoteDetailPage({ params }: Props) {
             noteId={noteId}
             workspaceId={workspaceId}
             content={
-              content
+              content ?? ""
               // result.data.content ?? {
               //   type: "doc",
               //   content: [],

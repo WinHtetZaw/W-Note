@@ -1,16 +1,25 @@
 import { Suspense } from "react";
 import NoteFormPage from "./note-form";
-import { fetchNote } from "../server/actions/fetch-note";
+import { fetchNoteById } from "../server/actions/fetch-note-by-id";
 
-export default async function NoteFormLoader({ noteId }: { noteId: string }) {
-  const res = await fetchNote(noteId);
-  if (!res.success) {
+export default async function NoteFormLoader({
+  workspaceId,
+  noteId,
+}: {
+  workspaceId: string;
+  noteId: string;
+}) {
+  const res = await fetchNoteById({ workspaceId, noteId });
+  if (res.code) {
     return <div>Failed to load note.</div>;
   }
 
   return (
     <Suspense fallback={<p>Loading Form</p>}>
-      <NoteFormPage oldNote={res.data} isEditForm={true} />
+      <NoteFormPage
+        oldNote={{ title: res.data.title, content: res.data.content ?? "" }}
+        isEditForm={true}
+      />
     </Suspense>
   );
 }

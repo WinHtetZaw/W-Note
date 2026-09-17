@@ -14,10 +14,11 @@ import { formSchema, NoteFormValues } from "../schemas/form-schema";
 import { useParams } from "next/navigation";
 import { createNote } from "../server/actions/create-note";
 import { editNote } from "../server/actions/edit-note";
+import { errorMessages } from "@/lib/errors";
 
 type Props = {
   isEditForm?: boolean;
-  oldNote?: NoteFormValues;
+  oldNote?: { title: string; content: string };
   // workspaceId: string;
   // noteId?: string;
 };
@@ -34,8 +35,8 @@ export default function NoteFormPage(props: Props) {
 
   const handleCreate = async (data: z.infer<typeof formSchema>) => {
     const result = await createNote({ ...data, workspaceId });
-    if (!result.success) {
-      toast.error(result.message);
+    if (result.code) {
+      toast.error(errorMessages[result.code]);
     } else {
       toast.success("Note created successfully.");
     }
@@ -44,8 +45,8 @@ export default function NoteFormPage(props: Props) {
 
   const handleRename = async (data: z.infer<typeof formSchema>) => {
     const result = await editNote({ ...data, workspaceId, noteId });
-    if (!result.success) {
-      toast.error(result.message);
+    if (result.code) {
+      toast.error(errorMessages[result.code]);
     } else {
       toast.success("Note edited successfully.");
     }

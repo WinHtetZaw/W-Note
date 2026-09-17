@@ -1,11 +1,11 @@
 import { requirePermission } from "@/lib/permissions";
+import { fail, ok } from "@/lib/result";
+import { ErrorReason } from "@/lib/errors";
 import {
   CreateFolderInput,
   createFolderSchema,
-} from "../schemas/create-folder-schema";
-import { insertFolder } from "../server/mutations/insert-folder";
-import { fail, ok } from "@/lib/result";
-import { ErrorReason } from "@/lib/errors";
+} from "@/features/folders/schemas";
+import { insertFolder } from "@/features/folders/server/mutations/insert-folder";
 
 export async function createWorkspaceInviteService(rawData: CreateFolderInput) {
   //========== Validating incoming data ==========//

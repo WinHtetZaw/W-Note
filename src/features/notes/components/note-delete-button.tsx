@@ -5,16 +5,19 @@ import { useTransition } from "react";
 import { removeNote } from "../server/actions/remove-note";
 import { toast } from "sonner";
 import { useParams } from "next/navigation";
+import { errorMessages } from "@/lib/errors";
+
+type Params = { workspaceId: string; folderId?: string; noteId: string };
 
 export default function NoteDeleteButton() {
   const [isPending, startTransition] = useTransition();
-  const { noteId } = useParams();
+  const { noteId, workspaceId, folderId } = useParams<Params>();
 
   const handleDelete = async () => {
     startTransition(async () => {
-      const { success, message } = await removeNote(noteId as string);
-      if (!success) {
-        toast.error(message || "Failed to delete note");
+      const res = await removeNote({ workspaceId, folderId, noteId });
+      if (res.code) {
+        toast.error(errorMessages[res.code]);
         return;
       }
 

@@ -60,8 +60,8 @@ export default function FolderForm({ isEditForm, oldFolder }: Props) {
       workspaceId,
       folderId,
     });
-    if (!result.success) {
-      toast.error(result.code);
+    if (result.code) {
+      toast.error(errorMessages[result.code]);
     } else {
       toast.success("Folder renamed successfully.");
     }

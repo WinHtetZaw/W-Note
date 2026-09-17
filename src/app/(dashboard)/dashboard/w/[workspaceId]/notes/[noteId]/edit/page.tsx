@@ -1,15 +1,12 @@
 import FormWrapper from "@/components/layout/form-wrapper";
-import NoteFormPage from "@/features/notes/components/note-form";
 import NoteFormLoader from "@/features/notes/components/note-form-loader";
-import { fetchNote } from "@/features/notes/server/actions";
-import { Suspense } from "react";
 
 type Props = {
   params: Promise<{ workspaceId: string; noteId: string }>;
 };
 
 export default async function Page({ params }: Props) {
-  const { noteId } = await params;
+  const { noteId, workspaceId } = await params;
 
   return (
     <FormWrapper
@@ -18,7 +15,7 @@ export default async function Page({ params }: Props) {
       formTitle="Edit Note"
       isNoteForm={true}
     >
-      <NoteFormLoader noteId={noteId} />
+      <NoteFormLoader noteId={noteId} workspaceId={workspaceId} />
     </FormWrapper>
   );
 }
