@@ -1,9 +1,9 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { db } from "@/db"; // your drizzle instance
-// import * as schema from "@/db/schema"; // your drizzle schema, ensure it includes the auth tables
 import { env } from "@/data/env/server";
 import { nextCookies } from "better-auth/next-js";
+import { sendDeleteAccountEmail } from "@/emails/send-delete-account-email";
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
@@ -17,6 +17,15 @@ export const auth = betterAuth({
     changeEmail: { enabled: true, updateEmailWithoutVerification: true },
     deleteUser: {
       enabled: true,
+
+      sendDeleteAccountVerification: async ({ user, url }) => {
+        await sendDeleteAccountEmail({
+          to: user.email,
+          userName: user.name,
+          deletionLink: url,
+          expiresIn: "1 hour",
+        });
+      },
     },
   },
   emailVerification: {
@@ -44,12 +53,16 @@ export const auth = betterAuth({
   //   ...schema,
   //   user: schema.user,
   // },
-  //   socialProviders: {
-  //     github: {
-  //       clientId: process.env.GITHUB_CLIENT_ID as string,
-  //       clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
-  //     },
-  //   },
+  socialProviders: {
+    google: {
+      clientId: env.GOOGLE_CLIENT_ID,
+      clientSecret: env.GOOGLE_CLIENT_SECRET,
+    },
+    github: {
+      clientId: env.GITHUB_CLIENT_ID,
+      clientSecret: env.GITHUB_CLIENT_SECRET,
+    },
+  },
   secret: env.BETTER_AUTH_SECRET,
   baseURL: env.BETTER_AUTH_URL,
 });

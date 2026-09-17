@@ -1,30 +1,14 @@
 import SectionHeader from "@/components/dashboard/section-header";
 import { Skeleton } from "@/components/ui/skeleton";
-import { fetchMemberById } from "@/features/members/server/actions/fetch-member-by-id";
 import { getSessionSerever } from "@/lib/auth/session-server";
 import { formatMonthYear } from "@/utils/formatting/format-month-year";
 import { CalendarDays, Mail, Shield } from "lucide-react";
 
-type Props = {
-  params: Promise<{ workspaceId: string }>;
-};
-
-export default async function AccountInfoCard({ params }: Props) {
-  const { workspaceId } = await params;
+export default async function AccountInfoCard() {
   const session = await getSessionSerever();
 
   if (!session) {
     return <p>fail to get user data</p>;
-  }
-
-  const memberResult = await fetchMemberById({
-    workspaceId,
-    userId: session.user.id,
-  });
-
-  if (memberResult.code) {
-    console.error(memberResult);
-    return <p>fail to get member</p>;
   }
 
   return (
@@ -44,23 +28,21 @@ export default async function AccountInfoCard({ params }: Props) {
 
         <InfoCard
           icon={<CalendarDays className="size-5" />}
-          label="Member Since"
-          value={formatMonthYear(memberResult.data.joinedAt)}
+          label="Account Since"
+          value={formatMonthYear(session.user.createdAt)}
         />
       </div>
     </section>
   );
 }
 
-function InfoCard({
-  icon,
-  label,
-  value,
-}: {
+type InfoCardProps = {
   icon: React.ReactNode;
   label: string;
   value: string;
-}) {
+};
+
+function InfoCard({ icon, label, value }: InfoCardProps) {
   return (
     <div className="rounded-2xl border border-white/10 bg-white/3 p-5">
       <div className="flex items-center gap-3 text-zinc-500">
@@ -96,7 +78,7 @@ export function AccountInfoCardLoading() {
         <div className="rounded-2xl border border-white/10 bg-white/3 p-5">
           <div className="flex items-center gap-3 text-zinc-500">
             <Mail className="size-5" />
-            <span className="text-sm">Member Since</span>
+            <span className="text-sm">Account Since</span>
           </div>
 
           <Skeleton className="h-8 mt-3 w-4/5 rounded-2xl" />

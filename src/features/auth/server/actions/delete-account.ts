@@ -4,8 +4,8 @@ import { redirect } from "next/navigation";
 import { ErrorCode } from "@/lib/errors";
 import { deleteAccountService } from "../../services/delete-account-service";
 
-export async function DeleteAccount() {
-  const [error, isDeleted] = await deleteAccountService();
+export async function DeleteAccount(password: string) {
+  const [error, isDeleted] = await deleteAccountService({ password });
 
   if (error == null) {
     return { success: isDeleted };
@@ -13,8 +13,10 @@ export async function DeleteAccount() {
 
   const reason = error.reason;
   switch (reason) {
+    case "INVALID_INPUT":
+      return { code: ErrorCode.Validation, reason, details: error.details };
     case "USER_HAS_OWN_WORKSPACES":
-      return { code: ErrorCode.Conflict, reason, details: error.details };
+      return { code: ErrorCode.Conflict, reason };
     case "NOT_AUTHENTICATED":
       redirect("/sign-in");
     case "UNEXPECTED":

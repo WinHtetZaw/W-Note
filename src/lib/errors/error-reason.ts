@@ -51,6 +51,7 @@ export const ErrorReason = {
 
   FailToCreateAIUsageRecord: "FAIL_TO_CREATE_AI_RECORD",
   FailToDeleteUser: "FAIL_TO_DELETE_USER",
+  FailToListUserAccounts: "FAIL_TO_LIST_USER_ACCOUNTS",
 
   SubscriberAlreadyExists: "SUBSCRIBER_ALREADY_EXISTS",
 } as const;

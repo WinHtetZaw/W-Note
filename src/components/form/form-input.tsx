@@ -41,7 +41,7 @@ export function FormInput<T extends FieldValues>(props: FormInputProps<T>) {
           {label && (
             <FieldLabel
               htmlFor={name}
-              className="mb-1 text-sm text-muted group-focus-within:text-zinc-200"
+              className="mb-1 text-sm text-muted group-focus-within:text-zinc-200 capitalize"
             >
               {label}
             </FieldLabel>

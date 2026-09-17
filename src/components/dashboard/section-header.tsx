@@ -1,16 +1,22 @@
+import { cn } from "@/lib/utils";
 import { ReactNode } from "react";
 
 type Props = {
   title: string;
-  description: string;
+  description?: string;
   icon: ReactNode;
 };
 
 export default function SectionHeader(props: Props) {
   const { title, description, icon } = props;
   return (
-    <div className="flex items-start gap-4">
-      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-violet-500/10 text-violet-400">
+    <div
+      className={cn(
+        "flex  gap-4",
+        description ? "items-start" : "items-center",
+      )}
+    >
+      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-violet-500/10 text-icon">
         {icon}
       </div>
 

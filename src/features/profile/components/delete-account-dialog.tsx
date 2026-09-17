@@ -11,7 +11,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Trash2 } from "lucide-react";
-import { MouseEvent, useState, useTransition } from "react";
+import { MouseEvent, useEffect, useState, useTransition } from "react";
 import { ConfirmPasswordDialog } from "./confirm-password-dialog";
 import { fetchOwnWorkspaces } from "@/features/workspaces/server/actions/fetch-own-workspaces";
 import { toast } from "sonner";
@@ -19,6 +19,9 @@ import { errorMessages } from "@/lib/errors";
 import WorkspaceResolutionDialog from "./delete-account-blocked-dialg";
 import { OwnWorkspaces } from "@/features/workspaces/types";
 import DeleteAccountBlockedDialog from "./delete-account-blocked-dialg";
+import { hasPasswordAccount } from "@/features/auth/services/has-password-account";
+import { authClient } from "@/lib/auth/auth-client";
+import DeleteAccountWithEmailConfirmationDilog from "./delete-account-with-email-confirmatin-dialog";
 
 type Props = {
   deleteDialogOpen: boolean;
@@ -31,6 +34,15 @@ export default function DeleteAccountDialog(props: Props) {
   const [wsResolutionDialog, setWsResolutionDialog] = useState(false);
   const [isPending, startTransition] = useTransition();
   const [workspaces, setWorkspaces] = useState<OwnWorkspaces>([]);
+  const [isPasswordAuth, setIsPasswordAuth] = useState(false);
+
+  useEffect(() => {
+    const gettingIsPasswordAuth = async () => {
+      const result = await hasPasswordAccount();
+      setIsPasswordAuth(result);
+    };
+    gettingIsPasswordAuth();
+  }, []);
 
   function handleConfirmOpen(e: MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
@@ -47,7 +59,6 @@ export default function DeleteAccountDialog(props: Props) {
       if (result.data.length > 0) {
         setWsResolutionDialog(true);
         setWorkspaces(result.data);
-        console.log(result.data);
         return;
       }
 
@@ -78,11 +89,26 @@ export default function DeleteAccountDialog(props: Props) {
             This permanently deletes your account and cannot be undone.
           </p>
         </div>
-        <ConfirmPasswordDialog
+        {/* <ConfirmPasswordDialog
           setDeleteDialogOpen={setDeleteDialogOpen}
           confirmDialogOpen={confirmDialogOpen}
           setConfirmDialogOpen={setConfirmDialogOpen}
-        />
+        /> */}
+
+        {isPasswordAuth ? (
+          <ConfirmPasswordDialog
+            setDeleteDialogOpen={setDeleteDialogOpen}
+            confirmDialogOpen={confirmDialogOpen}
+            setConfirmDialogOpen={setConfirmDialogOpen}
+          />
+        ) : (
+          <DeleteAccountWithEmailConfirmationDilog
+            setDeleteDialogOpen={setDeleteDialogOpen}
+            emailConfirmationOpen={confirmDialogOpen}
+            setEmailConfirmationOpen={setConfirmDialogOpen}
+          />
+        )}
+
         {/* <WorkspaceResolutionDialog
           wsResolutionDialog={wsResolutionDialog}
           setWsResolutionDialog={setWsResolutionDialog}
@@ -92,6 +118,10 @@ export default function DeleteAccountDialog(props: Props) {
           open={wsResolutionDialog}
           workspaces={workspaces}
           onOpenChange={setWsResolutionDialog}
+          setDeleteDialogOpen={setDeleteDialogOpen}
+          setWorkspaces={setWorkspaces}
+          confirmDialogOpen={confirmDialogOpen}
+          setConfirmDialogOpen={setConfirmDialogOpen}
           // onTransferOwnership={(workspaceId: string) => null}
           // onDeleteWorkspace={(workspaceId: string) => null}
         />

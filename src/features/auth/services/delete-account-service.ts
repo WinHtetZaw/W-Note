@@ -3,8 +3,22 @@ import { ErrorReason } from "@/lib/errors";
 import { requireAuth } from "@/lib/permissions";
 import { fail, ok } from "@/lib/result";
 import { deleteUser } from "./delete-user";
+import z from "zod";
 
-export async function deleteAccountService() {
+const schema = z.object({
+  password: z.string().min(1),
+});
+
+type IncomingData = z.infer<typeof schema>;
+
+export async function deleteAccountService(rawData: IncomingData) {
+  //========= Validating incoming data ========//
+  const validated = schema.safeParse(rawData);
+  if (!validated.success) {
+    return fail({ reason: ErrorReason.InvalidInput, details: validated.error });
+  }
+  const { password } = validated.data;
+
   //========== Auth ==========//
   const [authError, user] = await requireAuth();
   if (authError) {
@@ -26,7 +40,7 @@ export async function deleteAccountService() {
     }
 
     //========= Delete User  ========//
-    const [deleteEror, isDeleted] = await deleteUser();
+    const [deleteEror, isDeleted] = await deleteUser(password);
     if (deleteEror) {
       return fail({ reason: deleteEror.reason, details: deleteEror.details });
     }

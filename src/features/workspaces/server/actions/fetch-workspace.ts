@@ -17,6 +17,8 @@ export async function fetchWorkspace(workspaceId: string) {
       return { code: ErrorCode.Validation, reason, details: error.details };
     case "NOT_AUTHENTICATED":
       redirect("/sign-in");
+    case "WORKSPACE_NOT_FOUND":
+      return { code: ErrorCode.NotFound, reason };
     case "UNEXPECTED":
       return { code: ErrorCode.Internal, reason };
     default:

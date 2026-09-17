@@ -1,8 +1,6 @@
-import { resend, sendEmail } from "@/lib/resend";
+import { sendEmail } from "@/lib/resend";
 
 import { InvitationEmail } from "@/emails/templates/invitation-email";
-import { env } from "@/data/env/server";
-import { getInvitationExpiration } from "./get-invitation-expiration";
 
 type Props = {
   to: string;
@@ -21,7 +19,6 @@ export async function sendInvitationEmail({
   invitationLink,
   expiresIn,
 }: Props) {
-  // const expiresInDays = getInvitationExpiration();
   return sendEmail({
     to,
     subject: `You're invited to join ${workspaceName}`,

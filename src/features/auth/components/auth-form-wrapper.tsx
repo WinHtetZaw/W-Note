@@ -1,5 +1,6 @@
 import { Sparkles } from "lucide-react";
 import React from "react";
+import { SocialSignInButtons } from "./social-sign-in-buttons";
 
 type Props = {
   children: React.ReactNode;
@@ -29,9 +30,10 @@ export default function AuthFormWrapper(props: Props) {
         <span className="text-sm text-zinc-500">OR</span>
         <div className="h-px flex-1 bg-white/10" />
       </div>
-      <button className="h-14 w-full rounded-2xl border border-white/10 bg-white/5 transition hover:bg-white/10">
+      {/* <button className="h-14 w-full rounded-2xl border border-white/10 bg-white/5 transition hover:bg-white/10">
         Continue with Google
-      </button>
+      </button> */}
+      <SocialSignInButtons />
       <p className="mt-8 text-center text-zinc-400">{link}</p>
     </div>
   );

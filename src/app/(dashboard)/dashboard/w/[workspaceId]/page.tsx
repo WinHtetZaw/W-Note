@@ -6,6 +6,7 @@ import WorkspaceStats, {
   WorkspaceStatsLoading,
 } from "@/features/workspaces/components/wokspace-stats";
 import CreateNoteButton from "@/features/notes/components/create-note-button";
+import MainLoaing from "@/components/ui/main-loaing";
 
 type Props = {
   params: Promise<{ workspaceId: string }>;
@@ -13,7 +14,7 @@ type Props = {
 
 export default async function WorkspaceDetailPage({ params }: Props) {
   return (
-    <Suspense fallback={<p>workspace detail content loading</p>}>
+    <Suspense fallback={<MainLoaing />}>
       <WorkspaceDetailContent params={params} />
     </Suspense>
   );
@@ -28,8 +29,9 @@ async function WorkspaceDetailContent({ params }: Props) {
         pageLabel="Workspace Overview"
         title="Startup Team"
         subTitle="Manage your team, notes, and AI workflows."
-        link={<PageHeadLink workspaceId={workspaceId} />}
-      />
+      >
+        <PageHeadLink workspaceId={workspaceId} />
+      </PageHead>
 
       <Suspense fallback={<WorkspaceStatsLoading />}>
         <WorkspaceStats workspaceId={workspaceId} />

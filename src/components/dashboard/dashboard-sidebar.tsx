@@ -3,8 +3,7 @@ import { Brain } from "lucide-react";
 import { SidebarNavItem } from "./sidebar-nav-item";
 import { WorkspaceSwitcher } from "./workspace-switcher";
 import { AIUsageCard } from "./ai-usage-card";
-import { aiLinks, workspaceLinks } from "./dashboard-sidebar-data";
-import AddNoteButton from "../ui/note-create-button";
+import { toolsLinks, workspaceLinks } from "./dashboard-sidebar-data";
 import { redirect } from "next/navigation";
 import { fetchUserWorkspaces } from "@/features/workspaces/server/actions/fetch-user-workspaces";
 import { fetchWorkspace } from "@/features/workspaces/server/actions/fetch-workspace";
@@ -63,11 +62,11 @@ export async function DashboardSidebar({ params }: Props) {
 
         <div>
           <p className="mb-3 px-4 text-xs font-semibold tracking-wider text-zinc-500 uppercase">
-            AI
+            tools
           </p>
 
           <div className="space-y-2">
-            {aiLinks.map((item) => (
+            {toolsLinks.map((item) => (
               <SidebarNavItem
                 key={item.label}
                 label={item.label}

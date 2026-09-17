@@ -39,7 +39,7 @@ export default function SignInForm() {
       toast.success("Signed in successfully.");
 
       const invitations = await fetchUserPendingInvitationsCount(email);
-      if (invitations.success && invitations.data >= 1) {
+      if (invitations.data && invitations.data >= 1) {
         router.push("/invitations");
       }
 

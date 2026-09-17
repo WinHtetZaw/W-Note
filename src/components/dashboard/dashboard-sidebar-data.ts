@@ -24,10 +24,10 @@ export const generalLinks = [
   },
 ];
 
-export const aiLinks = [
+export const toolsLinks = [
   {
-    label: "AI Assistant",
-    href: "assistant",
+    label: "Settings",
+    href: "settings",
     icon: "sparkles",
   },
   {

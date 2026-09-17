@@ -189,7 +189,7 @@
   }
 
   .glass-red {
-    @apply border border-red-500/20 bg-red-500/3;
+    @apply border border-rose-500/20 bg-rose-500/3;
   }
 
   .glass-violet {

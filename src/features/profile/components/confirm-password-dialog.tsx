@@ -47,7 +47,7 @@ export function ConfirmPasswordDialog(props: Props) {
 
   const handleConfirm = async (formData: PasswordFormValues) => {
     startTransition(async () => {
-      const result = await DeleteAccount();
+      const result = await DeleteAccount(formData.password);
       if (result.code) {
         console.log(result);
         if (result.code === "CONFLICT") {
