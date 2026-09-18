@@ -6,12 +6,13 @@ import BillingHistory from "./billing-history";
 import { fetchActiveSubscriptionPlan } from "../server/actions/fetch-active-subscripton-plan";
 
 type BillingPageProps = {
-  workspaceId: string;
+  params: Promise<{
+    workspaceId: string;
+  }>;
 };
 
-export default async function BillingPageContent({
-  workspaceId,
-}: BillingPageProps) {
+export default async function BillingPageContent({ params }: BillingPageProps) {
+  const { workspaceId } = await params;
   const activePlanData = await fetchActiveSubscriptionPlan(workspaceId);
   if (activePlanData.code) {
     return <p>unable to fetch activePlanData</p>;

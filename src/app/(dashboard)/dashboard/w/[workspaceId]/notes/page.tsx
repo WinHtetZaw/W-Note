@@ -1,7 +1,7 @@
 import PageHead from "@/components/dashboard/page-head";
 import CardSkeletonList from "@/components/ui/card-skeleton-list";
 import InputSearch from "@/components/ui/input-search";
-import MainLoaing from "@/components/ui/main-loaing";
+import MainLoading from "@/components/ui/main-loaing";
 import CreateNoteButton from "@/features/notes/components/create-note-button";
 import NotesList from "@/features/notes/components/notes-list";
 import { Suspense } from "react";
@@ -13,7 +13,7 @@ type Props = {
 
 export default async function NotesPage(props: Props) {
   return (
-    <Suspense fallback={<MainLoaing />}>
+    <Suspense fallback={<MainLoading />}>
       <NotesContent {...props} />
     </Suspense>
   );

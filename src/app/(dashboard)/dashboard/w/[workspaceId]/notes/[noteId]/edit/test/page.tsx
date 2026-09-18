@@ -1,5 +1,7 @@
+import MainLoading from "@/components/ui/main-loaing";
 import NoteEditor from "@/features/notes/components/editor/note-editor";
 import { fetchNoteById } from "@/features/notes/server/actions/fetch-note-by-id";
+import { Suspense } from "react";
 
 type Props = {
   params: Promise<{
@@ -9,16 +11,17 @@ type Props = {
 };
 
 export default async function NoteDetailPage({ params }: Props) {
+  <Suspense fallback={<MainLoading />}>
+    <NoteDetailPageContent params={params} />
+  </Suspense>;
+}
+
+async function NoteDetailPageContent({ params }: Props) {
   const { workspaceId, noteId } = await params;
   const result = await fetchNoteById({ workspaceId, noteId });
 
   if (result.code) {
-    return (
-      <div className="flex h-full items-center justify-center">
-        <p>someee</p>
-        <p className="text-sm text-zinc-400">{result.code}</p>
-      </div>
-    );
+    throw new Error("Failed to fetch note.");
   }
 
   const { title, content } = result.data;

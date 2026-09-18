@@ -6,7 +6,7 @@ import WorkspaceStats, {
   WorkspaceStatsLoading,
 } from "@/features/workspaces/components/wokspace-stats";
 import CreateNoteButton from "@/features/notes/components/create-note-button";
-import MainLoaing from "@/components/ui/main-loaing";
+import MainLoading from "@/components/ui/main-loaing";
 
 type Props = {
   params: Promise<{ workspaceId: string }>;
@@ -14,7 +14,7 @@ type Props = {
 
 export default async function WorkspaceDetailPage({ params }: Props) {
   return (
-    <Suspense fallback={<MainLoaing />}>
+    <Suspense fallback={<MainLoading />}>
       <WorkspaceDetailContent params={params} />
     </Suspense>
   );

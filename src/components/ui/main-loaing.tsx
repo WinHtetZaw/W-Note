@@ -1,7 +1,7 @@
 import { Quantum } from "ldrs/react";
 import "ldrs/react/Quantum.css";
 
-export default function MainLoaing() {
+export default function MainLoading() {
   return (
     <div className=" w-full h-full flex items-center justify-center">
       {/* <Quantum size="45" speed="1.75" color="oklch(60.6% 0.25 292.717)" /> */}

@@ -9,12 +9,13 @@ import {
   Brain,
   MessageSquare,
 } from "lucide-react";
+import { Suspense } from "react";
 
-type Props = {
-  params: Promise<{ noteId: string }>;
-};
+// type Props = {
+//   params: Promise<{ noteId: string }>;
+// };
 
-export default async function NoteDetailPage({ params }: Props) {
+export default function NoteDetailPage() {
   return (
     <>
       {/* Head */}
@@ -182,7 +183,9 @@ We will add realtime collaboration, AI agents, and advanced workspace analytics.
         </aside>
       </div>
 
-      <NoteDeleteButton />
+      <Suspense fallback={<p>note delete button loading</p>}>
+        <NoteDeleteButton />
+      </Suspense>
     </>
   );
 }

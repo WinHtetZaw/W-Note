@@ -1,17 +1,23 @@
 import { db } from "@/db";
 import { workspaceInvitationsTable } from "@/db/schema";
-
+import { cacheTags } from "@/lib/cache/tags";
 import { and, eq, gt } from "drizzle-orm";
+import { cacheTag } from "next/cache";
 
-export async function getUserPendingInvitations(email: string) {
+type IncomingData = { email: string; userId: string };
+
+export async function getUserPendingInvitations({
+  email,
+  userId,
+}: IncomingData) {
+  "use cache";
+  cacheTag(cacheTags.userInvitations(userId));
+
   return db.query.workspaceInvitationsTable.findMany({
     where: and(
-      // eq(workspaceInvitationsTable.workspaceId, workspaceId),
       eq(workspaceInvitationsTable.email, email),
-      //   isNull(workspaceInvitationsTable.acceptedAt),
-      //   isNull(workspaceInvitationsTable.revokedAt),
-      gt(workspaceInvitationsTable.expiresAt, new Date()),
       eq(workspaceInvitationsTable.status, "pending"),
+      gt(workspaceInvitationsTable.expiresAt, new Date()),
     ),
     columns: {
       id: true,
@@ -95,6 +101,6 @@ export async function getUserPendingInvitations(email: string) {
   //   .orderBy(desc(workspaceInvitationsTable.createdAt));
 }
 
-export type PendingInvitations = NonNullable<
+export type PendingInvitation = NonNullable<
   Awaited<ReturnType<typeof getUserPendingInvitations>>
 >[number];

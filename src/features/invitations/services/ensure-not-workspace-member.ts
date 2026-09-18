@@ -6,9 +6,5 @@ export async function ensureNotWorkspaceMember(
 ) {
   const member = await getWorkspaceMember(workspaceId, userId);
 
-  if (member) {
-    throw new Error("User is already a workspace member.");
-  }
-
-  return !!member;
+  return !member;
 }

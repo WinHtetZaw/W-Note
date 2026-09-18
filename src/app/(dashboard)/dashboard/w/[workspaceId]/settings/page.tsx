@@ -1,6 +1,6 @@
 import PageHead from "@/components/dashboard/page-head";
 import SectionHeader from "@/components/dashboard/section-header";
-import MainLoaing from "@/components/ui/main-loaing";
+import MainLoading from "@/components/ui/main-loaing";
 import GeneralCard from "@/features/settings/components/general-card";
 import NotificationsCard from "@/features/settings/components/notifications-card";
 import DeleteWorkspaceCard from "@/features/workspaces/components/delete-workspace-card";
@@ -16,7 +16,7 @@ type Props = {
 export default function SettingsPage({ params }: Props) {
   return (
     <>
-      <Suspense fallback={<MainLoaing />}>
+      <Suspense fallback={<MainLoading />}>
         <SettingPageContent params={params} />
       </Suspense>
     </>

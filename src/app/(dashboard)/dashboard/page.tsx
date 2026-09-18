@@ -1,3 +1,4 @@
+import MainLoading from "@/components/ui/main-loaing";
 import { fetchUserWorkspace } from "@/features/workspaces/server/actions/fetch-user-workspace";
 import {
   Plus,
@@ -10,8 +11,17 @@ import {
   Activity,
 } from "lucide-react";
 import { redirect } from "next/navigation";
+import { Suspense } from "react";
 
 export default async function DashboardPage() {
+  return (
+    <Suspense fallback={<MainLoading />}>
+      <DashboardPageContent />
+    </Suspense>
+  );
+}
+
+async function DashboardPageContent() {
   const result = await fetchUserWorkspace();
 
   if (!result.data) {

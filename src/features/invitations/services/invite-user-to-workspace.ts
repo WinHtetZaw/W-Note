@@ -8,7 +8,6 @@ import {
   createWorkspaceInviteSchema,
 } from "../schemas/create-workspace-invite-schema";
 import { getInvitationExpiration } from "./get-invitation-expiration";
-import { logger, User } from "better-auth";
 import { Invitation } from "../types";
 import { ensureNotWorkspaceMember } from "./ensure-not-workspace-member";
 import { requireAuth, requireWorkspaceAdmin } from "@/lib/permissions";
@@ -41,10 +40,14 @@ export async function inviteUserToWorkspace(
 
   //========== DB ==========//
   try {
-    const user = await getUserByEmail(workspaceId, email);
-    if (user) {
-      const isNotAMember = await ensureNotWorkspaceMember(workspaceId, user.id);
-      if (isNotAMember) {
+    const invitee = await getUserByEmail(workspaceId, email);
+    if (invitee) {
+      const isNotAMember = await ensureNotWorkspaceMember(
+        workspaceId,
+        invitee.id,
+      );
+
+      if (!isNotAMember) {
         return fail({ reason: ErrorReason.UserAlreadyAWorkspaceMember });
       }
     }

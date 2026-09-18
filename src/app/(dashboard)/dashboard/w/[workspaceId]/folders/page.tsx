@@ -3,7 +3,7 @@ import InputSearch from "@/components/ui/input-search";
 import FolderCreateLink from "@/features/folders/components/folder-create-link";
 import { Suspense } from "react";
 import FolderList from "@/features/folders/components/folder-list";
-import MainLoaing from "@/components/ui/main-loaing";
+import MainLoading from "@/components/ui/main-loaing";
 import CardSkeletonList from "@/components/ui/card-skeleton-list";
 
 type Props = {
@@ -13,7 +13,7 @@ type Props = {
 
 export default async function FoldersPage(props: Props) {
   return (
-    <Suspense fallback={<MainLoaing />}>
+    <Suspense fallback={<MainLoading />}>
       <FoldersContent {...props} />
     </Suspense>
   );

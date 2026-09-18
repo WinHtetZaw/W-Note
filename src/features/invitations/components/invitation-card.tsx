@@ -2,12 +2,12 @@ import { CalendarClock, Clock3, Mail } from "lucide-react";
 
 import RoleBadge from "./role-badge";
 import InvitationActions from "./invitation-actions";
-import { PendingInvitations } from "../server/queries/get-user-pending-invitations";
+import { PendingInvitation } from "../server/queries/get-user-pending-invitations";
 import { timeAgo } from "@/lib/utils";
 import { formatExpiryInDays } from "@/utils/formatting";
 
 interface Props {
-  invitation: PendingInvitations;
+  invitation: PendingInvitation;
 }
 
 export default function InvitationCard({ invitation }: Props) {

@@ -1,4 +1,6 @@
+import MainLoading from "@/components/ui/main-loaing";
 import BillingPageContent from "@/features/billing/components/billing-page-content";
+import { Suspense } from "react";
 
 type BillingPageProps = {
   params: Promise<{
@@ -7,7 +9,9 @@ type BillingPageProps = {
 };
 
 export default async function Page({ params }: BillingPageProps) {
-  const { workspaceId } = await params;
-
-  return <BillingPageContent workspaceId={workspaceId} />;
+  return (
+    <Suspense fallback={<MainLoading />}>
+      <BillingPageContent params={params} />
+    </Suspense>
+  );
 }

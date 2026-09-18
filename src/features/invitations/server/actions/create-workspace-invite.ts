@@ -14,6 +14,7 @@ export async function createWorkspaceInvite(
 
   if (error == null) {
     updateTag(cacheTags.invitation(invitation.id));
+    updateTag(cacheTags.workspaceInvitations(invitation.workspaceId));
     return { data: invitation };
   }
 

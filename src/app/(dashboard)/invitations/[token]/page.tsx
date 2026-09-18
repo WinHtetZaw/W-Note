@@ -1,3 +1,4 @@
+import MainLoading from "@/components/ui/main-loaing";
 import { getCurrentUser } from "@/lib/permissions";
 import {
   CalendarClock,
@@ -8,17 +9,26 @@ import {
   WandSparkles,
 } from "lucide-react";
 import { redirect } from "next/navigation";
+import { Suspense } from "react";
 
-export default async function InvitationPage({
-  params,
-}: {
+type Props = {
   params: Promise<{
     token: string;
   }>;
-}) {
+};
+
+export default async function InvitationPage({ params }: Props) {
+  return (
+    <Suspense fallback={<MainLoading />}>
+      <InvitationPageContent params={params} />
+    </Suspense>
+  );
+}
+
+async function InvitationPageContent({ params }: Props) {
   const { token } = await params;
   const user = await getCurrentUser();
-  console.dir(user);
+  // console.dir(user);
 
   if (!user) {
     return redirect(`/sign-in?token=${token}`);

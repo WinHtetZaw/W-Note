@@ -5,17 +5,14 @@ import { ErrorCode } from "@/lib/errors";
 import { redirect } from "next/navigation";
 
 export async function fetchUserPendingInvitations() {
-  const [error, invitations] = await userPendingInvitationsService();
+  const [error, data] = await userPendingInvitationsService();
 
   if (error == null) {
-    // updateTag(cacheTags.workspaceFolders(folder.workspaceId));
-    return { data: invitations };
+    return { data };
   }
 
   const reason = error.reason;
   switch (reason) {
-    // case "INVALID_INPUT":
-    //   return { code: ErrorCode.Validation, reason, details: error.details };
     case "NOT_AUTHENTICATED":
       redirect("/sign-in");
     case "UNEXPECTED":
