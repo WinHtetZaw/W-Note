@@ -2,6 +2,7 @@ import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { db } from "@/db"; // your drizzle instance
 import { env } from "@/data/env/server";
+import { env as clientEnv } from "@/data/env/client";
 import { nextCookies } from "better-auth/next-js";
 import { sendDeleteAccountEmail } from "@/emails/send-delete-account-email";
 
@@ -65,4 +66,5 @@ export const auth = betterAuth({
   },
   secret: env.BETTER_AUTH_SECRET,
   baseURL: env.BETTER_AUTH_URL,
+  trustedOrigins: [clientEnv.NEXT_PUBLIC_APP_URL],
 });
