@@ -48,9 +48,6 @@ export const aiUsageTable = pgTable(
     createdAt,
   },
   (table) => [
-    // index("ai_usage_workspace_idx").on(table.workspaceId),
-    // index("ai_usage_user_idx").on(table.userId),
-    // index("ai_usage_created_at_idx").on(table.createdAt),
     index("ai_usage_workspace_created_at_idx").on(
       table.workspaceId,
       table.createdAt,

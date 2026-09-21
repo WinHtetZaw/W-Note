@@ -3,7 +3,6 @@
 import { Button } from "@/components/ui/button";
 import { Sparkles } from "lucide-react";
 import { useTransition } from "react";
-import { summarizeNote } from "../../server/actions/summarize-note";
 import { toast } from "sonner";
 import { errorMessages } from "@/lib/errors";
 import { useRouter } from "next/navigation";

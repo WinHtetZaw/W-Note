@@ -35,4 +35,9 @@ export const toolsLinks = [
     href: "trash",
     icon: "trash2",
   },
+  {
+    label: "Billing",
+    href: "billing",
+    icon: "creditCard",
+  },
 ];

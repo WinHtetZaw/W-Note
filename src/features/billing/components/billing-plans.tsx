@@ -2,7 +2,7 @@
 
 import { wait } from "@/lib/utils";
 import { Check, Sparkles, Users } from "lucide-react";
-import { use, useTransition } from "react";
+import { useTransition } from "react";
 import { SubscriptionPlans } from "../types/billing.types";
 import { createCheckoutSession } from "../server/actions/create-checkout-session";
 

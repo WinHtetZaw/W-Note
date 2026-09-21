@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import {
+  CreditCard,
   FileText,
   FolderTree,
   LayoutDashboard,
@@ -26,6 +27,7 @@ const iconMap: Record<string, LucideIcon> = {
   layoutDashboard: LayoutDashboard,
   sparkles: Sparkles,
   trash2: Trash2,
+  creditCard: CreditCard,
 };
 
 export function SidebarNavItem({ href, label, icon }: SidebarNavItemProps) {

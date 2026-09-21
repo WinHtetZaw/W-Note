@@ -14,13 +14,7 @@ import { Button } from "@/components/ui/button";
 import { CopyButton } from "@/components/ui/copy-button";
 import { errorMessages } from "@/lib/errors";
 
-import {
-  Wand2,
-  Check,
-  AlertCircle,
-  Sparkles,
-  CircleCheckBig,
-} from "lucide-react";
+import { Wand2, Check, AlertCircle, Sparkles } from "lucide-react";
 
 import SummarizeNoteButton from "../ai/summarize-note-button";
 import GenerateTitleButton from "../ai/generate-title-button";
@@ -51,9 +45,6 @@ export default function NoteEditor({
 
   const savedVersionRef = useRef(0);
   const savingRef = useRef(false);
-  const latestVersionRef = useRef(0);
-  const latestTitleRef = useRef(title);
-  const savePromiseRef = useRef<Promise<boolean> | null>(null);
 
   const editor = useEditor({
     extensions: editorExtensions,
@@ -64,90 +55,61 @@ export default function NoteEditor({
       },
     },
     onUpdate() {
-      latestVersionRef.current += 1;
-
-      setChangeVersion(latestVersionRef.current);
+      setChangeVersion((version) => version + 1);
       setSaveStatus("unsaved");
     },
   });
 
   // Title changes also make the note dirty.
   const handleTitleChange = (value: string) => {
-    latestTitleRef.current = value;
-
-    latestVersionRef.current += 1;
-    setChangeVersion(latestVersionRef.current);
-
     setUserTitle(value);
+    setChangeVersion((version) => version + 1);
     setSaveStatus("unsaved");
   };
 
-  const saveNote = useCallback((): Promise<boolean> => {
-    if (!editor) {
-      return Promise.resolve(false);
-    }
+  const saveNote = useCallback(async () => {
+    if (!editor || savingRef.current) return;
 
-    // Reuse an ongoing save instead of starting another one.
-    if (savePromiseRef.current) {
-      return savePromiseRef.current;
-    }
+    // Nothing new to save.
+    if (savedVersionRef.current === changeVersion) return;
 
-    const savePromise = (async (): Promise<boolean> => {
-      setSaveStatus("saving");
+    savingRef.current = true;
+    setSaveStatus("saving");
 
-      try {
-        // Keep saving until the latest revision is persisted.
-        while (savedVersionRef.current < latestVersionRef.current) {
-          const versionToSave = latestVersionRef.current;
+    // Snapshot the values being saved.
+    const versionToSave = changeVersion;
+    const titleToSave = userTitle;
+    const contentToSave = JSON.stringify(editor.getJSON());
 
-          const titleToSave = latestTitleRef.current;
-          const contentToSave = JSON.stringify(editor.getJSON());
+    try {
+      const result = await editNote({
+        workspaceId,
+        noteId,
+        title: titleToSave,
+        content: contentToSave,
+      });
 
-          const result = await editNote({
-            workspaceId,
-            noteId,
-            title: titleToSave,
-            content: contentToSave,
-          });
-
-          if (result.code) {
-            toast.error(errorMessages[result.code]);
-            setSaveStatus("error");
-
-            return false;
-          }
-
-          savedVersionRef.current = versionToSave;
-        }
-
-        setSaveStatus("saved");
-        return true;
-      } catch {
-        toast.error("Unable to save your note.");
+      if (result.code) {
+        toast.error(errorMessages[result.code]);
         setSaveStatus("error");
-
-        return false;
+        return;
       }
-    })();
 
-    savePromiseRef.current = savePromise;
+      savedVersionRef.current = versionToSave;
 
-    // Clear the shared promise when this save finishes.
-    void savePromise.then(
-      () => {
-        if (savePromiseRef.current === savePromise) {
-          savePromiseRef.current = null;
-        }
-      },
-      () => {
-        if (savePromiseRef.current === savePromise) {
-          savePromiseRef.current = null;
-        }
-      },
-    );
-
-    return savePromise;
-  }, [editor, workspaceId, noteId]);
+      // Don't mark as saved if user edited during the request.
+      if (versionToSave === changeVersion) {
+        setSaveStatus("saved");
+      } else {
+        setSaveStatus("unsaved");
+      }
+    } catch {
+      setSaveStatus("error");
+      toast.error("Unable to save your note.");
+    } finally {
+      savingRef.current = false;
+    }
+  }, [editor, changeVersion, userTitle, workspaceId, noteId]);
 
   // Debounced autosave: wait until the user pauses editing.
   useEffect(() => {
@@ -176,19 +138,14 @@ export default function NoteEditor({
   }, [editor, changeVersion, saveNote]);
 
   const handleManualSave = async () => {
-    const isSaved = await saveNote();
-
-    if (!isSaved) {
-      return;
-    }
-
+    await saveNote();
     router.back();
   };
 
   return (
-    <article className="flex min-h-[calc(100dvh-64px)] flex-col">
+    <div className="flex min-h-[calc(100dvh-64px)] flex-col">
       {/* Editor header */}
-      <header className="sticky top-20 z-20 border-b bg-background/90 backdrop-blur-xl">
+      <header className="sticky top-0 z-20 border-b bg-background/90 backdrop-blur-xl">
         <div className="flex min-h-16 items-center justify-between gap-4 px-4 py-3 md:px-8">
           <div className="min-w-0">
             <p className="truncate text-xs text-muted-foreground">
@@ -228,16 +185,22 @@ export default function NoteEditor({
             </div>
           </div>
 
-          <Button onClick={handleManualSave} disabled={saveStatus === "saving"}>
-            {saveStatus === "saving" ? "Saving..." : "Done"}
+          <Button
+            size="sm"
+            onClick={handleManualSave}
+            disabled={saveStatus === "saving"}
+            className="shrink-0 gap-2"
+          >
+            <Check className="size-4" />
+            Done
           </Button>
         </div>
       </header>
 
       {/* Main editor layout */}
-      <main className="mx-auto grid w-full max-w-400 flex-1 items-start gap-6 p-4 md:p-8 xl:grid-cols-[minmax(0,1fr)_300px]">
+      <main className="mx-auto grid w-full max-w-[1600px] flex-1 items-start gap-6 p-4 md:p-8 xl:grid-cols-[minmax(0,1fr)_300px]">
         {/* Writing area */}
-        <section className="min-w-0 overflow-hidden rounded-[32px] border bg-card shadow-sm">
+        <section className="min-w-0 overflow-hidden rounded-2xl border bg-card shadow-sm">
           <div className="p-5 md:p-8">
             <Label
               htmlFor="note-title"
@@ -277,8 +240,8 @@ export default function NoteEditor({
         </section>
 
         {/* AI sidebar */}
-        <aside className="min-w-0 space-y-4 xl:sticky xl:top-46">
-          <section className="rounded-[32px] border bg-card p-5 shadow-sm">
+        <aside className="min-w-0 space-y-4 xl:sticky xl:top-24">
+          <section className="rounded-2xl border bg-card p-5 shadow-sm">
             <div className="flex items-center gap-3">
               <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-violet-500/10">
                 <Wand2 className="size-5 text-violet-500" />
@@ -305,14 +268,6 @@ export default function NoteEditor({
                 setUserTitle={handleTitleChange}
               />
             </div>
-
-            <div className="mt-5 pt-5 border-t-2">
-              <p className="mb-2">NOTE STATUS</p>
-              <div className="flex items-center gap-2">
-                <CircleCheckBig className="size-4 text-green-400" />
-                <span className="text-sm text-muted">Autosave enabled</span>
-              </div>
-            </div>
           </section>
 
           {/* Summary stays beside the editor */}
@@ -336,6 +291,6 @@ export default function NoteEditor({
           )}
         </aside>
       </main>
-    </article>
+    </div>
   );
 }

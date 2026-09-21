@@ -236,3 +236,49 @@ body {
   background-color: #cd4e6e;
   background: linear-gradient(90deg, #B76E79 0%, #FAD3D1 50%, #B76E79 100%);
 }
+
+
+.noteEditorContent .tiptap {
+  min-height: 55vh;
+  outline: none;
+  color: hsl(var(--foreground));
+  font-size: 1rem;
+  line-height: 1.9;
+}
+
+.noteEditorContent .tiptap p {
+  margin-block: 0.75rem;
+}
+
+.noteEditorContent .tiptap h1,
+.noteEditorContent .tiptap h2,
+.noteEditorContent .tiptap h3 {
+  margin-block: 1.5rem 0.75rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.noteEditorContent .tiptap ul,
+.noteEditorContent .tiptap ol {
+  padding-left: 1.5rem;
+}
+
+.noteEditorContent .tiptap ul {
+  list-style: disc;
+}
+
+.noteEditorContent .tiptap ol {
+  list-style: decimal;
+}
+
+.noteEditorContent .tiptap:focus {
+  outline: none;
+}
+
+.noteEditorContent .tiptap p.is-editor-empty:first-child::before {
+  color: hsl(var(--muted-foreground));
+  content: "Start writing your thoughts...";
+  float: left;
+  height: 0;
+  pointer-events: none;
+}

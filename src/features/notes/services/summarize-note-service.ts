@@ -75,8 +75,6 @@ export async function summarizeNoteService(rawData: IncomingData) {
       model: "openai/gpt-oss-20b",
       inputTokens,
       outputTokens,
-      // costInCents:
-      //     input.costInCents ?? null,
     });
 
     return ok({ summary, usage, requestType });

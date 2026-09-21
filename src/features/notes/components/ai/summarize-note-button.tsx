@@ -19,11 +19,6 @@ export default function SummarizeNoteButton(props: Props) {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
-  //   const workspaceId = params.workspaceId;
-  // if (typeof workspaceId !== "string") {
-  //   throw new Error("Invalid workspace ID");
-  // }
-
   const handleClick = () => {
     startTransition(async () => {
       const result = await summarizeNote({ workspaceId, noteId });
