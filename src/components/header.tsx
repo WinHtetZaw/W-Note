@@ -4,6 +4,7 @@ import { Brain } from "lucide-react";
 import { headers } from "next/headers";
 import Link from "next/link";
 import { Suspense } from "react";
+import { ThemeToggle } from "./ui/theme-toggle";
 
 export default async function Header() {
   return (
@@ -42,6 +43,7 @@ export default async function Header() {
           >
             Get Started
           </Link>
+          <ThemeToggle />
         </nav>
       </div>
     </header>

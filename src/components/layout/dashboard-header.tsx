@@ -1,5 +1,6 @@
 import { Bell, Search } from "lucide-react";
 import Link from "next/link";
+import { ThemeToggle } from "../ui/theme-toggle";
 
 type Props = {
   params: Promise<{ workspaceId: string }>;
@@ -42,6 +43,8 @@ export default async function DashboardHeader({ params }: Props) {
               </div>
             </div>
           </Link>
+
+          <ThemeToggle />
         </div>
       </div>
     </header>
