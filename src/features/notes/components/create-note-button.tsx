@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { useTransition } from "react";
 import { createNote } from "../server/actions/create-note";
 import { Plus } from "lucide-react";
+import { toast } from "sonner";
+import { errorMessages } from "@/lib/errors";
 
 type Props = {
   workspaceId: string;
@@ -19,7 +21,14 @@ export default function CreateNoteButton(props: Props) {
 
   const handleCreate = () => {
     startTransition(async () => {
-      await createNote({ workspaceId, folderId });
+      const result = await createNote({ workspaceId, folderId });
+
+      if (result.code) {
+        toast.error(errorMessages[result.code]);
+        return;
+      }
+
+      toast.success("Note created successfully.");
     });
   };
 

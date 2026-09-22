@@ -30,6 +30,8 @@ export async function generateNoteTitle(rawData: IncomingData) {
       return { code: ErrorCode.NotFound, reason };
     case "AI_GENERATION_FAILED":
       return { code: ErrorCode.Internal, reason };
+    case "PLAN_LIMIT_REACHED":
+      return { code: ErrorCode.PlanLimitReached, reason };
     case "UNEXPECTED":
       return { code: ErrorCode.Internal, reason };
     default:

@@ -6,6 +6,10 @@ export const errorMessages = {
   UNKNOWN_ERROR: "Something went wrong. Please try again.",
   CONFLICT: "The resource already exists or there is a conflict.",
   EMAIL_NOT_SENT: "Failed to send the invitation email. Please try again.",
+  PLAN_LIMIT_REACHED:
+    "You have reached the limit for this feature. Please upgrade your plan to continue using it.",
+  FEATURE_NOT_AVAILABLE:
+    "This feature is not available on your current plan. Please upgrade your plan to access it.",
 } as const;
 
 // CONFLICT: "The resource already exists.",

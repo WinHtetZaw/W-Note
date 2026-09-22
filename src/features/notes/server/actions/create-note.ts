@@ -31,6 +31,12 @@ export async function createNote(rawData: CreateNoteInput) {
       return { code: ErrorCode.Forbidden, reason };
     case "INSUFFICIENT_PERMISSION":
       return { code: ErrorCode.Forbidden, reason };
+    case "PLAN_LIMIT_REACHED":
+      return {
+        code: ErrorCode.PlanLimitReached,
+        reason,
+        details: error.details,
+      };
     case "UNEXPECTED":
       return { code: ErrorCode.Internal, reason };
     default:

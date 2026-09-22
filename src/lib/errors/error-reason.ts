@@ -47,11 +47,15 @@ export const ErrorReason = {
   EmailDoesNotSent: "EMAIL_DOES_NOT_SENT",
   AIGenerationFailed: "AI_GENERATION_FAILED",
   AIRateLimited: "AI_RATE_LIMITED",
-  AIUsageLimitReached: "AI_USAGE_LIMIT_REACHED",
+  // AIUsageLimitReached: "AI_USAGE_LIMIT_REACHED",
 
   FailToCreateAIUsageRecord: "FAIL_TO_CREATE_AI_RECORD",
   FailToDeleteUser: "FAIL_TO_DELETE_USER",
   FailToListUserAccounts: "FAIL_TO_LIST_USER_ACCOUNTS",
 
   SubscriberAlreadyExists: "SUBSCRIBER_ALREADY_EXISTS",
+
+  PlanLimitReached: "PLAN_LIMIT_REACHED",
+  FeatureNotAvailable: "FEATURE_NOT_AVAILABLE",
+  AIUsageLimitReached: "AI_USAGE_LIMIT_REACHED",
 } as const;

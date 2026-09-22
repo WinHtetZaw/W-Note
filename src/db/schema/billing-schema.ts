@@ -5,6 +5,7 @@ import {
   timestamp,
   varchar,
   index,
+  boolean,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 import { workspacesTable } from "./workspace-schema";
@@ -48,6 +49,7 @@ export const subscriptionsTable = pgTable(
       .default("active"),
 
     currentPeriodEnd: timestamp("current_period_end"),
+    cancelAtPeriodEnd: boolean("cancel_at_period_end").notNull().default(false),
 
     createdAt,
     updatedAt,
