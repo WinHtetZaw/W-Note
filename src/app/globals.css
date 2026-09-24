@@ -150,7 +150,9 @@
   --muted: var(--color-zinc-400);
   --muted-foreground: oklch(0.72 0.02 280);
 
-  --accent: oklch(0.22 0.02 280);
+  /* --accent: oklch(0.22 0.02 280);
+  --accent-foreground: oklch(0.98 0 0); */
+  --accent: color-mix(in oklab, var(--color-white) /* #fff = #ffffff */ 10%, transparent);;
   --accent-foreground: oklch(0.98 0 0);
 
   /* --border: oklch(1 0 0 / 10%); */

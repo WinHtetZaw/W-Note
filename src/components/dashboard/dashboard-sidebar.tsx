@@ -77,7 +77,7 @@ export async function DashboardSidebar({ params }: Props) {
           </div>
         </div>
 
-        <AIUsageCard />
+        <AIUsageCard workspaceId={workspaceId} />
       </div>
     </aside>
   );
