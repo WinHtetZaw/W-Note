@@ -129,7 +129,7 @@ function LinksDisplay() {
   return (
     <div className="mt-10 flex flex-col gap-4 sm:flex-row">
       <Button asChild className="text-lg font-semibold">
-        <Link href="/sign-up">Start Free</Link>
+        <Link href="/dashboard/w">Start Free</Link>
       </Button>
 
       <Button asChild variant="outline" className="text-lg font-semibold">

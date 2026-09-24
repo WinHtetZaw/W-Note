@@ -66,5 +66,8 @@ export const auth = betterAuth({
   },
   secret: env.BETTER_AUTH_SECRET,
   baseURL: env.BETTER_AUTH_URL,
-  trustedOrigins: [clientEnv.NEXT_PUBLIC_APP_URL],
+  trustedOrigins: [
+    clientEnv.NEXT_PUBLIC_APP_URL,
+    "https://w-note-ai-git-staging-winhtetzaws-projects.vercel.app/",
+  ],
 });

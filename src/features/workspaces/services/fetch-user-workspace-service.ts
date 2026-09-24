@@ -12,8 +12,11 @@ export async function fetchUserWorkspaceService() {
 
   //========== DB Fetching ==========//
   try {
-    const res = await getUserWorkspace(user.id);
-    return ok(res);
+    const workspace = await getUserWorkspace(user.id);
+    if (!workspace) {
+      return fail({ reason: ErrorReason.WorkspaceNotFound });
+    }
+    return ok(workspace);
   } catch {
     return fail({ reason: ErrorReason.UnexpectedError });
   }

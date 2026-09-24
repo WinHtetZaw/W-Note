@@ -193,7 +193,7 @@
   }
   
   .glass {
-    @apply border border-foreground/10 bg-primary/5 backdrop-blur-2xl;
+    @apply border border-border hover:bg-foreground/10 dark:hover:bg-white/10 bg-primary/5 dark:bg-white/5 backdrop-blur-2xl;
   }
 
   .glass-red {
