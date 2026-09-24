@@ -3,46 +3,29 @@ import { auth } from "@/lib/auth";
 import { Brain } from "lucide-react";
 import { headers } from "next/headers";
 import Link from "next/link";
-import { Suspense } from "react";
+import { ReactNode, Suspense } from "react";
 import { ThemeToggle } from "./ui/theme-toggle";
+import { Skeleton } from "./ui/skeleton";
+import { Button } from "./ui/button";
 
 export default async function Header() {
   return (
-    <header className="fixed w-full top-0 z-50 border-b border-white/10 backdrop-blur-xl">
+    <header className="fixed w-full top-0 z-50 border-b border-foreground/10 backdrop-blur-xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
         <Link href="/" className="flex items-center gap-2">
-          <Brain className="h-7 w-7 text-violet-400" />
+          <Brain className="size-7 text-icon" />
           <span className="text-xl font-bold tracking-tight">NoteAI</span>
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex">
-          <Link
-            href="/features"
-            className="text-zinc-300 transition hover:text-white"
-          >
-            Features
-          </Link>
+          <NavLink href="/features">Features</NavLink>
 
-          <Link
-            href="/pricing"
-            className="text-zinc-300 transition hover:text-white"
-          >
-            Pricing
-          </Link>
-          <Suspense
-            fallback={
-              <div className="h-5 w-20 animate-pulse rounded bg-zinc-700" />
-            }
-          >
+          <NavLink href="/pricing">Pricing</NavLink>
+
+          <Suspense fallback={<Skeleton className="h-5 w-20 rounded-xl" />}>
             <AuthCheckLink />
           </Suspense>
 
-          <Link
-            href="/sign-up"
-            className="rounded-full bg-violet-600 px-5 py-2 font-medium transition hover:bg-violet-500"
-          >
-            Get Started
-          </Link>
           <ThemeToggle />
         </nav>
       </div>
@@ -56,15 +39,22 @@ async function AuthCheckLink() {
   return (
     <>
       {session?.user ? (
-        <SignOutButton className="text-zinc-300 transition hover:text-white" />
+        <SignOutButton className="h-8 px-2 text-link transition hover:text-violet-500" />
       ) : (
-        <Link
-          href="/sign-in"
-          className="text-zinc-300 transition hover:text-white"
-        >
-          Sign In
-        </Link>
+        <NavLink href="/sign-in">Sign In</NavLink>
       )}
     </>
+  );
+}
+
+type NavLinkProps = { children: ReactNode; href: string };
+
+function NavLink({ children, href }: NavLinkProps) {
+  return (
+    <Button variant="styleLess" asChild className="h-8 px-2 ">
+      <Link href={href} className="text-link transition hover:text-violet-500">
+        {children}
+      </Link>
+    </Button>
   );
 }

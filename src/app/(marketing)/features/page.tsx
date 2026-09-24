@@ -84,7 +84,7 @@ export default function FeaturesPage() {
           {features.map(({ title, description, icon: Icon }) => (
             <FeatureCard
               key={title}
-              icon={<Icon className="size-7 text-primary" />}
+              icon={Icon}
               title={title}
               description={description}
             />

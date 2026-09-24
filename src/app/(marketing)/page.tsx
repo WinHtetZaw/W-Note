@@ -4,6 +4,10 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Hero from "@/components/home/hero";
 import FeatureCard from "@/components/home/feature-card";
+import { PLAN_DISPLAY } from "@/features/billing/constants/plan-display";
+import { SubscriptionPlans } from "@/features/billing/constants/billing.constants";
+import { getPlanFeatures } from "@/features/billing/uitls/get-plan-features";
+import SimplePricing from "@/components/home/simple-pricing";
 
 export default function LandingPage() {
   return (
@@ -29,19 +33,19 @@ export default function LandingPage() {
 
         <div className="grid gap-8 md:grid-cols-3">
           <FeatureCard
-            icon={<FileText className="size-7 text-primary" />}
+            icon={FileText}
             title="Smart Notes"
             description="Create rich notes with markdown, folders, tags, and AI assistance."
           />
 
           <FeatureCard
-            icon={<Zap className="size-7 text-primary" />}
+            icon={Zap}
             title="AI Summaries"
             description="Generate summaries, rewrite content, and extract key insights instantly."
           />
 
           <FeatureCard
-            icon={<Users className="size-7 text-primary" />}
+            icon={Users}
             title="Team Collaboration"
             description="Invite members, share workspaces, and collaborate in real time."
           />
@@ -58,6 +62,7 @@ export default function LandingPage() {
           </p>
         </div>
 
+        <SimplePricing />
         <div className="grid gap-8 md:grid-cols-2">
           {/* Free */}
           <PricingCard
@@ -123,15 +128,11 @@ function TitleDisplay() {
 function LinksDisplay() {
   return (
     <div className="mt-10 flex flex-col gap-4 sm:flex-row">
-      <Button asChild className="text-lg font-semibold px-8 py-7.5">
+      <Button asChild className="text-lg font-semibold">
         <Link href="/sign-up">Start Free</Link>
       </Button>
 
-      <Button
-        asChild
-        variant="outline"
-        className="text-lg font-semibold px-8 py-7.5"
-      >
+      <Button asChild variant="outline" className="text-lg font-semibold">
         <Link href="/features">Explore Features</Link>
       </Button>
     </div>

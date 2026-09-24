@@ -10,14 +10,12 @@ import { PlanLimits, SubscriptionPlans } from "../constants/billing.constants";
 export const PLAN_LIMITS = {
   free: {
     workspaces: 1,
-    // notes: 50,
-    notes: 3,
+    notes: 50,
     folders: 5,
     members: 1,
 
     ai: {
-      // requestsPerMonth: 20,
-      requestsPerMonth: 6,
+      requestsPerMonth: 20,
     },
 
     features: {

@@ -40,7 +40,7 @@ export default function RootLayout({
         inter.variable,
       )}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col text-foreground bg-background">
         <ThemeProvider>
           <Toaster closeButton richColors />
           {children}

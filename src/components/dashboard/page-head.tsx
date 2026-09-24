@@ -1,5 +1,6 @@
 import { Sparkles } from "lucide-react";
 import { ReactNode } from "react";
+import PageLabel from "../ui/page-label";
 
 type Props = {
   pageLabel: string;
@@ -14,10 +15,7 @@ export default function PageHead(props: Props) {
   return (
     <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
       <div>
-        <div className="mb-4 inline-flex items-center gap-2 rounded-full glass px-4 py-2 text-sm">
-          {labelIcon ?? <Sparkles className="size-4 text-icon" />}
-          {pageLabel}
-        </div>
+        <PageLabel icon={labelIcon} label={pageLabel} className="mb-4" />
 
         <h1 className="text-4xl font-black md:text-5xl">{title}</h1>
 

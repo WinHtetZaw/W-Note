@@ -10,7 +10,7 @@ export default function LandingPage() {
       <div className="absolute inset-0 -z-10">
         <div className="absolute left-1/2 top-0 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-violet-600/30 blur-[140px]" />
       </div>
-
+      <p>hello</p>
       {/* Header */}
       <header className="sticky top-0 z-50 border-b border-white/10 bg-zinc-950/70 backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
