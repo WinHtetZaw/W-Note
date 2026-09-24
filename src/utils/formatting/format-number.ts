@@ -31,10 +31,3 @@ export const compactNumber = (
 ) => {
   return formatNumber(input, locale, { notation: "compact", compactDisplay });
 };
-
-export const formatNumberToPercentage = (
-  input: number | string,
-  max: number | string,
-) => {
-  return (100 / +max) * +input;
-};

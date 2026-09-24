@@ -1,7 +1,8 @@
 import { fetchAIUsageStatus } from "@/features/ai/server/actions/fetch-ai-usage-status";
-import { formatNumber, formatNumberToPercentage } from "@/utils/formatting";
+import { formatNumber } from "@/utils/formatting";
 import { Zap } from "lucide-react";
 import { Progress } from "../ui/progress";
+import { calculatePercentage } from "@/utils/caculate-percentage";
 
 export async function AIUsageCard({ workspaceId }: { workspaceId: string }) {
   const result = await fetchAIUsageStatus(workspaceId);
@@ -27,7 +28,9 @@ export async function AIUsageCard({ workspaceId }: { workspaceId: string }) {
         <div className="flex justify-between text-sm">
           <span className="text-muted">Monthly Request</span>
 
-          <span>{formatNumberToPercentage(usedRequest, maximunRequest)}%</span>
+          <span>
+            {limit == null ? "Unlimited" : calculatePercentage(usage, limit)}%
+          </span>
         </div>
 
         <Progress value={33} className="h-3 mt-4" />
