@@ -1,15 +1,8 @@
-import { DashboardSidebar } from "@/components/dashboard/dashboard-sidebar";
-import DashboardHeader from "@/components/layout/dashboard-header";
-import { headers } from "next/headers";
-import { Suspense } from "react";
+import { ReactNode } from "react";
 
-export default async function Layout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default async function Layout({ children }: { children: ReactNode }) {
   return (
-    <main className="h-screen custom-scroll bg-zinc-950 text-white">
+    <main className="h-screen custom-scroll bg-background text-foreground">
       {children}
     </main>
   );
