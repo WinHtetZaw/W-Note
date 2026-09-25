@@ -15,7 +15,11 @@ import Link from "next/link";
 
 type Props = {
   currentName: string;
-  userWorkspaces: UserWorkspace[];
+  // userWorkspaces: UserWorkspace[];
+  userWorkspaces: {
+    id: string;
+    name: string;
+  }[];
 };
 
 export function WorkspaceSwitcher({ userWorkspaces, currentName }: Props) {
@@ -38,9 +42,9 @@ export function WorkspaceSwitcher({ userWorkspaces, currentName }: Props) {
         <DropdownMenuSeparator />
 
         {userWorkspaces.map((item) => (
-          <DropdownMenuItem key={item.workspace.id} asChild>
-            <Link href={`/dashboard/w/${item.workspace.id}`} className="w-full">
-              {item.workspace.name}
+          <DropdownMenuItem key={item.id} asChild>
+            <Link href={`/dashboard/w/${item.id}`} className="w-full">
+              {item.name}
             </Link>
           </DropdownMenuItem>
         ))}

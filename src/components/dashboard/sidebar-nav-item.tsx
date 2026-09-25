@@ -13,6 +13,7 @@ import {
   Trash2,
   Users,
 } from "lucide-react";
+import { useDashboardSidebarStore } from "@/stores/dashboard-sidebar-store";
 
 type SidebarNavItemProps = {
   href: string;
@@ -34,10 +35,12 @@ export function SidebarNavItem({ href, label, icon }: SidebarNavItemProps) {
   const pathname = usePathname();
   const Icon = iconMap[icon];
   const active = pathname === href || pathname.startsWith(`${href}/`);
+  const setOpen = useDashboardSidebarStore((state) => state.setOpen);
 
   return (
     <Link
       href={href}
+      onClick={() => setOpen(false)}
       className={cn(
         "flex group items-center gap-3 rounded-xl px-4 py-3 transition-all",
         active
