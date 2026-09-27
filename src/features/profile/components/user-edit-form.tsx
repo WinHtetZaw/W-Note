@@ -64,7 +64,7 @@ export default function UserEditForm({ userName }: Props) {
         />
         <FormSubmitButton
           isPending={isPending}
-          className="ml-auto font-semibold h-12"
+          className="mr-auto font-semibold h-12"
         >
           Save Changes
         </FormSubmitButton>

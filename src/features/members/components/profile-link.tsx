@@ -12,7 +12,7 @@ export default async function ProfileLink() {
 
   return (
     <Link href="/profile">
-      <div className="flex items-center gap-3 rounded-2xl glass px-3 py-2">
+      <div className="flex items-center gap-3 rounded-full lg:rounded-2xl glass lg:px-3 lg:py-2">
         <div className="flex h-10 w-10 items-center uppercase justify-center rounded-full bg-violet-600 font-bold">
           {userName[0]}
         </div>

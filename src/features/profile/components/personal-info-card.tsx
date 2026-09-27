@@ -21,7 +21,7 @@ export default async function PersonalInfoCard() {
         description="Update the information associated with your account."
       />
 
-      <div className="mt-8 flex flex-col gap-8">
+      {/* <div className="mt-8 flex flex-col gap-8">
         <div className="flex items-center gap-5">
           <div className="flex h-20 w-20 items-center uppercase justify-center rounded-full bg-violet-600 text-2xl font-black">
             {userName[0]}
@@ -41,6 +41,15 @@ export default async function PersonalInfoCard() {
         </div>
 
         <UserEditForm userName={userName} />
+      </div> */}
+      <div className="mt-8 flex flex-col gap-8">
+        <div className="flex items-center gap-5">
+          <div className="flex h-20 w-20 items-center uppercase justify-center rounded-full bg-violet-600 text-2xl font-black">
+            {userName[0]}
+          </div>
+
+          <UserEditForm userName={userName} />
+        </div>
       </div>
     </section>
   );

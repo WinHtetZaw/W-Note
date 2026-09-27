@@ -65,7 +65,7 @@ export default function LandingPage() {
         <SimplePricing />
         <div className="grid gap-8 md:grid-cols-2">
           {/* Free */}
-          <PricingCard
+          {/* <PricingCard
             title="Free"
             price="$0"
             description="Perfect for personal note taking."
@@ -76,10 +76,10 @@ export default function LandingPage() {
               "Basic collaboration",
             ]}
             button="Get Started"
-          />
+          /> */}
 
           {/* Pro */}
-          <PricingCard
+          {/* <PricingCard
             featured
             title="Pro"
             price="$19"
@@ -91,7 +91,7 @@ export default function LandingPage() {
               "Priority support",
             ]}
             button="Upgrade Now"
-          />
+          /> */}
         </div>
       </section>
 
@@ -134,78 +134,6 @@ function LinksDisplay() {
 
       <Button asChild variant="outline" className="text-lg font-semibold">
         <Link href="/features">Explore Features</Link>
-      </Button>
-    </div>
-  );
-}
-
-// function FeatureCard({
-//   icon,
-//   title,
-//   description,
-// }: {
-//   icon: React.ReactNode;
-//   title: string;
-//   description: string;
-// }) {
-//   return (
-//     <div className="glass p-8">
-//       <div className="mb-5">{icon}</div>
-//       <h3 className="text-2xl font-bold">{title}</h3>
-//       <p className="mt-4 leading-7 text-muted">{description}</p>
-//     </div>
-//   );
-// }
-
-function PricingCard({
-  title,
-  price,
-  description,
-  features,
-  button,
-  featured = false,
-}: {
-  title: string;
-  price: string;
-  description: string;
-  features: string[];
-  button: string;
-  featured?: boolean;
-}) {
-  return (
-    <div
-      // className={`rounded-3xl border p-10 backdrop-blur-xl ${
-      //   featured
-      //     ? "border-violet-500 bg-violet-500/10"
-      //     : "border-white/10 bg-white/5"
-      // }`}
-      className={cn(
-        "rounded-3xl border p-10 backdrop-blur-xl bg-white/5",
-        featured && " border border-violet-500 bg-violet-500/10",
-      )}
-    >
-      <h3 className="text-3xl font-bold">{title}</h3>
-
-      <div className="mt-5 flex items-end gap-2">
-        <span className="text-5xl font-black">{price}</span>
-        <span className="pb-1 text-muted">/month</span>
-      </div>
-
-      <p className="mt-5 text-muted">{description}</p>
-
-      <ul className="mt-8 space-y-4">
-        {features.map((feature) => (
-          <li key={feature} className="flex items-center gap-3">
-            <Check className="size-5 text-primary" />
-            <span>{feature}</span>
-          </li>
-        ))}
-      </ul>
-      <Button
-        variant={featured ? "default" : "outline"}
-        className="w-full mt-10"
-      >
-        {button}
       </Button>
     </div>
   );

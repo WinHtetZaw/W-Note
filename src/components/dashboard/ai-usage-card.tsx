@@ -33,7 +33,12 @@ export async function AIUsageCard({ workspaceId }: { workspaceId: string }) {
           </span>
         </div>
 
-        <Progress value={33} className="h-3 mt-4" />
+        {limit && (
+          <Progress
+            value={calculatePercentage(usage, limit)}
+            className="h-3 mt-4"
+          />
+        )}
 
         <p className="mt-4 text-sm text-muted">
           {usedRequest} / {maximunRequest} used

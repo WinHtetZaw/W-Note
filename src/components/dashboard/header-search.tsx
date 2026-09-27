@@ -14,6 +14,7 @@ import {
   useRouter,
   useSearchParams,
 } from "next/navigation";
+import { useMediaQuery } from "@/lib/hooks/use-media-query";
 
 export default function HeaderSearch() {
   const router = useRouter();
@@ -21,10 +22,12 @@ export default function HeaderSearch() {
   const params = useParams<{ workspaceId: string }>();
   const searchParams = useSearchParams();
   const [value, setValue] = useState("");
+  const isMobile = useMediaQuery("(max-width: 1023px)");
 
   const { workspaceId } = params;
 
   if (!workspaceId) return null;
+  if (isMobile) return null;
 
   const handleSearch = () => {
     if (!value.trim()) {
@@ -53,13 +56,6 @@ export default function HeaderSearch() {
     params.delete("q");
     router.replace(`${pathname}?${params}`);
   };
-
-  //   const handleOnBlur = () => {
-  //     if (!value.trim()) {
-  //       return;
-  //     }
-  //     handleSearch();
-  //   };
 
   return (
     <>
