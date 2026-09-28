@@ -18,9 +18,7 @@ export function CTASection({
     <GlassCard className="p-14 text-center">
       <h2 className="text-4xl font-black md:text-6xl">{title}</h2>
 
-      <p className="mx-auto mt-6 max-w-2xl text-lg text-zinc-400">
-        {description}
-      </p>
+      <p className="mx-auto mt-6 max-w-2xl text-lg text-muted">{description}</p>
 
       <Link
         href={buttonHref}

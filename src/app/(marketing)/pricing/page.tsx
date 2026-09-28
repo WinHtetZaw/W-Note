@@ -1,62 +1,9 @@
-import Link from "next/link";
-import { Check, Sparkles, Zap, Shield, Users } from "lucide-react";
+import { Zap, Shield, Users } from "lucide-react";
 import { CTASection } from "@/features/marketing/components/cta-section";
 import Hero from "@/components/home/hero";
 import PricingCardList from "@/components/home/pricing-card-list";
 import FeatureCard from "@/components/home/feature-card";
-
-const plans = [
-  {
-    name: "Free",
-    price: "$0",
-    description: "Perfect for personal note taking and trying the platform.",
-    button: "Get Started",
-    href: "/sign-up",
-    featured: false,
-    features: [
-      "Unlimited notes",
-      "1 workspace",
-      "AI summaries",
-      "Markdown editor",
-      "Basic collaboration",
-      "Community support",
-    ],
-  },
-
-  {
-    name: "Pro",
-    price: "$19",
-    description: "Best for creators, students, and productivity power users.",
-    button: "Upgrade to Pro",
-    href: "/sign-up",
-    featured: true,
-    features: [
-      "Unlimited workspaces",
-      "Advanced AI tools",
-      "AI note generation",
-      "Unlimited folders",
-      "Team collaboration",
-      "Priority support",
-    ],
-  },
-
-  {
-    name: "Business",
-    price: "$49",
-    description: "Advanced collaboration and management for teams.",
-    button: "Contact Sales",
-    href: "/sign-up",
-    featured: false,
-    features: [
-      "Unlimited team members",
-      "Admin dashboard",
-      "Workspace analytics",
-      "Advanced permissions",
-      "AI usage controls",
-      "Premium support",
-    ],
-  },
-];
+import FaqItem from "@/components/home/faq-item";
 
 export default function PricingPage() {
   return (
@@ -65,13 +12,14 @@ export default function PricingPage() {
         shortLabel="Simple & Transparent Pricing"
         title={<TitleDisplay />}
         desc="Start free and scale your productivity with powerful AI tools, collaboration, and workspace management."
+        className="section-padding-block"
       />
 
       {/* Pricing Cards */}
       <PricingCardList />
 
       {/* Features Row */}
-      <section className="mx-auto max-w-7xl px-6 pb-28">
+      <section className="mx-auto max-w-7xl section-padding-block">
         <div className="grid gap-8 md:grid-cols-3">
           <FeatureCard
             icon={Zap}
@@ -93,7 +41,7 @@ export default function PricingPage() {
       </section>
 
       {/* FAQ */}
-      <section className="mx-auto max-w-5xl px-6 pb-28">
+      <section className="mx-auto max-w-5xl section-padding-block">
         <div className="mb-16 text-center">
           <h2 className="text-4xl font-bold md:text-5xl">
             Frequently asked questions
@@ -124,7 +72,7 @@ export default function PricingPage() {
       </section>
 
       {/* CTA */}
-      <section className="mx-auto max-w-6xl px-6 pb-28">
+      <section className="mx-auto max-w-6xl section-padding-block">
         <CTASection
           title="Ready to boost your productivity?"
           description="Join creators, developers, students, and teams using AI to organize
@@ -143,15 +91,5 @@ function TitleDisplay() {
       Pricing built for
       <span className="text-gradient"> every workflow</span>
     </h1>
-  );
-}
-
-function FaqItem({ question, answer }: { question: string; answer: string }) {
-  return (
-    <div className="rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl">
-      <h3 className="text-xl font-semibold">{question}</h3>
-
-      <p className="mt-4 leading-7 text-zinc-400">{answer}</p>
-    </div>
   );
 }

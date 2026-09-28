@@ -14,6 +14,9 @@ import {
 import { CTASection } from "@/features/marketing/components/cta-section";
 import Hero from "@/components/home/hero";
 import FeatureCard from "@/components/home/feature-card";
+import SectionTitle from "@/components/home/section-title";
+import PageLabel from "@/components/ui/page-label";
+import { Button } from "@/components/ui/button";
 
 const features = [
   {
@@ -76,11 +79,16 @@ export default function FeaturesPage() {
         title={<TitleDisplay />}
         desc="Capture ideas, organize notes, collaborate with teams, and automate your workflow using modern AI tools."
         links={<LinksDisplay />}
+        className="section-padding-block"
       />
 
       {/* Main Features */}
-      <section className="mx-auto max-w-7xl px-6 py-10">
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+      <section className="mx-auto max-w-7xl py-10">
+        <SectionTitle
+          title="Everything you need to work smarter"
+          description="Powerful tools to capture, organize, and transform your knowledge."
+        />
+        <div className="card-grid">
           {features.map(({ title, description, icon: Icon }) => (
             <FeatureCard
               key={title}
@@ -93,14 +101,11 @@ export default function FeaturesPage() {
       </section>
 
       {/* Showcase Section */}
-      <section className="mx-auto max-w-7xl px-6 py-28">
+      <section className="mx-auto max-w-7xl section-padding-block">
         <div className="grid items-center gap-16 lg:grid-cols-2">
           {/* Left */}
           <div>
-            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm backdrop-blur-md">
-              <Wand2 className="h-4 w-4 text-violet-400" />
-              AI Workspace Experience
-            </div>
+            <PageLabel className="mb-5" label="AI Workspace Experience" />
 
             <h2 className="text-4xl font-black leading-tight md:text-6xl">
               Built for creators, developers, and teams
@@ -123,7 +128,7 @@ export default function FeaturesPage() {
           </div>
 
           {/* Right */}
-          <div className="relative">
+          <div className="relative overflow-hidden">
             <div className="rounded-[36px] border border-white/10 bg-white/5 px-8 py-12 backdrop-blur-2xl">
               {/* Fake Dashboard */}
               <div className="">
@@ -196,7 +201,7 @@ export default function FeaturesPage() {
       </section>
 
       {/* CTA */}
-      <section className="mx-auto max-w-6xl px-6 pb-28">
+      <section className="mx-auto max-w-6xl section-padding-block">
         <CTASection
           title="Ready to build your second brain?"
           description="Start organizing your knowledge with AI-powered productivity tools and collaborative workspaces."
@@ -220,19 +225,12 @@ function TitleDisplay() {
 function LinksDisplay() {
   return (
     <div className="mt-10 flex flex-col justify-center gap-4 sm:flex-row">
-      <Link
-        href="/sign-up"
-        className="rounded-2xl bg-violet-600 px-8 py-4 text-lg font-semibold transition hover:bg-violet-500"
-      >
-        Start Free
-      </Link>
-
-      <Link
-        href="/pricing"
-        className="rounded-2xl border border-white/10 bg-white/5 px-8 py-4 text-lg font-semibold backdrop-blur-xl transition hover:bg-white/10"
-      >
-        View Pricing
-      </Link>
+      <Button className="text-lg p-8 font-semibold" asChild>
+        <Link href="/dashboard">Start Free</Link>
+      </Button>
+      <Button className="text-lg p-8 font-semibold" variant={"outline"} asChild>
+        <Link href="/pricing">View Pricing</Link>
+      </Button>
     </div>
   );
 }

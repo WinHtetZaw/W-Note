@@ -1,18 +1,15 @@
 import Link from "next/link";
-import { FileText, Users, Zap, Check } from "lucide-react";
+import { FileText, Users, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import Hero from "@/components/home/hero";
 import FeatureCard from "@/components/home/feature-card";
-import { PLAN_DISPLAY } from "@/features/billing/constants/plan-display";
-import { SubscriptionPlans } from "@/features/billing/constants/billing.constants";
-import { getPlanFeatures } from "@/features/billing/uitls/get-plan-features";
 import SimplePricing from "@/components/home/simple-pricing";
 
 export default function LandingPage() {
   return (
     <>
       <Hero
+        className="section-padding-block"
         shortLabel="AI-Powered Smart Notes"
         title={<TitleDisplay />}
         desc="Capture ideas, organize knowledge, summarize notes, and collaborate with your team using powerful AI tools."
@@ -20,7 +17,7 @@ export default function LandingPage() {
       />
 
       {/* Features */}
-      <section className="py-24">
+      <section className="section-padding-block">
         <div className="mb-16 text-center">
           <h2 className="text-4xl font-bold md:text-5xl">
             Built for modern productivity
@@ -53,7 +50,7 @@ export default function LandingPage() {
       </section>
 
       {/* Pricing Preview */}
-      <section className="py-24">
+      <section className="section-padding-block">
         <div className="mb-16 text-center">
           <h2 className="text-4xl font-bold md:text-5xl">Simple pricing</h2>
 
@@ -63,41 +60,11 @@ export default function LandingPage() {
         </div>
 
         <SimplePricing />
-        <div className="grid gap-8 md:grid-cols-2">
-          {/* Free */}
-          {/* <PricingCard
-            title="Free"
-            price="$0"
-            description="Perfect for personal note taking."
-            features={[
-              "Unlimited notes",
-              "AI summaries",
-              "1 workspace",
-              "Basic collaboration",
-            ]}
-            button="Get Started"
-          /> */}
-
-          {/* Pro */}
-          {/* <PricingCard
-            featured
-            title="Pro"
-            price="$19"
-            description="For creators and growing teams."
-            features={[
-              "Unlimited workspaces",
-              "Advanced AI tools",
-              "Team collaboration",
-              "Priority support",
-            ]}
-            button="Upgrade Now"
-          /> */}
-        </div>
       </section>
 
       {/* CTA */}
-      <section className="mx-auto max-w-5xl px-6 py-28">
-        <div className="glass p-12 text-center">
+      <section className="mx-auto max-w-5xl section-padding-block">
+        <div className="glass p-12 text-center  rounded-[32px]">
           <h2 className="text-4xl font-black md:text-6xl">
             Start building your knowledge system today
           </h2>
@@ -107,8 +74,13 @@ export default function LandingPage() {
             productivity.
           </p>
 
-          <Button asChild className="mt-10 text-lg font-semibold p-8">
-            <Link href="/sign-up">Create Free Account</Link>
+          <Button
+            asChild
+            className="mt-10 text-lg font-semibold h-auto p-8 w-fit min-w-fit whitespace-pre-wrap py-4"
+          >
+            <Link href="/sign-up" className=" ">
+              Create Free Account
+            </Link>
           </Button>
         </div>
       </section>
@@ -118,9 +90,9 @@ export default function LandingPage() {
 
 function TitleDisplay() {
   return (
-    <h1 className="max-w-5xl text-5xl font-black leading-tight tracking-tight md:text-7xl">
+    <h1 className="max-w-5xl text-4xl font-black leading-tight tracking-tight md:text-7xl">
       Your Second Brain
-      <span className="text-gradient"> Powered by AI</span>
+      <span className="text-gradient block md:inline"> Powered by AI</span>
     </h1>
   );
 }
