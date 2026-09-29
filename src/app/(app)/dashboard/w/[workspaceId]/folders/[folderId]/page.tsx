@@ -74,7 +74,7 @@ async function FolderDetailContent({ params }: Props) {
     <>
       <PageHead
         pageLabel="Folder View"
-        labelIcon={<Folder className="size-4 text-icon" />}
+        labelIcon={Folder}
         title="Product Folder"
         subTitle=" All notes inside this folder."
       >

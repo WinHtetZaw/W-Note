@@ -116,7 +116,7 @@ export default function FeaturesPage() {
               faster with an AI-powered workflow.
             </p>
 
-            <div className="mt-10 space-y-5">
+            <div className="mt-10 space-y-5 px-8 md:px-0">
               {productivity.map((item) => (
                 <div key={item} className="flex items-center gap-3">
                   <CheckCircle2 className="h-5 w-5 text-violet-400" />

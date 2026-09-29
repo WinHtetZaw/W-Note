@@ -69,5 +69,6 @@ export const auth = betterAuth({
   trustedOrigins: [
     clientEnv.NEXT_PUBLIC_APP_URL,
     "https://w-note-ai-git-staging-winhtetzaws-projects.vercel.app/",
+    "192.168.1.11:3000",
   ],
 });

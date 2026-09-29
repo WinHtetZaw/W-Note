@@ -1,25 +1,18 @@
 "use server";
 
 import { cacheTags } from "@/lib/cache/tags";
-import { removeNoteService } from "../../services/remove-note-service";
 import { updateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { ErrorCode } from "@/lib/errors";
+import { emptyTrashService } from "../../services/empty-trash-service";
 
-type IncomingData = {
-  workspaceId: string;
-  noteId: string;
-  folderId?: string;
-};
+export async function emptyTrashAction(workspaceId: string) {
+  const [error, deletedNoteCount] = await emptyTrashService({ workspaceId });
 
-export async function removeNote(rawData: IncomingData) {
-  const [error, isDeleted] = await removeNoteService(rawData);
   if (error == null) {
-    if (rawData.folderId) {
-      updateTag(cacheTags.folderNotes(rawData.folderId));
-    }
-    updateTag(cacheTags.workspaceNotes(rawData.workspaceId));
-    return { success: isDeleted };
+    updateTag(cacheTags.workspaceNotes(workspaceId));
+
+    return { deletedNoteCount };
   }
 
   const reason = error.reason;
@@ -33,7 +26,7 @@ export async function removeNote(rawData: IncomingData) {
     case "INSUFFICIENT_PERMISSION":
       return { code: ErrorCode.Forbidden, reason };
     case "UNEXPECTED":
-      return { code: ErrorCode.Internal, reason };
+      return { code: ErrorCode.Internal, reason, details: error.details };
     default:
       const _exhaustiveCheck: never = reason;
       console.error("Unknown server error reason:", _exhaustiveCheck);

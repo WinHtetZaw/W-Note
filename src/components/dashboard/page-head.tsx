@@ -1,10 +1,10 @@
-import { Sparkles } from "lucide-react";
+import { LucideIcon } from "lucide-react";
 import { ReactNode } from "react";
 import PageLabel from "../ui/page-label";
 
 type Props = {
   pageLabel: string;
-  labelIcon?: ReactNode;
+  labelIcon?: LucideIcon;
   title: string;
   subTitle: string;
   children?: ReactNode;

@@ -1,14 +1,14 @@
 import { cn } from "@/lib/utils";
-import { Sparkles } from "lucide-react";
-import { ReactNode } from "react";
+import { LucideIcon, Sparkles } from "lucide-react";
 
 type PageLabelProps = {
   label: string;
   className?: string;
-  icon?: ReactNode;
+  icon?: LucideIcon;
 };
 
 export default function PageLabel({ label, className, icon }: PageLabelProps) {
+  const Icon = icon ? icon : Sparkles;
   return (
     <div
       className={cn(
@@ -16,7 +16,7 @@ export default function PageLabel({ label, className, icon }: PageLabelProps) {
         className,
       )}
     >
-      {icon ?? <Sparkles className="size-4 text-icon" />}
+      <Icon className="size-4 text-icon" />
       {label}
     </div>
   );

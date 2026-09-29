@@ -1,35 +1,34 @@
 import { fail, ok } from "@/lib/result";
 import { requirePermission } from "@/lib/permissions";
-import { deleteNote } from "../server/mutations/delete-note";
 import z from "zod";
 import { ErrorReason } from "@/lib/errors";
+import { emptyTrash } from "../server/mutations/empty-trash";
 
 const schema = z.object({
-  workspaceId: z.string(),
-  noteId: z.string(),
+  workspaceId: z.uuid(),
 });
 
 type IncomingData = z.infer<typeof schema>;
 
-export async function removeNoteService(rawData: IncomingData) {
+export async function emptyTrashService(rawData: IncomingData) {
   //========= Validating incoming data ========//
   const result = schema.safeParse(rawData);
   if (!result.success) {
     return fail({ reason: ErrorReason.InvalidInput, details: result.error });
   }
-  const { workspaceId, noteId } = result.data;
+  const { workspaceId } = result.data;
 
   //========== Auth and permisssion ==========//
-  const [error] = await requirePermission(workspaceId, "note:delete");
-  if (error) {
-    return fail({ reason: error.reason });
+  const [authError] = await requirePermission(workspaceId, "note:update");
+  if (authError) {
+    return fail({ reason: authError.reason });
   }
 
   //========== DB mutation ==========//
   try {
-    const note = await deleteNote({ workspaceId, noteId });
-    return ok(note);
-  } catch {
-    return fail({ reason: ErrorReason.UnexpectedError });
+    const deletedNoteCount = await emptyTrash(workspaceId);
+    return ok(deletedNoteCount);
+  } catch (err) {
+    return fail({ reason: ErrorReason.UnexpectedError, details: err });
   }
 }

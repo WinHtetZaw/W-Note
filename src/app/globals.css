@@ -188,8 +188,16 @@
 }
 
 @layer utilities {
+  .page-container {
+    @apply mx-auto max-w-7xl px-5 md:px-10;
+  }
+
   .custom-scroll {
     @apply overflow-y-auto scrollbar-thin scrollbar-thumb-white/50 scrollbar-track-transparent
+  }
+
+  .header-bg {
+    @apply bg-zinc-950/70 bg-[linear-gradient(to_bottom,oklch(14.1%_0.005_285.823)_0%,oklch(14.1%_0.005_285.823)_50%,Transparent_100%)] backdrop-blur-lg border-b border-foreground/10
   }
   
   .glass {
@@ -222,11 +230,11 @@
   }
 }
 
-@layer components {
+/* @layer components {
   .page-container {
     @apply mx-auto max-w-7xl px-2.5 md:px-6;
   }
-}
+} */
 
 body {
   /* @apply bg-background text-foreground; */

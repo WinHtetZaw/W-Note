@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useTransition } from "react";
-import { removeNote } from "../server/actions/remove-note";
+import { permanentlyDeleteNoteAction } from "../server/actions/permanently-delete-note-action";
 import { toast } from "sonner";
 import { useParams } from "next/navigation";
 import { errorMessages } from "@/lib/errors";
@@ -15,7 +15,11 @@ export default function NoteDeleteButton() {
 
   const handleDelete = async () => {
     startTransition(async () => {
-      const res = await removeNote({ workspaceId, folderId, noteId });
+      const res = await permanentlyDeleteNoteAction({
+        workspaceId,
+        folderId,
+        noteId,
+      });
       if (res.code) {
         toast.error(errorMessages[res.code]);
         return;

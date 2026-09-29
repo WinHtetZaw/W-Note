@@ -22,7 +22,7 @@ export function DashboardSidebarContent({
 }: Props) {
   return (
     <>
-      <div className="flex h-20 items-center border-b px-6">
+      <div className="sticky top-0 z-50 flex h-20 items-center px-6 header-bg">
         <Link href="/" className="flex items-center gap-3">
           <Brain className="size-8 text-primary" />
 
