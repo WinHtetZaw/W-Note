@@ -6,7 +6,6 @@ export type PlanDisplayDetail = {
   name: string;
   description: string;
   price: number;
-  period: string;
   icon: LucideIcon;
   popular: boolean;
 };
@@ -16,7 +15,6 @@ export const PLAN_DISPLAY = {
     name: "Free",
     description: "For individuals getting started with AI notes.",
     price: 0,
-    period: "forever",
     icon: Sparkles,
     popular: false,
   },
@@ -25,7 +23,6 @@ export const PLAN_DISPLAY = {
     name: "Pro",
     description: "For individuals and small teams using AI every day.",
     price: 12,
-    period: "per month",
     icon: Sparkles,
     popular: true,
   },
@@ -33,8 +30,7 @@ export const PLAN_DISPLAY = {
   team: {
     name: "Team",
     description: "For teams collaborating on a shared knowledge base.",
-    price: 24,
-    period: "per member / month",
+    price: 20,
     icon: Users,
     popular: false,
   },

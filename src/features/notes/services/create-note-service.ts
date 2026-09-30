@@ -26,13 +26,13 @@ export async function createNoteService(inputData: CreateNoteInput) {
 
   //========== Plan Limit Check ==========//
   const noteCount = await countNotes(workspaceId);
-  const [limitError] = await checkPlanLimit({
+  const limitREsult = await checkPlanLimit({
     workspaceId,
     resource: "notes",
-    usage: noteCount,
+    currentCount: noteCount,
   });
-  if (limitError) {
-    return fail({ reason: limitError.reason, details: limitError.details });
+  if (!limitREsult.allowed) {
+    return fail({ reason: ErrorReason.PlanLimitReached });
   }
 
   //========== DB mutation ==========//

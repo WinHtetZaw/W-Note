@@ -5,6 +5,8 @@ import { Check, Sparkles, Users } from "lucide-react";
 import { useTransition } from "react";
 import { SubscriptionPlans } from "../types/billing.types";
 import { createCheckoutSession } from "../server/actions/create-checkout-session";
+import { PLAN_DISPLAY } from "../constants/plan-display";
+import { getPlanFeatures } from "../uitls/get-plan-features";
 
 type BillingPlansProps = {
   workspaceId: string;
@@ -64,14 +66,14 @@ export default function BillingPlans({
 }: BillingPlansProps) {
   const [isPending, startTransition] = useTransition();
 
-  const handleClcik = (planName: string) => {
+  const handleClcik = (planName: SubscriptionPlans) => {
+    if (planName === "free") {
+      return;
+    }
     startTransition(async () => {
-      await wait(2000);
-      console.log(planName);
-
       const res = await createCheckoutSession({
         workspaceId,
-        plan: "pro",
+        plan: planName,
       });
 
       if (res.code) {
@@ -84,10 +86,14 @@ export default function BillingPlans({
     });
   };
 
+  const planNames = Object.keys(PLAN_DISPLAY) as SubscriptionPlans[];
+
   return (
     <div className="grid gap-5 lg:grid-cols-3">
-      {plans.map((plan) => {
+      {planNames.map((p) => {
+        const plan = PLAN_DISPLAY[p];
         const Icon = plan.icon;
+        const features = getPlanFeatures(p);
 
         return (
           <div
@@ -122,15 +128,13 @@ export default function BillingPlans({
                 {plan.price}
               </span>
 
-              <span className="ml-1 text-sm text-zinc-500">
-                / {plan.period}
-              </span>
+              <span className="ml-1 text-sm text-zinc-500">/ per month</span>
             </div>
 
             <ul className="mt-6 flex-1 space-y-3">
-              {plan.features.map((feature) => (
+              {features.map((feature, i) => (
                 <li
-                  key={feature}
+                  key={i}
                   className="flex items-start gap-2.5 text-sm text-zinc-400"
                 >
                   <Check className="mt-0.5 size-4 shrink-0 text-violet-400" />
@@ -141,7 +145,7 @@ export default function BillingPlans({
 
             <button
               type="button"
-              onClick={() => handleClcik(plan.name)}
+              onClick={() => handleClcik(p)}
               className={[
                 "mt-8 h-10 rounded-xl px-4 text-sm font-semibold transition",
                 plan.popular
@@ -149,9 +153,7 @@ export default function BillingPlans({
                   : "border border-white/10 bg-white/5 text-zinc-200 hover:bg-white/10",
               ].join(" ")}
             >
-              {plan.name === activePlan
-                ? "Current plan (active)"
-                : `Choose ${plan.name}`}
+              {p === activePlan ? "Current plan (active)" : `Choose ${p}`}
             </button>
           </div>
         );

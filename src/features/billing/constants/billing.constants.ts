@@ -1,7 +1,6 @@
 export const SUBSCRIPTION_PLANS = ["free", "pro", "team"] as const;
 export const SUBSCRIPTION_STATUS = ["active", "canceled", "past_due"] as const;
 
-// export const subscriptionPlans = ["free", "pro", "team"] as const;
 export type SubscriptionPlans = (typeof SUBSCRIPTION_PLANS)[number];
 
 export const planResources = [

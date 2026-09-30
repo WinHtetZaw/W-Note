@@ -1,20 +1,20 @@
-// features/billing/services/get-workspace-entitlements.ts
-
 import { PLAN_LIMITS } from "../config/plan-limits";
-import { SubscriptionPlans } from "../constants/billing.constants";
-import { getWorkspaceSubscription } from "../server/queries/get-workspace-subscription";
+import { getWorkspacePlanService } from "./get-workspace-plan-service";
 
 export async function getWorkspaceEntitlements(workspaceId: string) {
-  const subscription = await getWorkspaceSubscription(workspaceId);
+  const subscription = await getWorkspacePlanService(workspaceId);
 
-  const plan: SubscriptionPlans =
-    subscription?.status === "active" ? subscription.plan : "free";
-
-  const limits = PLAN_LIMITS[plan];
+  const plan = subscription.status === "active" ? subscription.plan : "free";
 
   return {
     plan,
-    limits,
-    features: limits.features,
+
+    status: subscription.status,
+
+    limits: PLAN_LIMITS[plan],
+
+    cancelAtPeriodEnd: subscription.cancelAtPeriodEnd,
+
+    currentPeriodEnd: subscription.currentPeriodEnd,
   };
 }

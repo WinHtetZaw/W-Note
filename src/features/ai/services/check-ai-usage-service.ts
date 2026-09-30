@@ -27,28 +27,28 @@
 import { fail, ok } from "@/lib/result";
 import { countAIUsageThisMonth } from "../server/queries/count-ai-usage-month";
 import { checkPlanLimit } from "@/features/billing/services/check-plan-limit";
+import { ErrorReason } from "@/lib/errors";
 
 export async function checkAIUsageService(workspaceId: string) {
-  const usage = await countAIUsageThisMonth(workspaceId);
+  const currentCount = await countAIUsageThisMonth(workspaceId);
 
-  const [error, data] = await checkPlanLimit({
+  const result = await checkPlanLimit({
     workspaceId,
     resource: "aiRequestsPerMonth",
-    usage,
+    currentCount,
   });
 
-  if (error) {
+  if (!result.allowed) {
     return fail({
-      reason: error.reason,
-      details: error.details,
+      reason: ErrorReason.AIUsageLimitReached,
     });
   }
 
   return ok({
-    plan: data.plan,
-    limit: data.limit,
-    usage: data.usage,
-    remaining: data.remaining,
-    unlimited: data.unlimited,
+    plan: result.plan,
+    limit: result.limit,
+    current: result.current,
+    remaining: result.remaining,
+    // unlimited: result.unlimited,
   });
 }

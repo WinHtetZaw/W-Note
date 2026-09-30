@@ -5,6 +5,7 @@ import { SubscriptionPlans } from "../types/billing.types";
 import { fail, ok } from "@/lib/result";
 import { ErrorReason } from "@/lib/errors";
 import { env } from "@/data/env/client";
+import { checkSubscriptionExists } from "../server/queries/check-subscription-exists";
 
 type IncomingData = {
   workspaceId: string;
@@ -17,9 +18,9 @@ export async function checkoutSession(input: IncomingData) {
   const { workspaceId, plan, email, customerId } = input;
   const priceId = stripePrices[plan];
 
-  const subscription = await getWorkspaceSubscription(workspaceId);
+  const isExisted = await checkSubscriptionExists({ workspaceId, plan });
 
-  if (subscription?.stripeSubscriptionId) {
+  if (isExisted) {
     return fail({ reason: ErrorReason.SubscriberAlreadyExists });
   }
 

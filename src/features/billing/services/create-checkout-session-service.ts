@@ -2,7 +2,7 @@ import z from "zod";
 import { SUBSCRIPTION_PLANS } from "../constants/billing.constants";
 import { ErrorReason } from "@/lib/errors";
 import { fail, ok } from "@/lib/result";
-import { requireWorkspaceMember } from "@/lib/permissions";
+import { requirePermission } from "@/lib/permissions";
 import { checkoutSession } from "./checkout-session";
 
 const schema = z.object({
@@ -20,7 +20,10 @@ export async function createCheckoutSessionService(rawData: IncomingData) {
   }
   const { workspaceId, plan } = validated.data;
 
-  const [permissionError, authData] = await requireWorkspaceMember(workspaceId);
+  const [permissionError, authData] = await requirePermission(
+    workspaceId,
+    "billing:manage",
+  );
   if (permissionError) {
     return fail({ reason: permissionError.reason });
   }

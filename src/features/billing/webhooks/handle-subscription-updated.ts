@@ -1,27 +1,24 @@
 import Stripe from "stripe";
-
-import { db } from "@/db";
-import { subscriptionsTable } from "@/db/schema";
-
 import { eq } from "drizzle-orm";
+import { subscriptionsTable } from "@/db/schema";
+import { BillingDb } from "../types/billing.types";
 
 export async function handleSubscriptionUpdated(
+  db: BillingDb,
   subscription: Stripe.Subscription,
 ) {
   const workspaceId = subscription.metadata?.workspaceId;
 
   if (!workspaceId) {
-    console.error("Subscription missing workspaceId:", subscription.id);
-
-    return;
+    throw new Error(`Subscription ${subscription.id} is missing workspaceId`);
   }
 
   const plan = subscription.metadata?.plan;
 
   if (plan !== "pro" && plan !== "team") {
-    console.error("Invalid subscription plan:", plan);
-
-    return;
+    throw new Error(
+      `Subscription ${subscription.id} has invalid plan: ${plan}`,
+    );
   }
 
   const customerId =
@@ -29,21 +26,21 @@ export async function handleSubscriptionUpdated(
       ? subscription.customer
       : subscription.customer.id;
 
-  const status = mapStripeSubscriptionStatus(subscription.status);
+  const currentPeriodEnd = subscription.items.data[0]?.current_period_end;
 
   await db
     .update(subscriptionsTable)
     .set({
       plan,
-      status,
-
+      status: mapStripeSubscriptionStatus(subscription.status),
       stripeCustomerId: customerId,
-
       stripeSubscriptionId: subscription.id,
 
-      currentPeriodEnd: new Date(
-        subscription.items.data[0].current_period_end * 1000,
-      ),
+      currentPeriodEnd: currentPeriodEnd
+        ? new Date(currentPeriodEnd * 1000)
+        : null,
+
+      cancelAtPeriodEnd: subscription.cancel_at_period_end,
 
       updatedAt: new Date(),
     })
@@ -57,15 +54,15 @@ function mapStripeSubscriptionStatus(status: Stripe.Subscription.Status) {
       return "active" as const;
 
     case "past_due":
+    case "unpaid":
       return "past_due" as const;
 
     case "canceled":
-    case "unpaid":
     case "incomplete":
     case "incomplete_expired":
       return "canceled" as const;
 
     default:
-      return "canceled" as const;
+      return "past_due" as const;
   }
 }

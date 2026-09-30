@@ -24,23 +24,22 @@ export async function fetchAIUsageStatusService(rawData: IncomingData) {
 
   //========== DB fetching ==========//
   try {
-    const usage = await countAIUsageThisMonth(workspaceId);
-    const [error, data] = await checkPlanLimit({
+    const currentCount = await countAIUsageThisMonth(workspaceId);
+    const result = await checkPlanLimit({
       workspaceId,
       resource: "aiRequestsPerMonth",
-      usage,
+      currentCount,
     });
 
-    if (error) {
+    if (!result.allowed) {
       return fail({
-        reason: error.reason,
-        details: error.details,
+        reason: ErrorReason.AIUsageLimitReached,
       });
     }
     return ok({
-      usage: data.usage,
-      limit: data.limit,
-      remaining: data.remaining,
+      usage: result.current,
+      limit: result.limit,
+      remaining: result.remaining,
     });
   } catch {
     return fail({ reason: ErrorReason.UnexpectedError });

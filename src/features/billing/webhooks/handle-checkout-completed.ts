@@ -1,27 +1,22 @@
 import Stripe from "stripe";
-
-import { db } from "@/db";
-import { subscriptionsTable } from "@/db/schema";
-
 import { eq } from "drizzle-orm";
 
-type Session = Stripe.Checkout.Session;
+import { subscriptionsTable } from "@/db/schema";
+import { BillingDb } from "../types/billing.types";
 
-export async function handleCheckoutCompleted(session: Session) {
+export async function handleCheckoutCompleted(
+  db: BillingDb,
+  session: Stripe.Checkout.Session,
+) {
   const workspaceId = session.metadata?.workspaceId;
-
   const plan = session.metadata?.plan;
 
-  if (!workspaceId || !plan) {
-    console.error("Stripe Checkout session missing metadata", session.id);
-
-    return;
+  if (!workspaceId) {
+    throw new Error(`Checkout session ${session.id} is missing workspaceId`);
   }
 
   if (plan !== "pro" && plan !== "team") {
-    console.error("Invalid Stripe plan:", plan);
-
-    return;
+    throw new Error(`Checkout session ${session.id} has invalid plan: ${plan}`);
   }
 
   const subscriptionId =
@@ -30,13 +25,13 @@ export async function handleCheckoutCompleted(session: Session) {
       : session.subscription?.id;
 
   if (!subscriptionId) {
-    return;
+    throw new Error(`Checkout session ${session.id} has no subscription`);
   }
 
   const customerId =
     typeof session.customer === "string"
       ? session.customer
-      : session.customer?.id;
+      : (session.customer?.id ?? null);
 
   await db
     .update(subscriptionsTable)
@@ -45,7 +40,8 @@ export async function handleCheckoutCompleted(session: Session) {
       status: "active",
       stripeCustomerId: customerId,
       stripeSubscriptionId: subscriptionId,
-      //   updatedAt: new Date(),
+      cancelAtPeriodEnd: false,
+      updatedAt: new Date(),
     })
     .where(eq(subscriptionsTable.workspaceId, workspaceId));
 }

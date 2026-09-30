@@ -33,6 +33,7 @@ export async function createPortalSessionService(rawData: IncomingData) {
 
   const [error, data] = await portalSession({
     stripeCustomerId: subscription.stripeCustomerId,
+    workspaceId,
   });
 
   if (error) {

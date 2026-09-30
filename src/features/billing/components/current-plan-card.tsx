@@ -3,6 +3,7 @@
 import { CheckCircle2, CreditCard, ExternalLink } from "lucide-react";
 import { useTransition } from "react";
 import { createPortalSession } from "../server/actions/create-portal-session";
+import { Button } from "@/components/ui/button";
 
 type CurrentPlanCardProps = {
   workspaceId: string;
@@ -16,10 +17,9 @@ export default function CurrentPlanCard({ workspaceId }: CurrentPlanCardProps) {
       const res = await createPortalSession(workspaceId);
 
       if (res.code) {
-        console.log(res);
+        console.error(res);
         return;
       }
-      console.log(res);
 
       if (res.data.url) {
         // window.location.href = res.data.url;
@@ -45,25 +45,27 @@ export default function CurrentPlanCard({ workspaceId }: CurrentPlanCardProps) {
               </span>
             </div>
 
-            <p className="mt-1 text-sm text-zinc-400">
+            <p className="mt-1 text-sm text-muted">
               Your workspace is currently on the Pro plan.
             </p>
 
             <p className="mt-3 text-sm text-zinc-500">
               Next billing date:{" "}
-              <span className="text-zinc-300">October 11, 2026</span>
+              <span className="text-foreground/75">October 11, 2026</span>
             </p>
           </div>
         </div>
 
-        <button
+        <Button
           type="button"
+          variant="outline"
           onClick={handleClick}
-          className="inline-flex h-10 items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 text-sm font-medium text-zinc-200 transition hover:bg-white/10"
+          disabled={isPending}
+          className="inline-flex h-10 rounded-xl items-center justify-center gap-2 px-4 text-sm font-medium"
         >
           Manage billing
           <ExternalLink className="size-3.5" />
-        </button>
+        </Button>
       </div>
     </div>
   );

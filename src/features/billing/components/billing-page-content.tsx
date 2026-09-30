@@ -4,6 +4,7 @@ import BillingPlans from "./billing-plans";
 import UsageOverview from "./usage-overview";
 import BillingHistory from "./billing-history";
 import { fetchActiveSubscriptionPlan } from "../server/actions/fetch-active-subscripton-plan";
+import PageHead from "@/components/dashboard/page-head";
 
 type BillingPageProps = {
   params: Promise<{
@@ -15,36 +16,23 @@ export default async function BillingPageContent({ params }: BillingPageProps) {
   const { workspaceId } = await params;
   const activePlanData = await fetchActiveSubscriptionPlan(workspaceId);
   if (activePlanData.code) {
-    return <p>unable to fetch activePlanData</p>;
+    throw new Error("Unable to get active plan.");
   }
 
   return (
-    <div className="mx-auto w-full max-w-6xl space-y-10 px-6 py-10">
-      {/* Header */}
-      <div className="space-y-3">
-        <div className="inline-flex items-center gap-2 rounded-full border border-violet-500/20 bg-violet-500/10 px-3 py-1.5 text-xs font-medium text-violet-300">
-          <Sparkles className="size-3.5" />
-          Workspace billing
-        </div>
-
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-            Billing & Plans
-          </h1>
-
-          <p className="mt-2 max-w-2xl text-sm leading-6 text-zinc-400 sm:text-base">
-            Manage your workspace subscription, AI usage, and billing
-            information.
-          </p>
-        </div>
-      </div>
+    <div className="space-y-8">
+      <PageHead
+        title="Billing & Plans"
+        pageLabel="Workspace billing"
+        subTitle="Manage your workspace subscription, AI usage, and billing information."
+      />
 
       {/* Current plan */}
       <section>
         <div className="mb-4 flex items-center gap-2">
-          <CreditCard className="size-4 text-violet-400" />
+          <CreditCard className="size-4 text-icon" />
 
-          <h2 className="font-semibold text-white">Current plan</h2>
+          <h2 className="font-semibold">Current plan</h2>
         </div>
 
         <CurrentPlanCard workspaceId={workspaceId} />
@@ -80,7 +68,7 @@ export default async function BillingPageContent({ params }: BillingPageProps) {
       </section>
 
       {/* Billing history */}
-      <section>
+      {/* <section>
         <div className="mb-4 flex items-center gap-2">
           <Receipt className="size-4 text-violet-400" />
 
@@ -94,7 +82,7 @@ export default async function BillingPageContent({ params }: BillingPageProps) {
         </div>
 
         <BillingHistory workspaceId={workspaceId} />
-      </section>
+      </section> */}
     </div>
   );
 }

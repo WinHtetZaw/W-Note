@@ -19,7 +19,7 @@ export async function fetchAIUsageStatus(workspaceId: string) {
       redirect("/sign-in");
     case "NOT_WORKSPACE_MEMBER":
       return { code: ErrorCode.Forbidden, reason };
-    case "PLAN_LIMIT_REACHED":
+    case "AI_USAGE_LIMIT_REACHED":
       return { code: ErrorCode.PlanLimitReached, reason };
     case "UNEXPECTED":
       return { code: ErrorCode.Internal, reason };

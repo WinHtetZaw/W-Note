@@ -13,7 +13,6 @@ export async function AIUsageCard({ workspaceId }: { workspaceId: string }) {
 
   const { usage, limit, remaining } = result.data;
   const maximunRequest = limit == null ? "unlimited" : formatNumber(limit);
-  const remainRequest = remaining === null ? 0 : formatNumber(remaining);
   const usedRequest = formatNumber(usage);
 
   return (

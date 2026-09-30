@@ -1,3 +1,4 @@
+import { Neondb } from "@/db";
 import {
   SUBSCRIPTION_PLANS,
   SUBSCRIPTION_STATUS,
@@ -9,3 +10,5 @@ export type SubscriptionStatus = (typeof SUBSCRIPTION_STATUS)[number];
 
 // export type PlanLimits = Record<SubscriptionPlans, Record<string, number>>;
 export type PlanLimits = Record<SubscriptionPlans, unknown>;
+
+export type BillingDb = Pick<Neondb, "update">;

@@ -35,7 +35,6 @@ export async function createNote(rawData: CreateNoteInput) {
       return {
         code: ErrorCode.PlanLimitReached,
         reason,
-        details: error.details,
       };
     case "UNEXPECTED":
       return { code: ErrorCode.Internal, reason };

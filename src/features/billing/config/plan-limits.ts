@@ -1,11 +1,8 @@
-// features/billing/config/plan-limits.ts
-
-import { PlanLimits, SubscriptionPlans } from "../constants/billing.constants";
-
-// import {
-//   SubscriptionPlans,
-//   PlanLimits,
-// } from "../types/billing.types";
+import {
+  PlanLimits,
+  PlanResource,
+  SubscriptionPlans,
+} from "../constants/billing.constants";
 
 export const PLAN_LIMITS = {
   free: {
@@ -73,9 +70,7 @@ export const PLAN_LIMITS = {
 } satisfies Record<SubscriptionPlans, PlanLimits>;
 
 export type PlanLimitErrorDetails = {
-  resource:
-    "workspaces" | "notes" | "folders" | "members" | "aiRequestsPerMonth";
-
+  resource: PlanResource;
   plan: SubscriptionPlans;
   usage: number;
   limit: number;

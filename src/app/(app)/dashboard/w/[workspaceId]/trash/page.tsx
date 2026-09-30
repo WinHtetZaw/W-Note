@@ -1,3 +1,4 @@
+import MainLoading from "@/components/ui/main-loaing";
 import { TrashPageContent } from "@/features/trash/components/trash-page-content";
 import { Suspense } from "react";
 
@@ -9,7 +10,7 @@ type TrashPageProps = {
 
 export default function TrashPage({ params }: TrashPageProps) {
   return (
-    <Suspense fallback={<p>trashpage fallback</p>}>
+    <Suspense fallback={<MainLoading />}>
       <TrashPageContent params={params} />
     </Suspense>
   );

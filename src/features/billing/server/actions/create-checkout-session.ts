@@ -27,6 +27,8 @@ export async function createCheckoutSession(rawData: IncomingData) {
       return { code: ErrorCode.Forbidden, reason };
     case "SUBSCRIBER_ALREADY_EXISTS":
       return { code: ErrorCode.Conflict, reason };
+    case "INSUFFICIENT_PERMISSION":
+      return { code: ErrorCode.Forbidden, reason };
     case "UNEXPECTED":
       return { code: ErrorCode.Internal, reason };
     default:

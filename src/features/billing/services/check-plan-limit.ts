@@ -1,15 +1,10 @@
-// features/billing/services/check-plan-limit.ts
-
-import { ErrorReason } from "@/lib/errors";
-import { fail, ok } from "@/lib/result";
-
 import { getWorkspaceEntitlements } from "./get-workspace-entitlements";
 import { PlanLimit, PlanResource } from "../constants/billing.constants";
 
 type CheckPlanLimitInput = {
   workspaceId: string;
   resource: PlanResource;
-  usage: number;
+  currentCount: number;
 };
 
 function getLimit(
@@ -34,7 +29,7 @@ function getLimit(
 
     default: {
       const exhaustiveCheck: never = resource;
-      throw new Error(`Unhandled plan resource: ${String(exhaustiveCheck)}`);
+      throw new Error(`Unknown plan resource: ${String(exhaustiveCheck)}`);
     }
   }
 }
@@ -42,7 +37,7 @@ function getLimit(
 export async function checkPlanLimit({
   workspaceId,
   resource,
-  usage,
+  currentCount,
 }: CheckPlanLimitInput) {
   const entitlements = await getWorkspaceEntitlements(workspaceId);
 
@@ -50,42 +45,19 @@ export async function checkPlanLimit({
 
   // null means unlimited
   if (limit === null) {
-    return ok({
-      plan: entitlements.plan,
-      resource,
-      usage,
+    return {
+      allowed: true,
       limit: null,
-      remaining: null,
-      unlimited: true,
-    });
+      current: currentCount,
+    };
   }
 
-  const remaining = Math.max(limit - usage, 0);
-
-  if (usage >= limit) {
-    return fail({
-      //   reason:
-      //     resource === "aiRequestsPerMonth"
-      //       ? ErrorReason.AIUsageLimitReached
-      //       : ErrorReason.PlanLimitReached,
-      reason: ErrorReason.PlanLimitReached,
-
-      details: {
-        resource,
-        plan: entitlements.plan,
-        usage,
-        limit,
-        remaining: 0,
-      },
-    });
-  }
-
-  return ok({
+  const remaining = Math.max(limit - currentCount, 0);
+  return {
     plan: entitlements.plan,
-    resource,
-    usage,
+    allowed: currentCount < limit,
     limit,
     remaining,
-    unlimited: false,
-  });
+    current: currentCount,
+  };
 }
