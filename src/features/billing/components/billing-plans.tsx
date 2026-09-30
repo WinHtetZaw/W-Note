@@ -153,7 +153,7 @@ export default function BillingPlans({
                   : "border border-white/10 bg-white/5 text-zinc-200 hover:bg-white/10",
               ].join(" ")}
             >
-              {p === activePlan ? "Current plan (active)" : `Choose ${p}`}
+              {p === activePlan ? "Current plan" : `Choose ${p}`}
             </button>
           </div>
         );

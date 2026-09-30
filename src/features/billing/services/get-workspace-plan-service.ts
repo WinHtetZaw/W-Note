@@ -18,6 +18,8 @@ export async function getWorkspacePlanService(workspaceId: string) {
     plan,
     status,
 
+    limits,
+
     stripeCustomerId: subscription?.stripeCustomerId ?? null,
 
     stripeSubscriptionId: subscription?.stripeSubscriptionId ?? null,
@@ -25,7 +27,5 @@ export async function getWorkspacePlanService(workspaceId: string) {
     currentPeriodEnd: subscription?.currentPeriodEnd ?? null,
 
     cancelAtPeriodEnd: subscription?.cancelAtPeriodEnd ?? false,
-
-    limits,
   };
 }

@@ -8,7 +8,7 @@ export const planResources = [
   "notes",
   "folders",
   "members",
-  "aiRequestsPerMonth",
+  // "aiRequestsPerMonth",
 ] as const;
 
 export type PlanResource = (typeof planResources)[number];

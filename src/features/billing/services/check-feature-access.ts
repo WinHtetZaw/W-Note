@@ -7,5 +7,11 @@ export async function checkFeatureAccess(
 ) {
   const entitlements = await getWorkspaceEntitlements(workspaceId);
 
-  return entitlements.limits.features[feature];
+  const allowed = entitlements.limits.features[feature];
+
+  return {
+    allowed,
+    plan: entitlements.plan,
+    feature,
+  };
 }

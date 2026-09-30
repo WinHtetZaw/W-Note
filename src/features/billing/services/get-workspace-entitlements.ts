@@ -4,14 +4,18 @@ import { getWorkspacePlanService } from "./get-workspace-plan-service";
 export async function getWorkspaceEntitlements(workspaceId: string) {
   const subscription = await getWorkspacePlanService(workspaceId);
 
-  const plan = subscription.status === "active" ? subscription.plan : "free";
+  const hasPaidAccess = subscription.status === "active";
+
+  const effectivePlan = hasPaidAccess ? subscription.plan : "free";
 
   return {
-    plan,
+    plan: effectivePlan,
+
+    subscriptionPlan: subscription.plan,
 
     status: subscription.status,
 
-    limits: PLAN_LIMITS[plan],
+    limits: PLAN_LIMITS[effectivePlan],
 
     cancelAtPeriodEnd: subscription.cancelAtPeriodEnd,
 

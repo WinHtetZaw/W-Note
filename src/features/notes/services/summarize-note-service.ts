@@ -5,7 +5,7 @@ import { getNoteById } from "../server/queries/get-note-by-id";
 import z from "zod";
 import { generateTextService } from "@/features/ai/services/generate-text-service";
 import { recordAIUsage } from "@/features/ai/server/mutations/record-ai-usage";
-import { checkAIUsageService } from "@/features/ai/services/check-ai-usage-service";
+// import { checkAIUsageService } from "@/features/ai/services/check-ai-usage-service";
 
 const schema = z.object({ workspaceId: z.uuid(), noteId: z.uuid() });
 
@@ -30,10 +30,10 @@ export async function summarizeNoteService(rawData: IncomingData) {
   const userId = member.user.id;
 
   //========= Check AI quota ========//
-  const [usageError] = await checkAIUsageService(workspaceId);
-  if (usageError) {
-    return fail({ reason: usageError.reason });
-  }
+  // const [usageError] = await checkAIUsageService(workspaceId);
+  // if (usageError) {
+  //   return fail({ reason: usageError.reason });
+  // }
 
   //========= Get Note form db ========//
   const note = await getNoteById({ workspaceId, noteId });
