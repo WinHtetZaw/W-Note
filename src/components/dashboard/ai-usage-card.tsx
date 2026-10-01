@@ -7,13 +7,11 @@ import { calculatePercentage } from "@/utils/caculate-percentage";
 export async function AIUsageCard({ workspaceId }: { workspaceId: string }) {
   const result = await fetchAIUsageStatus(workspaceId);
 
-  // if (result.code) {
-  //   console.log(result);
-  //   throw new Error("Fail to fetch AI usage.");
-  // }
+  if (result.code) {
+    throw new Error("Fail to fetch AI usage.");
+  }
 
-  // const { usage, limit, remaining } = result.data;
-  const { usage, limit, remaining } = { usage: 10, limit: 100, remaining: 90 };
+  const { requestCount: usage, limit, remaining } = result.data;
   const maximunRequest = limit == null ? "unlimited" : formatNumber(limit);
   const usedRequest = formatNumber(usage);
 

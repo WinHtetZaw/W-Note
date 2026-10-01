@@ -1,6 +1,6 @@
 import { AIRequestInput, AIRequestType } from "../types/ai.types";
 
-type AIRequestConfig<K extends AIRequestType> = {
+export type AIRequestConfig<K extends AIRequestType> = {
   systemPrompt: string;
   buildUserPrompt: (input: AIRequestInput[K]) => string;
 };

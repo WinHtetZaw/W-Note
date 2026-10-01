@@ -9,3 +9,12 @@ export const AI_REQUEST_TYPES = [
 ] as const;
 
 export const AI_MODELS = { groq: ["openai/gpt-oss-20b"] };
+
+export const AI_USAGE_RESERVATION_STATUS = [
+  "reserved",
+  "completed",
+  "released",
+] as const;
+
+export type AIUsageReservationStatus =
+  (typeof AI_USAGE_RESERVATION_STATUS)[number];

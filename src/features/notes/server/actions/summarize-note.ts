@@ -28,10 +28,10 @@ export async function summarizeNote(rawData: IncomingData) {
       return { code: ErrorCode.Forbidden, reason };
     case "NOTE_NOT_FOUND":
       return { code: ErrorCode.NotFound, reason };
-    case "AI_GENERATION_FAILED":
-      return { code: ErrorCode.Internal, reason };
     case "AI_USAGE_LIMIT_REACHED":
       return { code: ErrorCode.PlanLimitReached, reason };
+    case "AI_GENERATION_FAILED":
+      return { code: ErrorCode.Internal, reason };
     case "UNEXPECTED":
       return { code: ErrorCode.Internal, reason };
     default:

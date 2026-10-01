@@ -7,6 +7,12 @@ export async function handleSubscriptionUpdated(
   db: BillingDb,
   subscription: Stripe.Subscription,
 ) {
+  console.log("Stripe subscription updated:", {
+    id: subscription.id,
+    status: subscription.status,
+    cancel_at_period_end: subscription.cancel_at_period_end,
+    metadata: subscription.metadata,
+  });
   const workspaceId = subscription.metadata?.workspaceId;
 
   if (!workspaceId) {

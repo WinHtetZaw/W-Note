@@ -2,6 +2,8 @@ import { AI_PROVIDERS, AI_REQUEST_TYPES } from "../constants/ai.constants";
 
 export type AIProvider = (typeof AI_PROVIDERS)[number];
 
+export type AIModels = Record<AIProvider, string[]>;
+
 export type AIRequestType = (typeof AI_REQUEST_TYPES)[number];
 
 export type GenerateTextInput = {

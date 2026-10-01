@@ -13,7 +13,11 @@ import { user as usersTable } from "./auth-schema";
 import { notesTable } from "./note-schema";
 import { createdAt, timeAt, updatedAt } from "./db-schema-helper";
 import { subscriptionsTable } from "./billing-schema";
-import { aiUsageTable } from "./ai-schema";
+import {
+  aiUsageCountersTable,
+  aiUsageReservationsTable,
+  aiUsageTable,
+} from "./ai-schema";
 
 /* =========================================================
    WORKSPACES
@@ -165,6 +169,8 @@ export const workspacesRelations = relations(
     notes: many(notesTable),
     subscription: one(subscriptionsTable),
     aiUsage: many(aiUsageTable),
+    aiUsageCounters: many(aiUsageCountersTable),
+    aiUsageReservations: many(aiUsageReservationsTable),
     invitations: many(workspaceInvitationsTable),
   }),
 );

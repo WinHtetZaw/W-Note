@@ -5,6 +5,7 @@ import { getNoteById } from "../server/queries/get-note-by-id";
 import z from "zod";
 import { generateTextService } from "@/features/ai/services/generate-text-service";
 import { recordAIUsage } from "@/features/ai/server/mutations/record-ai-usage";
+import { executeAiRequestService } from "@/features/ai/services/execute-ai-request-service";
 
 const schema = z.object({ workspaceId: z.uuid(), noteId: z.uuid() });
 
@@ -42,7 +43,10 @@ export async function improveWritingService(rawData: IncomingData) {
     });
   }
 
-  const [aiError, generatedData] = await generateTextService({
+  //========= AI ========//
+  const [aiError, generated] = await executeAiRequestService({
+    workspaceId,
+    userId,
     requestType: "improve_writing",
     variables: { content: note.content },
   });
@@ -51,23 +55,9 @@ export async function improveWritingService(rawData: IncomingData) {
     return fail({ reason: aiError.reason });
   }
 
-  const { requestType, usage, text: content } = generatedData;
-  const inputTokens = usage?.prompt_tokens ?? 0;
-  const outputTokens = usage?.completion_tokens ?? 0;
-
-  try {
-    await recordAIUsage({
-      userId,
-      workspaceId,
-      requestType,
-      provider: "groq",
-      model: "openai/gpt-oss-20b",
-      inputTokens,
-      outputTokens,
-    });
-
-    return ok({ content, usage, requestType });
-  } catch {
-    return fail({ reason: ErrorReason.UnexpectedError });
-  }
+  return ok({
+    content: generated.text,
+    usage: generated.usage,
+    requestType: generated.requestType,
+  });
 }

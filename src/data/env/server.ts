@@ -18,6 +18,7 @@ export const env = createEnv({
     GOOGLE_CLIENT_SECRET: z.string().min(1),
     GITHUB_CLIENT_ID: z.string().min(1),
     GITHUB_CLIENT_SECRET: z.string().min(1),
+    CRON_SECRET: z.string().min(1),
   },
   // If you're using Next.js < 13.4.4, you'll need to specify the runtimeEnv manually
   // runtimeEnv: {

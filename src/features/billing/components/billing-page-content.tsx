@@ -2,9 +2,9 @@ import { CreditCard, Receipt, Sparkles } from "lucide-react";
 import CurrentPlanCard from "./current-plan-card";
 import BillingPlans from "./billing-plans";
 import UsageOverview from "./usage-overview";
-import BillingHistory from "./billing-history";
 import { fetchActiveSubscriptionPlan } from "../server/actions/fetch-active-subscripton-plan";
 import PageHead from "@/components/dashboard/page-head";
+import { fetchAIUsageStatus } from "@/features/ai/server/actions/fetch-ai-usage-status";
 
 type BillingPageProps = {
   params: Promise<{
@@ -15,8 +15,14 @@ type BillingPageProps = {
 export default async function BillingPageContent({ params }: BillingPageProps) {
   const { workspaceId } = await params;
   const activePlanData = await fetchActiveSubscriptionPlan(workspaceId);
+  const aiUsage = await fetchAIUsageStatus(workspaceId);
+
   if (activePlanData.code) {
     throw new Error("Unable to get active plan.");
+  }
+
+  if (aiUsage.code) {
+    throw new Error("Fail to get AI Usage.");
   }
 
   return (
@@ -35,11 +41,17 @@ export default async function BillingPageContent({ params }: BillingPageProps) {
           <h2 className="font-semibold">Current plan</h2>
         </div>
 
-        <CurrentPlanCard workspaceId={workspaceId} />
+        <CurrentPlanCard
+          workspaceId={workspaceId}
+          plan={activePlanData.data.plan}
+          status={aiUsage.data.status}
+          currentPeriodEnd={aiUsage.data.currentPeriodEnd}
+          cancelAtPeriodEnd={aiUsage.data.cancelAtPeriodEnd}
+        />
       </section>
 
       {/* Plans */}
-      <section>
+      <section id="plans">
         <div className="mb-4">
           <h2 className="font-semibold text-white">Choose a plan</h2>
 
@@ -66,23 +78,6 @@ export default async function BillingPageContent({ params }: BillingPageProps) {
 
         <UsageOverview workspaceId={workspaceId} />
       </section>
-
-      {/* Billing history */}
-      {/* <section>
-        <div className="mb-4 flex items-center gap-2">
-          <Receipt className="size-4 text-violet-400" />
-
-          <div>
-            <h2 className="font-semibold text-white">Billing history</h2>
-
-            <p className="mt-1 text-sm text-zinc-500">
-              View your previous invoices and payments.
-            </p>
-          </div>
-        </div>
-
-        <BillingHistory workspaceId={workspaceId} />
-      </section> */}
     </div>
   );
 }

@@ -3,9 +3,7 @@ import { ErrorReason } from "@/lib/errors";
 import { fail, ok } from "@/lib/result";
 import { getNoteById } from "../server/queries/get-note-by-id";
 import z from "zod";
-import { generateTextService } from "@/features/ai/services/generate-text-service";
-import { recordAIUsage } from "@/features/ai/server/mutations/record-ai-usage";
-// import { checkAIUsageService } from "@/features/ai/services/check-ai-usage-service";
+import { executeAiRequestService } from "@/features/ai/services/execute-ai-request-service";
 
 const schema = z.object({ workspaceId: z.uuid(), noteId: z.uuid() });
 
@@ -29,12 +27,7 @@ export async function generateNoteTitleService(rawData: IncomingData) {
   }
   const userId = member.user.id;
 
-  //========= Check AI quota ========//
-  // const [usageError] = await checkAIUsageService(workspaceId);
-  // if (usageError) {
-  //   return fail({ reason: usageError.reason });
-  // }
-
+  //========= Getting Note ========//
   const note = await getNoteById({ workspaceId, noteId });
   if (!note) {
     return fail({ reason: ErrorReason.NoteNotFound });
@@ -45,13 +38,15 @@ export async function generateNoteTitleService(rawData: IncomingData) {
       reason: "INVALID_INPUT",
       details: {
         field: "content",
-        message: "Note has no content to summarize.",
+        message: "Note has no content to generate a title.",
       },
     });
   }
 
-  //========= Generate With AI ========//
-  const [aiError, generatedData] = await generateTextService({
+  //========= AI ========//
+  const [aiError, generated] = await executeAiRequestService({
+    workspaceId,
+    userId,
     requestType: "generate_title",
     variables: { content: note.content },
   });
@@ -60,25 +55,9 @@ export async function generateNoteTitleService(rawData: IncomingData) {
     return fail({ reason: aiError.reason });
   }
 
-  const { requestType, usage, text } = generatedData;
-  const title = text.trim();
-  const inputTokens = usage?.prompt_tokens ?? 0;
-  const outputTokens = usage?.completion_tokens ?? 0;
-
-  //========= Record usage in db ========//
-  try {
-    await recordAIUsage({
-      userId,
-      workspaceId: workspaceId,
-      requestType,
-      provider: "groq",
-      model: "openai/gpt-oss-20b",
-      inputTokens,
-      outputTokens,
-    });
-
-    return ok({ title, usage, requestType });
-  } catch {
-    return fail({ reason: ErrorReason.UnexpectedError });
-  }
+  return ok({
+    title: generated.text,
+    usage: generated.usage,
+    requestType: generated.requestType,
+  });
 }
