@@ -4,13 +4,13 @@ import z from "zod";
 import { deleteWorkspace } from "../server/mutations/delete-workspace";
 import { ErrorReason } from "@/lib/errors";
 
-const scehma = z.object({ workspaceId: z.string() });
+const schema = z.object({ workspaceId: z.string() });
 
 export async function removeWorkspaceService(workspaceId: string) {
   //========== Validating incoming data ==========//
-  const result = scehma.safeParse({ workspaceId });
-  if (!result.success) {
-    return fail({ reason: ErrorReason.InvalidInput, details: result.error });
+  const validated = schema.safeParse({ workspaceId });
+  if (!validated.success) {
+    return fail({ reason: ErrorReason.InvalidInput, details: validated.error });
   }
 
   //========== Auth and permisssion ==========//
@@ -21,7 +21,7 @@ export async function removeWorkspaceService(workspaceId: string) {
 
   //========== DB mutation ==========//
   try {
-    const isDeleted = await deleteWorkspace(result.data.workspaceId);
+    const isDeleted = await deleteWorkspace(validated.data.workspaceId);
     return ok(isDeleted);
   } catch {
     return fail({ reason: ErrorReason.UnexpectedError });

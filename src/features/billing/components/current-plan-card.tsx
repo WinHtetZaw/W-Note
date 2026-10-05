@@ -83,6 +83,7 @@ export default function CurrentPlanCard({
   plan,
   status,
   currentPeriodEnd,
+  cancelAtPeriodEnd,
 }: CurrentPlanCardProps) {
   const [isPending, startTransition] = useTransition();
 
@@ -139,9 +140,7 @@ export default function CurrentPlanCard({
             {billingDate && plan !== "free" && (
               <div className="mt-3 flex items-center gap-2 text-sm">
                 <span className="text-zinc-500">
-                  {status === "canceled"
-                    ? "Access until:"
-                    : "Next billing date:"}
+                  {cancelAtPeriodEnd ? "Access until:" : "Next billing date:"}
                 </span>
 
                 <span className="font-medium text-foreground/80">

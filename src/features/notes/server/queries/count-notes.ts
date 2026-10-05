@@ -1,7 +1,10 @@
 import { db } from "@/db";
 import { notesTable } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { and, eq, isNull } from "drizzle-orm";
 
 export async function countNotes(workspaceId: string) {
-  return db.$count(notesTable, eq(notesTable.workspaceId, workspaceId));
+  return db.$count(
+    notesTable,
+    and(eq(notesTable.workspaceId, workspaceId), isNull(notesTable.deletedAt)),
+  );
 }

@@ -53,7 +53,7 @@ export default async function BillingPageContent({ params }: BillingPageProps) {
       {/* Plans */}
       <section id="plans">
         <div className="mb-4">
-          <h2 className="font-semibold text-white">Choose a plan</h2>
+          <h2 className="font-semibold">Choose a plan</h2>
 
           <p className="mt-1 text-sm text-zinc-500">
             Upgrade or change your workspace plan as your needs grow.
@@ -67,17 +67,7 @@ export default async function BillingPageContent({ params }: BillingPageProps) {
       </section>
 
       {/* Usage */}
-      <section>
-        <div className="mb-4">
-          <h2 className="font-semibold text-white">Usage</h2>
-
-          <p className="mt-1 text-sm text-zinc-500">
-            Keep track of your workspace&apos;s current usage.
-          </p>
-        </div>
-
-        <UsageOverview workspaceId={workspaceId} />
-      </section>
+      <UsageOverview workspaceId={workspaceId} />
     </div>
   );
 }
