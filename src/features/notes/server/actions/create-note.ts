@@ -29,6 +29,8 @@ export async function createNote(rawData: CreateNoteInput) {
       redirect("/sign-in");
     case "NOT_WORKSPACE_MEMBER":
       return { code: ErrorCode.Forbidden, reason };
+    case "RATE_LIMITED":
+      return { code: ErrorCode.RateLimited, reason };
     case "INSUFFICIENT_PERMISSION":
       return { code: ErrorCode.Forbidden, reason };
     case "PLAN_LIMIT_REACHED":
@@ -36,6 +38,7 @@ export async function createNote(rawData: CreateNoteInput) {
         code: ErrorCode.PlanLimitReached,
         reason,
       };
+
     case "UNEXPECTED":
       return { code: ErrorCode.Internal, reason };
     default:

@@ -8,9 +8,10 @@ import { insertNote } from "../server/mutations/insert-note";
 import { ErrorReason } from "@/lib/errors";
 import { checkPlanLimit } from "@/features/billing/services/check-plan-limit";
 import { countNotes } from "../server/queries/count-notes";
+import { checkRateLimit } from "@/lib/ratelimit/check-rate-limit";
 
 export async function createNoteService(inputData: CreateNoteInput) {
-  //========= Validating incoming data ========//
+  // ─── Validate input ─────────────────────────────────────────────
   const validateResult = createNoteSchema.safeParse(inputData);
   if (!validateResult.success) {
     return fail({
@@ -20,25 +21,31 @@ export async function createNoteService(inputData: CreateNoteInput) {
   }
   const { workspaceId, folderId } = validateResult.data;
 
-  //========== Auth and permisssion ==========//
+  // ─── Authentication and Permisssion ───────────────────────────
   const [error, authData] = await requirePermission(workspaceId, "note:create");
   if (error) {
     return fail({ reason: error.reason });
   }
   const authorId = authData.user.id;
 
-  //========== Plan Limit Check ==========//
+  // ─── Check Ratelimit ───────────────────────────
+  const [limitError] = await checkRateLimit("create", `user:${authorId}`);
+  if (limitError) {
+    return fail({ reason: limitError.reason, details: limitError.details });
+  }
+
+  // ─── Check Quota ───────────────────────────
   const noteCount = await countNotes(workspaceId);
   const quota = await checkPlanLimit(workspaceId, "notes", noteCount);
   if (!quota.allowed) {
     return fail({ reason: ErrorReason.PlanLimitReached });
   }
 
-  //========== DB Process ==========//
+  // ─── DB operation ───────────────────────────
   try {
     const note = await insertNote({ workspaceId, authorId, folderId });
     return ok(note);
-  } catch {
-    return fail({ reason: ErrorReason.UnexpectedError });
+  } catch (error) {
+    return fail({ reason: ErrorReason.UnexpectedError, details: error });
   }
 }

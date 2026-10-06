@@ -10,6 +10,10 @@ export const errorMessages = {
     "You have reached the limit for this feature. Please upgrade your plan to continue using it.",
   FEATURE_NOT_AVAILABLE:
     "This feature is not available on your current plan. Please upgrade your plan to access it.",
+
+  RATE_LIMITED: "You have been rate-limited. Please try again later.",
+  QUOTA_EXCEEDED:
+    "You have exceeded your quota for this feature. Please try again later.",
 } as const;
 
 // CONFLICT: "The resource already exists.",

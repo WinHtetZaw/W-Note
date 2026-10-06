@@ -58,4 +58,7 @@ export const ErrorReason = {
   PlanLimitReached: "PLAN_LIMIT_REACHED",
   FeatureNotAvailable: "FEATURE_NOT_AVAILABLE",
   AIUsageLimitReached: "AI_USAGE_LIMIT_REACHED",
+
+  RateLimited: "RATE_LIMITED",
+  Quotae: "QUOTA_EXCEEDED",
 } as const;
