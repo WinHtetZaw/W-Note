@@ -1,5 +1,5 @@
 import { noteVersionsTable } from "@/db/schema";
-import { Transaction } from "@/lib/types";
+import { Transaction } from "@/db/types";
 
 type InsertNoteVersion = Omit<
   typeof noteVersionsTable.$inferInsert,

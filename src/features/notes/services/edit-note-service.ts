@@ -8,14 +8,14 @@ import { updateNote } from "../server/mutations/update-note";
 import { ErrorReason } from "@/lib/errors";
 
 export async function editNoteService(inputData: UpdateNoteInput) {
-  //========= Validating incoming data ========//
+  // ─── Validate input ───────────────────────────────────────────
   const result = updateNoteSchema.safeParse(inputData);
   if (!result.success) {
     return fail({ reason: ErrorReason.InvalidInput, details: result.error });
   }
   const { workspaceId, content, noteId, title } = result.data;
 
-  //========== Auth and permisssion ==========//
+  // ─── Authentication and Permisssion ───────────────────────────
   const [error, data] = await requirePermission(workspaceId, "note:update");
   if (error) {
     return fail({ reason: error.reason });

@@ -1,4 +1,4 @@
-import { Neondb } from "@/db";
+import { Neondb } from "@/db/types";
 import {
   SUBSCRIPTION_PLANS,
   SUBSCRIPTION_STATUS,

@@ -1,5 +1,5 @@
 import { aiUsageReservationsTable } from "@/db/schema";
-import { Transaction } from "@/lib/types";
+import { Transaction } from "@/db/types";
 
 type IncomingData = {
   tx: Transaction;

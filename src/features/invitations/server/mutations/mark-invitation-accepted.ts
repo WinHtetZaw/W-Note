@@ -1,5 +1,5 @@
 import { workspaceInvitationsTable } from "@/db/schema";
-import { Transaction } from "@/lib/types";
+import { Transaction } from "@/db/types";
 import { now } from "@/lib/utils";
 import { eq } from "drizzle-orm";
 

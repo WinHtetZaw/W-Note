@@ -1,6 +1,6 @@
 import { db } from "@/db";
 import { workspaceMembersTable } from "@/db/schema";
-import { Transaction } from "@/lib/types";
+import { Transaction } from "@/db/types";
 
 type CreateWorkspaceMemberData = {
   workspaceId: string;

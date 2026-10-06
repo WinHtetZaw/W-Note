@@ -1,30 +1,43 @@
-import { db } from "@/db";
-import { notesTable } from "@/db/schema";
-import { checkingFolderExist } from "../../services/checking-folder-exist";
+import { and, eq } from "drizzle-orm";
+import { foldersTable, notesTable } from "@/db/schema";
+import { Transaction } from "@/db/types";
 
-type InsertNote = {
+type InsertNoteData = {
   workspaceId: string;
   authorId: string;
   folderId?: string | null;
 };
 
-export async function insertNote(data: InsertNote) {
+export async function insertNote(tx: Transaction, data: InsertNoteData) {
   const { workspaceId, authorId, folderId } = data;
 
   if (folderId) {
-    const isExisted = await checkingFolderExist({ workspaceId, folderId });
-    if (!isExisted) {
+    const [folder] = await tx
+      .select({ id: foldersTable.id })
+      .from(foldersTable)
+      .where(
+        and(
+          eq(foldersTable.id, folderId),
+          eq(foldersTable.workspaceId, workspaceId),
+        ),
+      )
+      .limit(1);
+
+    if (!folder) {
       throw new Error("Folder not found");
     }
   }
 
-  const noteData = {
-    workspaceId,
-    folderId,
-    title: "New Note",
-    authorId,
-    content: "",
-  };
-  const [note] = await db.insert(notesTable).values(noteData).returning();
+  const [note] = await tx
+    .insert(notesTable)
+    .values({
+      workspaceId,
+      folderId,
+      title: "New Note",
+      authorId,
+      content: "",
+    })
+    .returning();
+
   return note;
 }

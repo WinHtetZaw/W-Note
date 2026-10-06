@@ -1,5 +1,5 @@
 import { aiUsageCountersTable } from "@/db/schema";
-import { Transaction } from "@/lib/types";
+import { Transaction } from "@/db/types";
 import { sql } from "drizzle-orm";
 
 type IncomingData = {
