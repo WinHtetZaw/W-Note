@@ -28,7 +28,8 @@ export default function CreateNoteButton(props: Props) {
         return;
       }
 
-      toast.success("Note created successfully.");
+      // toast.success("Note created successfully.");
+      return;
     });
   };
 

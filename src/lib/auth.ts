@@ -64,11 +64,17 @@ export const auth = betterAuth({
       clientSecret: env.GITHUB_CLIENT_SECRET,
     },
   },
+  // account: {
+  //   accountLinking: {
+  //     enabled: true,
+  //     trustedProviders: ["google", "github"], // Add trusted providers
+  //   },
+  // },
   secret: env.BETTER_AUTH_SECRET,
   baseURL: env.BETTER_AUTH_URL,
   trustedOrigins: [
     clientEnv.NEXT_PUBLIC_APP_URL,
-    "https://w-note-ai-git-staging-winhtetzaws-projects.vercel.app/",
-    "192.168.1.11:3000",
+    "https://w-note-ai-git-staging-winhtetzaws-projects.vercel.app",
+    "http://192.168.1.11:3000",
   ],
 });

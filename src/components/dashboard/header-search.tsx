@@ -14,7 +14,7 @@ import {
   useRouter,
   useSearchParams,
 } from "next/navigation";
-import { useMediaQuery } from "@/lib/hooks/use-media-query";
+import { useMediaQuery } from "@/utils/hooks/use-media-query";
 
 export default function HeaderSearch() {
   const router = useRouter();
