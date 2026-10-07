@@ -3,24 +3,37 @@ import { fail, ok } from "@/lib/result";
 import { deleteFolder } from "../server/mutations/delete-folder";
 import { RemoveFolder, removefolderSchema } from "../schemas";
 import { ErrorReason } from "@/lib/errors";
+import { checkRateLimit } from "@/lib/ratelimit/check-rate-limit";
 
 export async function removeFolderService(rawData: RemoveFolder) {
-  //========== Validating incoming data ==========//
-  const result = removefolderSchema.safeParse(rawData);
-  if (!result.success) {
-    return fail({ reason: ErrorReason.InvalidInput, details: result.error });
+  // ─── Validate Input ──────────────────────────────────────────
+  const validated = removefolderSchema.safeParse(rawData);
+  if (!validated.success) {
+    return fail({ reason: ErrorReason.InvalidInput, details: validated.error });
   }
-  const { workspaceId } = result.data;
+  const { workspaceId } = validated.data;
 
-  //========== Auth and permisssion ==========//
-  const [error] = await requirePermission(workspaceId, "folder:delete");
-  if (error) {
-    return fail({ reason: error.reason });
+  // ─── Check Authentication & Permission ───────────────────────
+  const [authError, authData] = await requirePermission(
+    workspaceId,
+    "folder:delete",
+  );
+  if (authError) {
+    return fail({ reason: authError.reason });
   }
 
-  //========== DB mutation ==========//
+  // ─── Check Ratelimit ─────────────────────────────────────────
+  const [limitError] = await checkRateLimit(
+    "destructive",
+    `user:${authData.user.id}`,
+  );
+  if (limitError) {
+    return fail({ reason: limitError.reason, details: limitError.details });
+  }
+
+  // ─── Check Operation ──────────────────────────────────────────
   try {
-    const isDeleted = await deleteFolder(result.data);
+    const isDeleted = await deleteFolder(validated.data);
     return ok({ success: isDeleted });
   } catch {
     return fail({ reason: ErrorReason.UnexpectedError });

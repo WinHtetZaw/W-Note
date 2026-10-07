@@ -26,6 +26,12 @@ export const rateLimiters = {
     prefix: "rl:destructive",
   }),
 
+  search: new Ratelimit({
+    redis,
+    limiter: Ratelimit.slidingWindow(30, "1 m"),
+    prefix: "rl:search",
+  }),
+
   ai: new Ratelimit({
     redis,
     limiter: Ratelimit.slidingWindow(10, "1 m"),

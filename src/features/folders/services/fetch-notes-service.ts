@@ -7,26 +7,25 @@ import z from "zod";
 const schema = z.object({
   workspaceId: z.string(),
   q: z.string().optional(),
-  limit: z.number().optional(),
+  limit: z.number().int().min(1).max(100).default(20),
 });
 
 type IncomingData = z.infer<typeof schema>;
 
 export async function fetchNotesService(rawData: IncomingData) {
-  //========== Validating incoming data ==========//
+  // ─── Validate Input ────────────────────────────────────────
   const result = schema.safeParse(rawData);
   if (!result.success) {
     return fail({ reason: ErrorReason.InvalidInput, details: result.error });
   }
-  const workspaceId = result.data.workspaceId;
 
-  //========== Auth ==========//
-  const [error] = await requireWorkspaceMember(workspaceId);
+  // ─── Authentication & Permission ────────────────────────────
+  const [error] = await requireWorkspaceMember(result.data.workspaceId);
   if (error) {
     return fail({ reason: error.reason });
   }
 
-  //========== DB Fetching ==========//
+  // ─── DB Operation ────────────────────────────
   try {
     const res = await getNotes(result.data);
     return ok(res);

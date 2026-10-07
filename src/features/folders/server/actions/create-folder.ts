@@ -23,6 +23,12 @@ export async function createFolder(rawData: CreateFolderInput) {
       redirect("/sign-in");
     case "NOT_WORKSPACE_MEMBER":
       return { code: ErrorCode.Forbidden, reason };
+    case "WORKSPACE_NOT_FOUND":
+      return { code: ErrorCode.NotFound, reason };
+    case "RATE_LIMITED":
+      return { code: ErrorCode.RateLimited, reason };
+    case "PLAN_LIMIT_REACHED":
+      return { code: ErrorCode.PlanLimitReached, reason };
     case "INSUFFICIENT_PERMISSION":
       return { code: ErrorCode.Forbidden, reason };
     case "UNEXPECTED":

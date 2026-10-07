@@ -1,19 +1,19 @@
 import { and, eq, isNull } from "drizzle-orm";
 import { db } from "@/db";
-import { notesTable, workspacesTable } from "@/db/schema";
+import { foldersTable, notesTable, workspacesTable } from "@/db/schema";
 import { checkPlanLimit } from "@/features/billing/services/check-plan-limit";
 import { ErrorReason } from "@/lib/errors";
-import { insertNote } from "./insert-note";
 import { fail, ok } from "@/lib/result";
+import { insertFolder } from "./insert-folder";
 
-type CreateNoteAtomicInput = {
+type CreateFolderAtomicInput = {
   workspaceId: string;
-  authorId: string;
-  folderId?: string | null;
+  name: string;
+  createdBy: string;
 };
 
-export async function createNoteAtomic(input: CreateNoteAtomicInput) {
-  const { workspaceId, authorId, folderId } = input;
+export async function createFolderAtomic(input: CreateFolderAtomicInput) {
+  const { workspaceId, name, createdBy } = input;
 
   return db.transaction(async (tx) => {
     // Serialize note creation for this workspace.
@@ -27,25 +27,23 @@ export async function createNoteAtomic(input: CreateNoteAtomicInput) {
       return fail({ reason: ErrorReason.WorkspaceNotFound });
     }
 
-    // Only active notes count toward the plan limit.
-    const noteCount = await tx.$count(
-      notesTable,
-      and(
-        eq(notesTable.workspaceId, workspaceId),
-        isNull(notesTable.deletedAt),
-      ),
+    // Getting folder count
+    const folderCount = await tx.$count(
+      foldersTable,
+      eq(foldersTable.workspaceId, workspaceId),
     );
 
-    const quota = await checkPlanLimit(workspaceId, "notes", noteCount);
+    // Check plan limit
+    const quota = await checkPlanLimit(workspaceId, "notes", folderCount);
 
     if (!quota.allowed) {
       return fail({ reason: ErrorReason.PlanLimitReached });
     }
 
-    const inserted = await insertNote(tx, {
+    const inserted = await insertFolder(tx, {
       workspaceId,
-      authorId,
-      folderId,
+      name,
+      createdBy,
     });
     return ok(inserted);
   });

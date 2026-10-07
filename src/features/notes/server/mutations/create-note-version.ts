@@ -1,26 +1,18 @@
 import { db } from "@/db";
-import { notesTable } from "@/db/schema";
-import { eq } from "drizzle-orm";
-
 import { getNoteForVersion } from "../queries/get-note-for-version";
 import { getNoteVersion } from "../queries/get-note-version";
 import { insertNoteVersion } from "../../services/insert-note-version";
 
-type CreateNoteVersionInput = {
+type IncomingData = {
   noteId: string;
   userId: string;
 };
 
-export async function createNoteVersion({
-  noteId,
-  userId,
-}: CreateNoteVersionInput) {
+export async function createNoteVersion({ noteId, userId }: IncomingData) {
   return db.transaction(async (tx) => {
     const note = await getNoteForVersion(noteId);
 
-    if (!note) {
-      throw new Error("Note not found");
-    }
+    if (!note) throw new Error("Note not found");
 
     const latest = await getNoteVersion(noteId);
 

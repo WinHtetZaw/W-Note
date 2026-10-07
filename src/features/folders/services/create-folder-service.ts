@@ -3,29 +3,45 @@ import {
   CreateFolderInput,
   createFolderSchema,
 } from "../schemas/create-folder-schema";
-import { insertFolder } from "../server/mutations/insert-folder";
 import { fail, ok } from "@/lib/result";
 import { ErrorReason } from "@/lib/errors";
+import { createFolderAtomic } from "../server/mutations/create-folder-atomic";
+import { checkRateLimit } from "@/lib/ratelimit/check-rate-limit";
 
 export async function createFolderService(rawData: CreateFolderInput) {
-  //========== Validating incoming data ==========//
-  const result = createFolderSchema.safeParse(rawData);
-  if (!result.success) {
-    return fail({ reason: ErrorReason.InvalidInput, details: result.error });
+  // ─── Validate Input ────────────────────────────────────────────────
+  const validated = createFolderSchema.safeParse(rawData);
+  if (!validated.success) {
+    return fail({ reason: ErrorReason.InvalidInput, details: validated.error });
   }
-  const workspaceId = result.data.workspaceId;
+  const { workspaceId, name } = validated.data;
 
-  //========== Auth and permisssion ==========//
-  const [error, data] = await requirePermission(workspaceId, "folder:create");
-  if (error) {
-    return fail({ reason: error.reason });
+  // ─── Check Authentication & Permission ─────────────────────────────
+  const [authError, authData] = await requirePermission(
+    workspaceId,
+    "folder:create",
+  );
+  if (authError) {
+    return fail({ reason: authError.reason });
   }
-  const createdBy = data.user.id;
+  const userId = authData.user.id;
 
-  //========== DB mutation ==========//
+  // ─── Check Ratelimit ───────────────────────────────────────────────
+  const [limitError] = await checkRateLimit("create", `user:${userId}`);
+  if (limitError) {
+    return fail({ reason: limitError.reason, details: limitError.details });
+  }
+
+  // ─── DB Operation ───────────────────────────────────────────────────
   try {
-    const res = await insertFolder({ ...result.data, createdBy });
-    return ok(res);
+    const [error, folder] = await createFolderAtomic({
+      workspaceId,
+      name,
+      createdBy: userId,
+    });
+
+    if (error) return fail({ reason: error.reason });
+    return ok(folder);
   } catch {
     return fail({ reason: ErrorReason.UnexpectedError });
   }
