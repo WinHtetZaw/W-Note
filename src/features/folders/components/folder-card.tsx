@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { FolderNotesView } from "../server/queries/get-folders-with-notes";
 import { ArrowRight, FileText, Folder } from "lucide-react";
 import { pluralize, timeAgo } from "@/lib/utils";
+import { FolderNotesView } from "../types";
 
 export default function FolderCard({ folder }: { folder: FolderNotesView }) {
   return (

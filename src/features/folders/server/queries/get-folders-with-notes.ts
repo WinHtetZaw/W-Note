@@ -28,7 +28,3 @@ export async function getFoldersWithNotes(data: IncomingData) {
     orderBy: (table, { asc }) => [asc(table.createdAt)],
   });
 }
-
-export type FolderNotesView = NonNullable<
-  Awaited<ReturnType<typeof getFoldersWithNotes>>
->[number];

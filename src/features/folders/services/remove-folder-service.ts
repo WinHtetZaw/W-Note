@@ -1,13 +1,20 @@
 import { requirePermission } from "@/lib/permissions";
 import { fail, ok } from "@/lib/result";
 import { deleteFolder } from "../server/mutations/delete-folder";
-import { RemoveFolder, removefolderSchema } from "../schemas";
 import { ErrorReason } from "@/lib/errors";
 import { checkRateLimit } from "@/lib/ratelimit/check-rate-limit";
+import z from "zod";
 
-export async function removeFolderService(rawData: RemoveFolder) {
+const schema = z.object({
+  workspaceId: z.string(),
+  folderId: z.string(),
+});
+
+type IncomingData = z.infer<typeof schema>;
+
+export async function removeFolderService(rawData: IncomingData) {
   // ─── Validate Input ──────────────────────────────────────────
-  const validated = removefolderSchema.safeParse(rawData);
+  const validated = schema.safeParse(rawData);
   if (!validated.success) {
     return fail({ reason: ErrorReason.InvalidInput, details: validated.error });
   }

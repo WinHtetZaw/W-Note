@@ -1,4 +1,3 @@
-import { db } from "@/db";
 import { foldersTable } from "@/db/schema";
 import { Transaction } from "@/db/types";
 

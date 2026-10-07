@@ -1,13 +1,17 @@
 "use server";
 
 import { updateTag } from "next/cache";
-import { RemoveFolder } from "../../schemas/";
 import { removeFolderService } from "../../services/remove-folder-service";
 import { cacheTags } from "@/lib/cache/tags";
 import { redirect } from "next/navigation";
 import { ErrorCode } from "@/lib/errors";
 
-export async function removeFolder(rawData: RemoveFolder) {
+type IncomingData = {
+  workspaceId: string;
+  folderId: string;
+};
+
+export async function removeFolder(rawData: IncomingData) {
   const [error, isDeleted] = await removeFolderService(rawData);
 
   if (error == null) {
@@ -16,17 +20,26 @@ export async function removeFolder(rawData: RemoveFolder) {
   }
 
   const reason = error.reason;
+
   switch (reason) {
     case "INVALID_INPUT":
       return { code: ErrorCode.Validation, reason, details: error.details };
+
     case "NOT_AUTHENTICATED":
       redirect("/sign-in");
+
     case "NOT_WORKSPACE_MEMBER":
       return { code: ErrorCode.Forbidden, reason };
+
+    case "RATE_LIMITED":
+      return { code: ErrorCode.RateLimited, reason };
+
     case "INSUFFICIENT_PERMISSION":
       return { code: ErrorCode.Forbidden, reason };
+
     case "UNEXPECTED":
       return { code: ErrorCode.Internal, reason };
+
     default:
       const _exhaustiveCheck: never = reason;
       console.error("Unknown server error reason:", _exhaustiveCheck);
