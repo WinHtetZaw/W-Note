@@ -1,4 +1,4 @@
-import MainLoading from "@/components/ui/main-loaing";
+import MainLoading from "@/components/ui/main-loading";
 import NoteEditor from "@/features/notes/components/editor/note-editor";
 import { fetchNoteById } from "@/features/notes/server/actions/fetch-note-by-id";
 import { Suspense } from "react";

@@ -3,7 +3,7 @@ import InputSearch from "@/components/ui/input-search";
 import FolderCreateLink from "@/features/folders/components/folder-create-link";
 import { Suspense } from "react";
 import FolderList from "@/features/folders/components/folder-list";
-import MainLoading from "@/components/ui/main-loaing";
+import MainLoading from "@/components/ui/main-loading";
 import CardSkeletonList from "@/components/ui/card-skeleton-list";
 
 type Props = {

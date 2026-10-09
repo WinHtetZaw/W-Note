@@ -1,5 +1,7 @@
+import EmptyState from "@/components/ui/empty-state";
 import { fetchFoldersNotes } from "../server/actions/fetch-folders-notes";
 import FolderCard from "./folder-card";
+import { FolderTree } from "lucide-react";
 
 type Props = {
   params: Promise<{ workspaceId: string }>;
@@ -43,5 +45,11 @@ function EmptyFolders({ query }: { query?: string }) {
     );
   }
 
-  return <div className="mt-8 text-muted text-center">No folder yet.</div>;
+  return (
+    <EmptyState
+      title=" No Folders yet."
+      description=" Create a new folder to get started."
+      className="mt-8"
+    />
+  );
 }

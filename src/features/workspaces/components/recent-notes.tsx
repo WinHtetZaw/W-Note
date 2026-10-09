@@ -3,6 +3,7 @@ import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
 import RecentNotesList, { RecentNotesListLoading } from "./recent-notes-lits";
+import { fetchNotes } from "@/features/notes/server/actions/fetch-notes";
 
 type Props = {
   params: Promise<{ workspaceId: string }>;

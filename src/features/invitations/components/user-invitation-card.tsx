@@ -1,8 +1,8 @@
 import { CalendarClock, Crown, Users } from "lucide-react";
 import { PendingInvitation } from "../server/queries/get-user-pending-invitations";
 import { formatExpiryInDays } from "@/utils/formatting";
-import InvitationAcceptButton from "./invitation-accept-button";
-import { Button } from "@/components/ui/button";
+import AcceptInvitationButton from "./accept-invitation-button";
+import DeclineInvitationButton from "./decline-invitation-button";
 
 type Props = {
   invitation: PendingInvitation;
@@ -45,14 +45,12 @@ export default function UserInvitationCard({ invitation }: Props) {
         {/* Right */}
 
         <div className="flex gap-3 ml-auto">
-          <InvitationAcceptButton
+          <AcceptInvitationButton
             invitationId={invitation.id}
             workspaceId={invitation.workspace.id}
           />
 
-          <Button variant={"outline"} className="h-12">
-            Decline
-          </Button>
+          <DeclineInvitationButton invitationId={invitation.id} />
         </div>
       </div>
     </div>

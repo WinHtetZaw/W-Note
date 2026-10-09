@@ -1,6 +1,7 @@
 import { LucideIcon } from "lucide-react";
 import { ReactNode } from "react";
 import PageLabel from "../ui/page-label";
+import { cn } from "@/lib/utils";
 
 type Props = {
   pageLabel: string;
@@ -8,18 +9,24 @@ type Props = {
   title: string;
   subTitle: string;
   children?: ReactNode;
+  className?: string;
 };
 
 export default function PageHead(props: Props) {
-  const { title, subTitle, children, pageLabel, labelIcon } = props;
+  const { title, subTitle, children, pageLabel, labelIcon, className } = props;
   return (
-    <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-      <div>
-        <PageLabel icon={labelIcon} label={pageLabel} className="mb-4" />
+    <div
+      className={cn(
+        "flex gap-6 flex-wrap lg:flex-row items-center justify-between",
+        className,
+      )}
+    >
+      <div className="space-y-3">
+        <PageLabel icon={labelIcon} label={pageLabel} />
 
-        <h1 className="text-4xl font-black md:text-5xl">{title}</h1>
+        <h1 className="font-black text-5xl capitalize">{title}</h1>
 
-        <p className="mt-4 text-lg text-muted">{subTitle}</p>
+        <p className="text-lg text-muted">{subTitle}</p>
       </div>
 
       {children}

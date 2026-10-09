@@ -24,7 +24,7 @@ export async function resendWorkspaceInvite(rawData: IncomingData) {
       redirect("/sign-in");
     case "WORKSPACE_NOT_FOUND":
       return { code: ErrorCode.NotFound, reason };
-    case "INVIATION_NOT_FOUND":
+    case "INVITATION_NOT_FOUND":
       return { code: ErrorCode.NotFound, reason };
     case "NOT_WORKSPACE_MEMBER":
     case "INVITATION_ALREADY_ACCEPTED":

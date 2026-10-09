@@ -9,6 +9,7 @@ import {
   FolderTree,
   LayoutDashboard,
   LucideIcon,
+  Settings,
   Sparkles,
   Trash2,
   Users,
@@ -29,6 +30,7 @@ const iconMap: Record<string, LucideIcon> = {
   sparkles: Sparkles,
   trash2: Trash2,
   creditCard: CreditCard,
+  settings: Settings,
 };
 
 export function SidebarNavItem({ href, label, icon }: SidebarNavItemProps) {

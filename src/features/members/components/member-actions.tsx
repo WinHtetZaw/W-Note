@@ -21,6 +21,7 @@ import RemoveMemberDialog from "./remove-member-dialog";
 import { Member } from "../utils/types";
 import ChangeRoleButton from "./change-role-button";
 import TransferOwnershipButton from "./transfer-ownership-button";
+import { Button } from "@/components/ui/button";
 
 interface Props {
   workspaceId: string;
@@ -40,15 +41,16 @@ export default function MemberActions({
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <button className="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/5 transition hover:bg-white/10">
-            <MoreVertical className="h-5 w-5" />
-          </button>
+          <Button
+            variant={"outline"}
+            className="size-11 p-0 absolute top-4 right-4"
+          >
+            <span className="sr-only">Open menu</span>
+            <MoreVertical className="size-5" />
+          </Button>
         </DropdownMenuTrigger>
 
-        <DropdownMenuContent
-          align="end"
-          className="w-64  p-2 backdrop-blur-2xl"
-        >
+        <DropdownMenuContent align="end" className="w-64 p-2 backdrop-blur-2xl">
           <Link href={`/workspace/${workspaceId}/members/${member.user.id}`}>
             <DropdownMenuItem className="h-11 cursor-pointer rounded-xl">
               <User className="mr-3 h-4 w-4" />

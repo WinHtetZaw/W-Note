@@ -1,8 +1,8 @@
-import { getSessionSerever } from "@/lib/auth/session-server";
+import { getSessionServer } from "@/lib/auth/session-server";
 import Link from "next/link";
 
 export default async function ProfileLink() {
-  const session = await getSessionSerever();
+  const session = await getSessionServer();
 
   if (!session) {
     throw new Error("Fail to load user session.");

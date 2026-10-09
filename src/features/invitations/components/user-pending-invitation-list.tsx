@@ -1,4 +1,3 @@
-import { Sparkles } from "lucide-react";
 import { fetchUserPendingInvitations } from "../server/actions/fetch-user-pending-invitations";
 import UserInvitationCard from "./user-invitation-card";
 import { Skeleton } from "@/components/ui/skeleton";

@@ -26,9 +26,9 @@ export const generalLinks = [
 
 export const toolsLinks = [
   {
-    label: "Settings",
-    href: "settings",
-    icon: "sparkles",
+    label: "Billing",
+    href: "billing",
+    icon: "creditCard",
   },
   {
     label: "Trash",
@@ -36,8 +36,8 @@ export const toolsLinks = [
     icon: "trash2",
   },
   {
-    label: "Billing",
-    href: "billing",
-    icon: "creditCard",
+    label: "Settings",
+    href: "settings",
+    icon: "settings",
   },
 ];

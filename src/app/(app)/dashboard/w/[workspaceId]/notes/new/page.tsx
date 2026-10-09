@@ -1,5 +1,5 @@
 import FormWrapper from "@/components/layout/form-wrapper";
-import MainLoading from "@/components/ui/main-loaing";
+import MainLoading from "@/components/ui/main-loading";
 import NoteFormPage from "@/features/notes/components/note-form";
 import { Suspense } from "react";
 

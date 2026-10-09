@@ -1,4 +1,4 @@
-import MainLoading from "@/components/ui/main-loaing";
+import MainLoading from "@/components/ui/main-loading";
 import { fetchUserWorkspace } from "@/features/workspaces/server/actions/fetch-user-workspace";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";

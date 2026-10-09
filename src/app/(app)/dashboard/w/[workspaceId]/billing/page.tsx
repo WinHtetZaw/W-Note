@@ -1,4 +1,4 @@
-import MainLoading from "@/components/ui/main-loaing";
+import MainLoading from "@/components/ui/main-loading";
 import BillingPageContent from "@/features/billing/components/billing-page-content";
 import { Suspense } from "react";
 

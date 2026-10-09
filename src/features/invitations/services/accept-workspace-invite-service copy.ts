@@ -2,7 +2,11 @@ import { fail, ok } from "@/lib/result";
 import { ErrorReason } from "@/lib/errors";
 import z from "zod";
 import { requireAuth } from "@/lib/permissions";
-import { acceptInvitationAtomic } from "../server/mutations/accept-invitation-atomic";
+import { getInvitationById } from "../server/queries/get-invitation-by-id";
+import { validateInvitation } from "./validate-invitation";
+import { ensureEmailMatches } from "./ensure-email-matches";
+import { ensureNotWorkspaceMember } from "./ensure-not-workspace-member";
+import { acceptInvitation } from "../server/mutations/accept-invitation";
 
 const schema = z.object({ invitationId: z.uuid() });
 
@@ -19,21 +23,28 @@ export async function acceptWorkspaceInviteService(rawData: IncomingData) {
   }
 
   // ─── Check Authentication & Permission ──────────────────────────────────
-  const [authError, authData] = await requireAuth();
-  if (authError) return fail({ reason: authError.reason });
+  const [error, authData] = await requireAuth();
+  if (error) return fail({ reason: error.reason });
   const { id: userId, email } = authData;
 
   // ─── DB Operation ───────────────────────────────────────────────────────
   try {
-    const [error, member] = await acceptInvitationAtomic({
-      invitationId: validateInput.data.invitationId,
-      userId,
-      email,
-    });
-    if (error) return fail({ reason: error.reason });
+    const invitation = await getInvitationById(validateInput.data.invitationId);
+
+    if (!invitation) {
+      return fail({ reason: ErrorReason.InvitationNotFound });
+    }
+
+    validateInvitation(invitation);
+
+    ensureEmailMatches(invitation.email, email);
+
+    await ensureNotWorkspaceMember(invitation.workspaceId, userId);
+
+    const member = await acceptInvitation({ invitation, userId });
 
     return ok(member);
-  } catch (error) {
-    return fail({ reason: ErrorReason.UnexpectedError, details: error });
+  } catch {
+    return fail({ reason: ErrorReason.UnexpectedError });
   }
 }

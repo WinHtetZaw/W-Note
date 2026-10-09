@@ -1,11 +1,11 @@
 import SectionHeader from "@/components/dashboard/section-header";
 import { Skeleton } from "@/components/ui/skeleton";
-import { getSessionSerever } from "@/lib/auth/session-server";
+import { getSessionServer } from "@/lib/auth/session-server";
 import { formatMonthYear } from "@/utils/formatting/format-month-year";
 import { CalendarDays, Mail, Shield } from "lucide-react";
 
 export default async function AccountInfoCard() {
-  const session = await getSessionSerever();
+  const session = await getSessionServer();
 
   if (!session) {
     return <p>fail to get user data</p>;

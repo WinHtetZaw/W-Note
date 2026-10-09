@@ -2,10 +2,10 @@ import UserEditForm from "./user-edit-form";
 import { User } from "lucide-react";
 import SectionHeader from "@/components/dashboard/section-header";
 import { Skeleton } from "@/components/ui/skeleton";
-import { getSessionSerever } from "@/lib/auth/session-server";
+import { getSessionServer } from "@/lib/auth/session-server";
 
 export default async function PersonalInfoCard() {
-  const session = await getSessionSerever();
+  const session = await getSessionServer();
 
   if (!session) {
     throw new Error("Fail to load data.");

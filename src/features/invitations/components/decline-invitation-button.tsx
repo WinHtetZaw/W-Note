@@ -2,30 +2,34 @@
 
 import { Button } from "@/components/ui/button";
 import { useTransition } from "react";
-import { acceptWorkspaceInvite } from "../server/actions/accept-workspace-invite";
 import { errorMessages } from "@/lib/errors";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
+import { declineWorkspaceInvite } from "../server/actions/decline-workspace-invite";
 import { useRouter } from "next/navigation";
 
 type Props = {
   invitationId: string;
-  workspaceId: string;
+  className?: string;
+  backUrl?: string;
 };
 
-export default function InvitationAcceptButton(props: Props) {
-  const { invitationId, workspaceId } = props;
+export default function DeclineInvitationButton(props: Props) {
+  const { invitationId, className, backUrl } = props;
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
   const handleClick = () => {
     startTransition(async () => {
-      const result = await acceptWorkspaceInvite(invitationId);
+      const result = await declineWorkspaceInvite(invitationId);
+
       if (result.code) {
         toast.error(errorMessages[result.code]);
         return;
       }
-      toast.success("Successfully accepted.");
-      router.push(`/dashboard/w/${workspaceId}`);
+
+      toast.success("Successfully declined.");
+      if (backUrl) router.push(backUrl);
     });
   };
 
@@ -33,9 +37,10 @@ export default function InvitationAcceptButton(props: Props) {
     <Button
       disabled={isPending}
       onClick={handleClick}
-      className="font-semibold"
+      variant="outline"
+      className={cn("font-semibold", className)}
     >
-      Accept
+      Decline
     </Button>
   );
 }

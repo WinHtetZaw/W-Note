@@ -22,7 +22,7 @@ export async function revokeWorkspaceInvite(rawData: IncomingData) {
       return { code: ErrorCode.Validation, reason, details: error.details };
     case "NOT_AUTHENTICATED":
       redirect("/sign-in");
-    case "INVIATION_NOT_FOUND":
+    case "INVITATION_NOT_FOUND":
       return { code: ErrorCode.NotFound, reason };
     case "NOT_WORKSPACE_MEMBER":
     case "INVITATION_ALREADY_ACCEPTED":

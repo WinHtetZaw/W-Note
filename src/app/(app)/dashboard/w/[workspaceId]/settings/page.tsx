@@ -1,6 +1,6 @@
 import PageHead from "@/components/dashboard/page-head";
 import SectionHeader from "@/components/dashboard/section-header";
-import MainLoading from "@/components/ui/main-loaing";
+import MainLoading from "@/components/ui/main-loading";
 import GeneralCard from "@/features/settings/components/general-card";
 import NotificationsCard from "@/features/settings/components/notifications-card";
 import DeleteWorkspaceCard from "@/features/workspaces/components/delete-workspace-card";

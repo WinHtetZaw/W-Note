@@ -57,24 +57,39 @@
   --foreground: oklch(27.4% 0.006 286.033);
   /* --card: oklch(1 0 0); */
   --card: color-mix(in oklab, var(--color-white) /* #fff = #ffffff */ 5%)
-  --card-foreground: oklch(0.141 0.005 285.823);
+    --card-foreground: oklch(0.141 0.005 285.823);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.141 0.005 285.823);
   --primary: var(--color-violet-500);
   --primary-foreground: oklch(0.985 0 0);
   /* --secondary: oklch(0.967 0.001 286.375); */
-  --secondary: color-mix(in oklab, var(--color-white) /* #fff = #ffffff */ 5%, transparent);
+  --secondary: color-mix(
+    in oklab,
+    var(--color-white) /* #fff = #ffffff */ 5%,
+    transparent
+  );
   --secondary-foreground: oklch(1 0 0);
   /* --muted: oklch(0.967 0.001 286.375);
   --muted-foreground: oklch(0.552 0.016 285.938); */
   --muted: var(--color-zinc-500);
-  --muted-foreground: color-mix(in oklab, var(--color-white) /* #fff = #ffffff */ 5%);
+  --muted-foreground: color-mix(
+    in oklab,
+    var(--color-white) /* #fff = #ffffff */ 5%
+  );
   /* --accent: oklch(0.967 0.001 286.375); */
-  --accent: color-mix(in oklab, var(--color-white) /* #fff = #ffffff */ 5%, transparent);
+  --accent: color-mix(
+    in oklab,
+    var(--color-white) /* #fff = #ffffff */ 5%,
+    transparent
+  );
   /* --accent-foreground: oklch(0.21 0.006 285.885); */
   --accent-foreground: var(--color-violet-400);
   --destructive: oklch(58.6% 0.253 17.585);
-  --border: color-mix(in oklab, var(--color-white) /* #fff = #ffffff */ 10%, transparent);
+  --border: color-mix(
+    in oklab,
+    var(--color-white) /* #fff = #ffffff */ 10%,
+    transparent
+  );
   --input: oklch(0.92 0.004 286.32);
   --ring: oklch(0.705 0.015 286.067);
   --icon: var(--color-violet-800);
@@ -152,17 +167,23 @@
 
   /* --accent: oklch(0.22 0.02 280);
   --accent-foreground: oklch(0.98 0 0); */
-  --accent: color-mix(in oklab, var(--color-white) /* #fff = #ffffff */ 10%, transparent);;
+  --accent: color-mix(
+    in oklab,
+    var(--color-white) /* #fff = #ffffff */ 10%,
+    transparent
+  );
   --accent-foreground: oklch(0.98 0 0);
 
   /* --border: oklch(1 0 0 / 10%); */
-  --border: color-mix(in oklab, var(--color-white) /* #fff = #ffffff */ 10%, transparent);
+  --border: color-mix(
+    in oklab,
+    var(--color-white) /* #fff = #ffffff */ 10%,
+    transparent
+  );
   --input: oklch(1 0 0 / 12%);
   --ring: oklch(0.62 0.24 285);
   --icon: var(--color-violet-400);
-  --link: var(--color-zinc-300)
-
-  --sidebar: oklch(0.16 0.02 280);
+  --link: var(--color-zinc-300) --sidebar: oklch(0.16 0.02 280);
   --sidebar-foreground: oklch(0.98 0 0);
 
   --sidebar-primary: oklch(0.62 0.24 285);
@@ -193,13 +214,13 @@
   }
 
   .custom-scroll {
-    @apply overflow-y-auto scrollbar-thin scrollbar-thumb-white/50 scrollbar-track-transparent
+    @apply overflow-y-auto scrollbar-thin scrollbar-thumb-white/50 scrollbar-track-transparent;
   }
 
   .header-bg {
-    @apply bg-zinc-950/70 bg-[linear-gradient(to_bottom,oklch(14.1%_0.005_285.823)_0%,oklch(14.1%_0.005_285.823)_50%,Transparent_100%)] backdrop-blur-lg border-b border-foreground/10
+    @apply bg-zinc-950/70 bg-[linear-gradient(to_bottom,oklch(14.1%_0.005_285.823)_0%,oklch(14.1%_0.005_285.823)_50%,Transparent_100%)] backdrop-blur-lg border-b border-foreground/10;
   }
-  
+
   .glass {
     @apply border border-border hover:bg-foreground/10 dark:hover:bg-white/10 bg-primary/5 dark:bg-white/5 backdrop-blur-2xl;
   }
@@ -222,11 +243,15 @@
   }
 
   .section-padding-block {
-    @apply py-12 md:py-24
+    @apply py-12 md:py-24;
   }
-  
+
   .card-grid {
     @apply grid gap-8 md:grid-cols-2 lg:grid-cols-3;
+  }
+
+  .center {
+    @apply content-center justify-items-center;
   }
 }
 
@@ -255,9 +280,8 @@ body {
 
 .rose-gold {
   background-color: #cd4e6e;
-  background: linear-gradient(90deg, #B76E79 0%, #FAD3D1 50%, #B76E79 100%);
+  background: linear-gradient(90deg, #b76e79 0%, #fad3d1 50%, #b76e79 100%);
 }
-
 
 .noteEditorContent .tiptap {
   min-height: 55vh;
@@ -305,7 +329,7 @@ body {
 }
 
 /* burger menu  */
-/* From Uiverse.io by JulanDeAlb */ 
+/* From Uiverse.io by JulanDeAlb */
 .hamburger {
   cursor: pointer;
 }
@@ -328,8 +352,9 @@ body {
   stroke-linejoin: round;
   stroke-width: 3;
   /* Define the transition for transforming the Stroke */
-  transition: stroke-dasharray 600ms cubic-bezier(0.4, 0, 0.2, 1),
-              stroke-dashoffset 600ms cubic-bezier(0.4, 0, 0.2, 1);
+  transition:
+    stroke-dasharray 600ms cubic-bezier(0.4, 0, 0.2, 1),
+    stroke-dashoffset 600ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .line-top-bottom {

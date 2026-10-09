@@ -1,6 +1,7 @@
 import { errorMessages } from "@/lib/errors";
 import { fetchNotes } from "../server/actions/fetch-notes";
 import NoteCard from "./note-card";
+import EmptyState from "@/components/ui/empty-state";
 
 type Props = {
   params: Promise<{ workspaceId: string }>;
@@ -41,5 +42,11 @@ function EmptyNotes({ query }: { query?: string }) {
     );
   }
 
-  return <div className="mt-8 text-muted text-center">No notes yet.</div>;
+  return (
+    <EmptyState
+      title=" No Notes yet."
+      description=" Create a new note to get started."
+      className="mt-8"
+    />
+  );
 }

@@ -18,7 +18,7 @@ export const ErrorReason = {
 
   WorkspaceNotFound: "WORKSPACE_NOT_FOUND",
   WorkspaceMemberNotFound: "WORKSPACE_MEMBER_NOT_FOUND",
-  InvitationNotFound: "INVIATION_NOT_FOUND",
+  InvitationNotFound: "INVITATION_NOT_FOUND",
   StripeCustomerNotFound: "STRIPE_CUSTOMER_N0T_FOUND",
   SubscriptionNotFound: "SUBSCRIPTION_N0T_FOUND",
 

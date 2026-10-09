@@ -1,5 +1,5 @@
 import FormWrapper from "@/components/layout/form-wrapper";
-import MainLoading from "@/components/ui/main-loaing";
+import MainLoading from "@/components/ui/main-loading";
 import FolderForm from "@/features/folders/components/folder-form";
 import { fetchFolderNotes } from "@/features/folders/server/actions/fetch-folder-notes";
 import { Suspense } from "react";

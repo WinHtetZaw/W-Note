@@ -3,7 +3,7 @@ export function ensureEmailMatches(
   currentEmail: string,
 ) {
   if (!invitationEmail) {
-    return;
+    throw new Error("This invitation has no email address.");
   }
 
   if (invitationEmail.toLowerCase() !== currentEmail.toLowerCase()) {

@@ -55,7 +55,9 @@ export async function resendWorkspaceInviteService(rawData: IncomingData) {
     }
     const workspaceName = workspace.name;
 
-    const inviteLink = generateInviteLink({ token });
+    // const inviteLink = generateInviteLink({ token });
+    const inviteLink = generateInviteLink(invitation.id);
+
     const expiresIn = formatExpiryInDays(expiresAt);
     const emailResult = await sendInvitationEmail({
       to: email,

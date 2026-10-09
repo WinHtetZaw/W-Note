@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import { Suspense } from "react";
 import { fetchUserWorkspaces } from "@/features/workspaces/server/actions/fetch-user-workspaces";
-import MainLoading from "@/components/ui/main-loaing";
+import MainLoading from "@/components/ui/main-loading";
 import { redirect } from "next/navigation";
 import PageHead from "@/components/dashboard/page-head";
 import DashboardHeader from "@/components/layout/dashboard-header";

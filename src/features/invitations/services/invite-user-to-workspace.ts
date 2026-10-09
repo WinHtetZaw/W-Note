@@ -8,9 +8,8 @@ import {
   createWorkspaceInviteSchema,
 } from "../schemas/create-workspace-invite-schema";
 import { getInvitationExpiration } from "./get-invitation-expiration";
-import { Invitation } from "../types";
 import { ensureNotWorkspaceMember } from "./ensure-not-workspace-member";
-import { requireAuth, requireWorkspaceAdmin } from "@/lib/permissions";
+import { requireWorkspaceAdmin } from "@/lib/permissions";
 import { hashInvitationToken } from "./hash-invitation-token";
 import { getUserByEmail } from "@/features/auth/server/queries/get-user-by-email";
 import { fail, ok } from "@/lib/result";
@@ -18,29 +17,27 @@ import { ErrorReason } from "@/lib/errors";
 import { formatExpiryInDays } from "@/utils/formatting";
 import { getWorkspace } from "@/features/workspaces/server/queries/get-workspace";
 
-type Meta = { emailSent: boolean; error: unknown };
-type InviteUserToWorkspace = Invitation & { emailSent: boolean };
-
 export async function inviteUserToWorkspace(
   rawData: CreateWorkspaceInviteInput,
 ) {
-  //========== Validating incoming data ==========//
-  const result = createWorkspaceInviteSchema.safeParse(rawData);
-  if (!result.success) {
-    return fail({ reason: ErrorReason.InvalidInput, details: result.error });
+  // ─── Validate input ─────────────────────────────────────────────
+  const validated = createWorkspaceInviteSchema.safeParse(rawData);
+  if (!validated.success) {
+    return fail({ reason: ErrorReason.InvalidInput, details: validated.error });
   }
-  const { workspaceId, email, role } = result.data;
+  const { workspaceId, email, role } = validated.data;
 
-  //========== Auth and permisssion ==========//
-  const [error, authData] = await requireWorkspaceAdmin(workspaceId);
-  if (error) {
-    return fail({ reason: error.reason });
+  // ─── Check Authentication & Permission ───────────────────────────
+  const [authError, authData] = await requireWorkspaceAdmin(workspaceId);
+  if (authError) {
+    return fail({ reason: authError.reason });
   }
   const { id: invitedBy, name: inviterName } = authData.user;
 
-  //========== DB ==========//
+  // ─── DB Operation ─────────────────────────────────────────────────
   try {
     const invitee = await getUserByEmail(workspaceId, email);
+
     if (invitee) {
       const isNotAMember = await ensureNotWorkspaceMember(
         workspaceId,
@@ -76,7 +73,8 @@ export async function inviteUserToWorkspace(
     const workspaceName = workspace.name;
 
     const expiresIn = formatExpiryInDays(expiresAt);
-    const invitationLink = generateInviteLink({ token });
+    // const invitationLink = generateInviteLink({ token });
+    const invitationLink = generateInviteLink(invitation.id);
 
     const emailResult = await sendInvitationEmail({
       to: email,

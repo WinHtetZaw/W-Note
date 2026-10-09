@@ -25,15 +25,17 @@ export default async function WorkspaceStats({ workspaceId }: Props) {
   ];
 
   return (
-    <div className="my-10 grid gap-6 md:grid-cols-3">
+    <div className="grid gap-6 md:grid-cols-3">
       {stats.map(({ label, value, icon: Icon }) => (
         <div
           key={label}
-          className="p-6 glass rounded-3xl gap-6 flex flex-col items-center"
+          className="p-6 glass rounded-3xl gap-6 flex flex-row-reverse lg:flex-col items-center"
         >
-          <h3 className="text-4xl font-black">{formatNumber(value)}</h3>
-          <div className="flex gap-2 items-center justify-between">
-            <p className=" text-muted">{label}</p>
+          <h3 className="text-2xl lg:text-4xl font-black mr-auto lg:mr-0">
+            {formatNumber(value)}
+          </h3>
+          <div className="flex flex-row-reverse min-w-32 lg:min-w-auto lg:flex-row gap-2 items-center lg:justify-between">
+            <p className=" text-muted mr-auto">{label}</p>
             <Icon className="size-6 icon" />
           </div>
         </div>

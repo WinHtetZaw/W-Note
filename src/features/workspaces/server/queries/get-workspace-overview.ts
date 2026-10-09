@@ -5,7 +5,7 @@ import {
   workspaceMembersTable,
   workspacesTable,
 } from "@/db/schema";
-import { eq, sql } from "drizzle-orm";
+import { and, eq, isNull, sql } from "drizzle-orm";
 
 // export async function getWorkspaceOverview(workspaceId: string) {
 //   const [workspace] = await db
@@ -60,7 +60,13 @@ export async function getWorkspaceOverview(workspaceId: string) {
       workspaceMembersTable,
       eq(workspaceMembersTable.workspaceId, workspaceId),
     ),
-    db.$count(notesTable, eq(notesTable.workspaceId, workspaceId)),
+    db.$count(
+      notesTable,
+      and(
+        eq(notesTable.workspaceId, workspaceId),
+        isNull(notesTable.deletedAt),
+      ),
+    ),
     db.$count(foldersTable, eq(foldersTable.workspaceId, workspaceId)),
   ]);
 

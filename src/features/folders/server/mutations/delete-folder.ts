@@ -1,9 +1,13 @@
 import { db } from "@/db";
 import { foldersTable } from "@/db/schema";
 import { and, eq } from "drizzle-orm";
-import { RemoveFolder } from "../../schemas";
 
-export async function deleteFolder(data: RemoveFolder) {
+type IncomingData = {
+  folderId: string;
+  workspaceId: string;
+};
+
+export async function deleteFolder(data: IncomingData) {
   const [deletedFolderId] = await db
     .delete(foldersTable)
     .where(
