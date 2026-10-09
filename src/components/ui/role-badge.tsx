@@ -1,12 +1,7 @@
-// features/workspace/members/components/role-badge.tsx
-
+import { WorkspaceRole } from "@/features/members/types";
 import { Crown, Shield, User } from "lucide-react";
 
-import { WorkspaceRole } from "../types";
-
-interface Props {
-  role: WorkspaceRole;
-}
+type Props = { role: WorkspaceRole };
 
 export default function RoleBadge({ role }: Props) {
   const config = {

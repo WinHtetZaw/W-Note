@@ -1,10 +1,10 @@
 import { CalendarClock, Clock3, Mail } from "lucide-react";
-
-import RoleBadge from "./role-badge";
 import InvitationActions from "./invitation-actions";
-import { PendingInvitation } from "../server/queries/get-user-pending-invitations";
 import { timeAgo } from "@/lib/utils";
 import { formatExpiryInDays } from "@/utils/formatting";
+import InvitationStatusBadge from "./invitation-status-badge";
+import { PendingInvitation } from "../types";
+import RoleBadge from "@/components/ui/role-badge";
 
 interface Props {
   invitation: PendingInvitation;
@@ -37,8 +37,8 @@ export default function InvitationCard({ invitation }: Props) {
         </div>
 
         <div className="flex items-center gap-3">
+          <InvitationStatusBadge status={invitation.status} />
           <RoleBadge role={invitation.role} />
-
           <InvitationActions
             invitationId={invitation.id}
             workspaceId={invitation.workspace.id}

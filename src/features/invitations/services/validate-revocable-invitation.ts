@@ -5,11 +5,7 @@ import { ErrorReason } from "@/lib/errors";
 
 export function validateRevocableInvitation(invitation: Invitation) {
   if (invitation.status === "accepted") {
-    return fail({ reason: ErrorReason.InvitatioAlreadyAccepted });
-  }
-
-  if (invitation.status === "declined") {
-    return fail({ reason: ErrorReason.InvitationAlreadyDeclined });
+    return fail({ reason: ErrorReason.InvitationAlreadyAccepted });
   }
 
   if (invitation.status === "revoked") {

@@ -27,8 +27,6 @@ export async function revokeWorkspaceInvite(rawData: IncomingData) {
     case "NOT_WORKSPACE_MEMBER":
     case "INVITATION_ALREADY_ACCEPTED":
       return { code: ErrorCode.Conflict, reason };
-    case "INVITATION_ALREADY_DECLINED":
-      return { code: ErrorCode.Conflict, reason };
     case "INVITATION_ALREADY_REVOKED":
       return { code: ErrorCode.Conflict, reason };
     case "INVITATION_EXPIRED":

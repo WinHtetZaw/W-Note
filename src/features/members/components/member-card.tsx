@@ -1,16 +1,10 @@
-// features/workspace/members/components/member-card.tsx
-
 "use client";
 
 import Link from "next/link";
-import { Clock3, Mail } from "lucide-react";
-
-import type { WorkspaceMember } from "../types";
-import RoleBadge from "./role-badge";
-import StatusBadge from "./status-badge";
+import { Mail } from "lucide-react";
 import MemberActions from "./member-actions";
 import { Member } from "../utils/types";
-import { timeAgo } from "@/lib/utils";
+import RoleBadge from "@/components/ui/role-badge";
 
 interface Props {
   workspaceId: string;
@@ -47,11 +41,10 @@ export default function MemberCard({
                 {member.user.email}
               </div>
 
-              <div className=" flex items-center gap-2 text-sm text-zinc-500">
+              {/* <div className=" flex items-center gap-2 text-sm text-zinc-500">
                 <Clock3 className="h-4 w-4" />
-                {/* Last active {timeAgo(member.joinedAt)} */}
-                Joined in {timeAgo(member.joinedAt)}
-              </div>
+                Last active {timeAgo(member.activeAt)}
+              </div> */}
             </div>
           </div>
         </Link>

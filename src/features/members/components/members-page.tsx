@@ -1,15 +1,10 @@
 "use client";
 
 import { ReactNode, useMemo, useState } from "react";
-
-import { Sparkles } from "lucide-react";
-
 import MemberSearch from "./member-search";
 import MemberCard from "./member-card";
-// import InviteMemberDialog from "./invite-member-dialog";
-// import { members } from "../constant";
 import { Member } from "../utils/types";
-import { pendingInvitations } from "@/features/invitations/constant";
+import PageHead from "@/components/dashboard/page-head";
 
 interface Props {
   workspaceId: string;
@@ -29,8 +24,6 @@ export default function MembersPage(props: Props) {
   } = props;
   const [search, setSearch] = useState("");
 
-  const [inviteOpen, setInviteOpen] = useState(false);
-
   const filteredMembers = useMemo(() => {
     const value = search.toLowerCase();
 
@@ -41,47 +34,23 @@ export default function MembersPage(props: Props) {
     );
   }, [search]);
 
-  const filteredInvitations = useMemo(() => {
-    const value = search.toLowerCase();
-
-    return pendingInvitations.filter((invite) =>
-      invite.email.toLowerCase().includes(value),
-    );
-  }, [search]);
   // console.log(members);
 
   return (
     <>
-      {/* Header */}
-
-      <section className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
-        <div>
-          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 backdrop-blur-xl">
-            <Sparkles className="size-4 text-icon" />
-
-            <span className="text-sm">Team Collaboration</span>
-          </div>
-
-          <h1 className="text-5xl font-black">Workspace Members</h1>
-
-          <p className="mt-4 max-w-2xl text-lg text-zinc-400">
-            Manage your workspace members, invitations, permissions and
-            ownership.
-          </p>
-        </div>
-
+      <PageHead
+        pageLabel="Members"
+        title="Workspace Members"
+        subTitle="Manage your workspace members, invitations, permissions and ownership."
+      >
         {(currentUserRole === "owner" || currentUserRole === "admin") && (
           <>{invitationButton}</>
         )}
-      </section>
-
-      {/* Search */}
+      </PageHead>
 
       <section className="mt-10">
         <MemberSearch value={search} onChange={setSearch} />
       </section>
-
-      {/* Members */}
 
       <section className="mt-12">
         <div className="mb-6 flex items-center justify-between">
@@ -110,34 +79,7 @@ export default function MembersPage(props: Props) {
           )}
         </div>
       </section>
-
-      {/* Invitations */}
-      {/* <InvitationList /> */}
       {invitationList}
-      {/* <section className="mt-20">
-        <div className="mb-6 flex items-center justify-between">
-          <h2 className="text-2xl font-bold">Pending Invitations</h2>
-
-          <span className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-zinc-400">
-            {filteredInvitations.length} Pending
-          </span>
-        </div>
-
-        {filteredInvitations.length === 0 ? (
-          <EmptyState
-            title="No pending invitations"
-            description="Everyone has accepted their invitations."
-          />
-        ) : (
-          <div className="space-y-5">
-            {filteredInvitations.map((invite) => (
-              <InvitationCard key={invite.id} invitation={invite} />
-            ))}
-          </div>
-        )}
-      </section> */}
-
-      {/* <InviteMemberDialog open={inviteOpen} onOpenChange={setInviteOpen} /> */}
     </>
   );
 }
@@ -150,7 +92,7 @@ function EmptyState({
   description: string;
 }) {
   return (
-    <div className="rounded-[32px] border border-dashed border-white/10 bg-white/[0.03] p-16 text-center">
+    <div className="rounded-[32px] border border-dashed border-white/10 bg-white/3 p-16 text-center">
       <h3 className="text-2xl font-bold">{title}</h3>
 
       <p className="mt-3 text-zinc-500">{description}</p>

@@ -1,12 +1,10 @@
-// features/workspace/members/components/member-actions.tsx
-
 "use client";
 
 import { useState } from "react";
 
 import Link from "next/link";
 
-import { Crown, MoreVertical, Shield, Trash2, User } from "lucide-react";
+import { MoreVertical, Trash2, User } from "lucide-react";
 
 import {
   DropdownMenu,
@@ -16,7 +14,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import type { WorkspaceMember } from "../types";
 import RemoveMemberDialog from "./remove-member-dialog";
 import { Member } from "../utils/types";
 import ChangeRoleButton from "./change-role-button";
@@ -25,7 +22,6 @@ import { Button } from "@/components/ui/button";
 
 interface Props {
   workspaceId: string;
-  // member: WorkspaceMember;
   member: Member;
   currentUserRole: "owner" | "admin" | "member";
 }
@@ -43,7 +39,7 @@ export default function MemberActions({
         <DropdownMenuTrigger asChild>
           <Button
             variant={"outline"}
-            className="size-11 p-0 absolute top-4 right-4"
+            className="size-11 p-0 absolute top-4 right-4 lg:static"
           >
             <span className="sr-only">Open menu</span>
             <MoreVertical className="size-5" />

@@ -1,8 +1,9 @@
 // features/workspace/members/types.ts
 
+import { WORKSPACE_ROLE } from "./constant";
 import { getAllMembers } from "./server/queries/get-all-members";
 
-export type WorkspaceRole = "owner" | "admin" | "member";
+export type WorkspaceRole = (typeof WORKSPACE_ROLE)[number];
 
 export type MemberStatus = "active" | "offline";
 

@@ -13,11 +13,11 @@ export default async function ProfileLink() {
   return (
     <Link href="/profile">
       <div className="flex items-center gap-3 rounded-full lg:rounded-2xl glass lg:px-3 lg:py-2">
-        <div className="flex h-10 w-10 items-center uppercase justify-center rounded-full bg-violet-600 font-bold">
+        <div className="flex size-10 items-center uppercase justify-center rounded-full bg-violet-600 font-bold">
           {userName[0]}
         </div>
 
-        <div className="hidden md:block max-w-26">
+        <div className="hidden lg:block max-w-26">
           <p className="font-medium line-clamp-1">{userName}</p>
         </div>
       </div>

@@ -22,7 +22,7 @@ export function DashboardSidebarContent({
 }: Props) {
   return (
     <>
-      <div className="sticky min-h-20 lg:sticky top-0 z-50 flex h-20 items-center px-6 header-bg">
+      <div className="sticky min-h-20 lg:sticky top-0 z-50 flex h-20 items-center px-4 lg:px-8 header-bg">
         <Link href="/" className="flex items-center gap-3">
           <Brain className="size-8 text-primary" />
 
@@ -33,7 +33,7 @@ export function DashboardSidebarContent({
         </Link>
       </div>
 
-      <div className="space-y-8 p-8">
+      <div className="space-y-8 p-4 lg:p-8">
         <WorkspaceSwitcher
           userWorkspaces={workspaces}
           currentName={workspaceName}

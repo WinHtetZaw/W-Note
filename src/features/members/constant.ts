@@ -2,6 +2,8 @@
 
 import { WorkspaceMember } from "./types";
 
+export const WORKSPACE_ROLE = ["owner", "admin", "member"] as const;
+
 export const members: WorkspaceMember[] = [
   {
     id: "1",

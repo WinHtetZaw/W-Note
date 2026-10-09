@@ -22,6 +22,7 @@ export async function getUserPendingInvitations({
     columns: {
       id: true,
       email: true,
+      status: true,
       expiresAt: true,
       role: true,
       updatedAt: true,
@@ -100,7 +101,3 @@ export async function getUserPendingInvitations({
   //   )
   //   .orderBy(desc(workspaceInvitationsTable.createdAt));
 }
-
-export type PendingInvitation = NonNullable<
-  Awaited<ReturnType<typeof getUserPendingInvitations>>
->[number];

@@ -18,6 +18,8 @@ import {
   aiUsageReservationsTable,
   aiUsageTable,
 } from "./ai-schema";
+import { InvitationStatus } from "@/features/invitations/types";
+import { WorkspaceRole } from "@/features/members/types";
 
 /* =========================================================
    WORKSPACES
@@ -53,7 +55,7 @@ export const workspaceMembersTable = pgTable(
     role: varchar("role", {
       length: 50,
     })
-      .$type<"owner" | "admin" | "member">()
+      .$type<WorkspaceRole>()
       .notNull()
       .default("member"),
     joinedAt: timestamp("joined_at").defaultNow().notNull(),
@@ -95,7 +97,7 @@ export const workspaceInvitationsTable = pgTable(
     status: varchar("status", {
       length: 50,
     })
-      .$type<"pending" | "accepted" | "declined" | "revoked">()
+      .$type<InvitationStatus>()
       .notNull()
       .default("pending"),
     // token: text("token").notNull(),

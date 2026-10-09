@@ -10,11 +10,8 @@ export default async function InvitationList({
     await fetchWorkspacePendingInvitations(workspaceId);
 
   if (wsPendingInvitations.code) {
-    console.log(wsPendingInvitations);
-    return <p>user pending invitaions not found</p>;
+    throw new Error("Fail to get workspace pending invitations");
   }
-
-  // console.log("pending--->", result.data[0]);
 
   return (
     <section className="mt-20">

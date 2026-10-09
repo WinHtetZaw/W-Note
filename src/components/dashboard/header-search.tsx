@@ -59,7 +59,7 @@ export default function HeaderSearch() {
 
   return (
     <>
-      <InputGroup className="group flex-1 pl-2 overflow-hidden max-w-100">
+      <InputGroup className="group flex-1 pl-2 overflow-hidden max-w-100 hidden md:block">
         <InputGroupInput
           className=" text-[1rem] placeholder:text-zinc-500 placeholder:tracking-wider"
           value={value}
@@ -67,7 +67,7 @@ export default function HeaderSearch() {
           onChange={(e) => setValue(e.target.value)}
           placeholder="Search . . ."
         />
-        <InputGroupAddon className="hidden md:block">
+        <InputGroupAddon>
           <Search className="size-5 text-muted group-focus-within:text-zinc-200" />
         </InputGroupAddon>
         <InputGroupAddon

@@ -1,9 +1,18 @@
 import { db } from "@/db";
 import { workspaceInvitationsTable } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 
-export async function getInvitationById(invitationId: string) {
+type IncomingData = {
+  workspaceId: string;
+  invitationId: string;
+};
+
+export async function getInvitationById(data: IncomingData) {
+  const { workspaceId, invitationId } = data;
   return db.query.workspaceInvitationsTable.findFirst({
-    where: eq(workspaceInvitationsTable.id, invitationId),
+    where: and(
+      eq(workspaceInvitationsTable.workspaceId, workspaceId),
+      eq(workspaceInvitationsTable.id, invitationId),
+    ),
   });
 }

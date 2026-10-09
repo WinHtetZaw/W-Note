@@ -42,6 +42,7 @@ export default function InvitationActions(props: Props) {
       if (result.code) {
         console.log(result);
         toast.error(errorMessages[result.code]);
+        return;
       }
 
       toast.success("Successfully invitation resent");

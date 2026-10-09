@@ -37,22 +37,43 @@ export function SidebarNavItem({ href, label, icon }: SidebarNavItemProps) {
   const pathname = usePathname();
   const Icon = iconMap[icon];
   const active = pathname === href || pathname.startsWith(`${href}/`);
+
   const setOpen = useDashboardSidebarStore((state) => state.setOpen);
 
   return (
     <Link
       href={href}
       onClick={() => setOpen(false)}
+      aria-current={active ? "page" : undefined}
       className={cn(
-        "flex group items-center gap-3 rounded-xl px-4 py-3 transition-all",
+        "group relative flex items-center gap-3 rounded-lg px-3 py-2.5 transition-colors duration-200",
         active
-          ? "bg-violet-600 text-white"
-          : "text-muted hover:bg-secondary hover:text-violet-400",
+          ? "bg-violet-500/8 text-violet-300"
+          : "text-muted-foreground hover:bg-secondary/60 hover:text-foreground",
       )}
     >
-      <Icon className="size-5 group-hover:text-inherit" />
+      {/* Active indicator */}
+      {active && (
+        <span className="absolute inset-y-2 left-0 w-0.5 rounded-full bg-violet-400" />
+      )}
 
-      <span className="font-medium">{label}</span>
+      <Icon
+        className={cn(
+          "size-5 shrink-0 transition-colors",
+          active
+            ? "text-violet-400"
+            : "text-muted-foreground group-hover:text-foreground",
+        )}
+      />
+
+      <span
+        className={cn(
+          "text-sm transition-colors",
+          active ? "font-semibold" : "font-medium",
+        )}
+      >
+        {label}
+      </span>
     </Link>
   );
 }

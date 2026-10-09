@@ -1,20 +1,23 @@
 import { db } from "@/db";
 import { workspaceInvitationsTable } from "@/db/schema";
-
-import { and, eq, gt } from "drizzle-orm";
+import { and, eq, gt, isNull } from "drizzle-orm";
 
 export async function getWorkspacePendingInvitations(workspaceId: string) {
   return db.query.workspaceInvitationsTable.findMany({
     where: and(
       eq(workspaceInvitationsTable.workspaceId, workspaceId),
-      //   isNull(workspaceInvitationsTable.acceptedAt),
-      //   isNull(workspaceInvitationsTable.revokedAt),
+      isNull(workspaceInvitationsTable.acceptedAt),
+      isNull(workspaceInvitationsTable.revokedAt),
       gt(workspaceInvitationsTable.expiresAt, new Date()),
-      eq(workspaceInvitationsTable.status, "pending"),
+      // or(
+      //   eq(workspaceInvitationsTable.status, "pending"),
+      //   eq(workspaceInvitationsTable.status, "declined"),
+      // ),
     ),
     columns: {
       id: true,
       email: true,
+      status: true,
       expiresAt: true,
       role: true,
       updatedAt: true,

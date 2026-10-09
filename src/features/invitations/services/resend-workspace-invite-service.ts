@@ -18,19 +18,19 @@ const schema = z.object({ invitationId: z.uuid(), workspaceId: z.uuid() });
 type IncomingData = z.infer<typeof schema>;
 
 export async function resendWorkspaceInviteService(rawData: IncomingData) {
-  const result = schema.safeParse(rawData);
-  if (!result.success) {
-    return fail({ reason: ErrorReason.InvalidInput, details: result.error });
+  // ─── Validate Input ────────────────────────────────────────────────
+  const validated = schema.safeParse(rawData);
+  if (!validated.success) {
+    return fail({ reason: ErrorReason.InvalidInput, details: validated.error });
   }
-  const { invitationId, workspaceId } = result.data;
+  const { invitationId, workspaceId } = validated.data;
 
-  const [error, authData] = await requireWorkspaceAdmin(workspaceId);
-  if (error) return fail({ reason: error.reason });
-  const { name: inviterName, email } = authData.user;
+  // ─── Check Authentication & Permission ────────────────────────────────────────────────
+  const [authError, authData] = await requireWorkspaceAdmin(workspaceId);
+  if (authError) return fail({ reason: authError.reason });
 
-  //========== DB Process ==========//
   try {
-    const invitation = await getInvitationById(invitationId);
+    const invitation = await getInvitationById({ workspaceId, invitationId });
     if (!invitation) {
       return fail({ reason: ErrorReason.InvitationNotFound });
     }
@@ -45,6 +45,7 @@ export async function resendWorkspaceInviteService(rawData: IncomingData) {
     const expiresAt = getInvitationExpiration();
     const isUpdated = await updateInvitation({
       invitationId: invitation.id,
+      status: "pending",
       tokenHash,
       expiresAt,
     });
@@ -55,22 +56,20 @@ export async function resendWorkspaceInviteService(rawData: IncomingData) {
     }
     const workspaceName = workspace.name;
 
-    // const inviteLink = generateInviteLink({ token });
     const inviteLink = generateInviteLink(invitation.id);
 
     const expiresIn = formatExpiryInDays(expiresAt);
     const emailResult = await sendInvitationEmail({
-      to: email,
+      to: invitation.email,
       workspaceName,
-      inviterName,
+      inviterName: authData.user.name,
       role: invitation.role,
       invitationLink: inviteLink,
       expiresIn,
     });
 
     if (!emailResult.success) {
-      // logger.error(emailResult.error);
-      fail({ reason: ErrorReason.EmailDoesNotSent });
+      return fail({ reason: ErrorReason.EmailDoesNotSent });
     }
 
     return ok({ success: isUpdated, emailSent: true });

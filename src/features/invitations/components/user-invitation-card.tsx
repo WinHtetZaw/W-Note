@@ -1,8 +1,8 @@
 import { CalendarClock, Crown, Users } from "lucide-react";
-import { PendingInvitation } from "../server/queries/get-user-pending-invitations";
 import { formatExpiryInDays } from "@/utils/formatting";
 import AcceptInvitationButton from "./accept-invitation-button";
 import DeclineInvitationButton from "./decline-invitation-button";
+import { PendingInvitation } from "../types";
 
 type Props = {
   invitation: PendingInvitation;

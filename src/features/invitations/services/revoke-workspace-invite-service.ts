@@ -22,7 +22,7 @@ export async function revokeWorkspaceInviteService(rawData: IncomingData) {
 
   //========== DB Process ==========//
   try {
-    const invitation = await getInvitationById(invitationId);
+    const invitation = await getInvitationById({ workspaceId, invitationId });
     if (!invitation) {
       return fail({ reason: ErrorReason.InvitationNotFound });
     }

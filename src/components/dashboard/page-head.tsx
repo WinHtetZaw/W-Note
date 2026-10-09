@@ -21,7 +21,7 @@ export default function PageHead(props: Props) {
         className,
       )}
     >
-      <div className="space-y-3">
+      <div className="flex-1 space-y-3">
         <PageLabel icon={labelIcon} label={pageLabel} />
 
         <h1 className="font-black text-5xl capitalize">{title}</h1>
