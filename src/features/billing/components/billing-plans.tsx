@@ -99,10 +99,10 @@ export default function BillingPlans({
           <div
             key={plan.name}
             className={[
-              "relative flex flex-col overflow-hidden rounded-2xl border p-6 backdrop-blur-xl",
+              "relative flex flex-col overflow-hidden rounded-[32px] border p-6 backdrop-blur-xl",
               plan.popular
-                ? "border-violet-500/40 bg-violet-500/[0.06]"
-                : "border-white/10 bg-white/[0.03]",
+                ? "border-violet-500/40 bg-violet-500/6"
+                : "border-white/10 bg-white/3",
             ].join(" ")}
           >
             {plan.popular && (

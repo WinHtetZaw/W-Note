@@ -37,13 +37,13 @@ async function SettingPageContent({ params }: Props) {
         {/* Left */}
         <div className="space-y-6">
           <GeneralCard params={params} />
-          <NotificationsCard />
+          {/* <NotificationsCard /> */}
         </div>
 
         {/* Right */}
-        <aside className="space-y-6">
+        <div className="space-y-6">
           {/* Security */}
-          <div className="rounded-[32px] border border-white/10 bg-white/5 p-6 backdrop-blur-2xl">
+          {/* <div className="rounded-[32px] border border-white/10 bg-white/5 p-6 backdrop-blur-2xl">
             <div className="flex items-center gap-3">
               <Shield className="h-6 w-6 text-violet-400" />
 
@@ -57,10 +57,10 @@ async function SettingPageContent({ params }: Props) {
 
               <SecurityCard title="Member Permissions" value="Restricted" />
             </div>
-          </div>
+          </div> */}
 
           {/* AI Settings */}
-          <div className="rounded-[32px] border border-white/10 bg-white/5 p-6 backdrop-blur-2xl">
+          {/* <div className="rounded-[32px] border border-white/10 bg-white/5 p-6 backdrop-blur-2xl">
             <div className="flex items-center gap-3">
               <Brain className="h-6 w-6 text-violet-400" />
 
@@ -78,10 +78,10 @@ async function SettingPageContent({ params }: Props) {
                 description="Automatically summarize notes."
               />
             </div>
-          </div>
+          </div> */}
 
           <DeleteWorkspaceCard />
-        </aside>
+        </div>
       </div>
     </>
   );

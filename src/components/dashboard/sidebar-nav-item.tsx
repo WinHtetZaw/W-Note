@@ -7,6 +7,7 @@ import {
   CreditCard,
   FileText,
   FolderTree,
+  Home,
   LayoutDashboard,
   LucideIcon,
   Settings,
@@ -20,9 +21,11 @@ type SidebarNavItemProps = {
   href: string;
   label: string;
   icon: string;
+  exact?: boolean;
 };
 
 const iconMap: Record<string, LucideIcon> = {
+  home: Home,
   fileText: FileText,
   folderTree: FolderTree,
   users: Users,
@@ -33,11 +36,17 @@ const iconMap: Record<string, LucideIcon> = {
   settings: Settings,
 };
 
-export function SidebarNavItem({ href, label, icon }: SidebarNavItemProps) {
+export function SidebarNavItem({
+  href,
+  label,
+  icon,
+  exact = false,
+}: SidebarNavItemProps) {
   const pathname = usePathname();
   const Icon = iconMap[icon];
-  const active = pathname === href || pathname.startsWith(`${href}/`);
-
+  const active = exact
+    ? pathname === href || pathname === `${href}/`
+    : pathname === href || pathname.startsWith(`${href}/`);
   const setOpen = useDashboardSidebarStore((state) => state.setOpen);
 
   return (

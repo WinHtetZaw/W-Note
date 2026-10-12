@@ -1,13 +1,6 @@
-import Link from "next/link";
-import { Brain } from "lucide-react";
-import { SidebarNavItem } from "./sidebar-nav-item";
-import { WorkspaceSwitcher } from "./workspace-switcher";
-import { AIUsageCard } from "./ai-usage-card";
-import { toolsLinks, workspaceLinks } from "./dashboard-sidebar-data";
 import { redirect } from "next/navigation";
 import { fetchUserWorkspaces } from "@/features/workspaces/server/actions/fetch-user-workspaces";
 import { fetchWorkspace } from "@/features/workspaces/server/actions/fetch-workspace";
-import CreateNoteButton from "@/features/notes/components/create-note-button";
 import { DashboardSidebarContent } from "./dashboard-sidebar-content";
 import { MobileDashboardSidebar } from "./mobile-dashboard-sidebar";
 

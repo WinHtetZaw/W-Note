@@ -1,3 +1,4 @@
+import MainLoading from "@/components/ui/main-loading";
 import InvitationButton from "@/features/invitations/components/invitation-button";
 import InvitationList from "@/features/invitations/components/invitation-list";
 import MembersPage from "@/features/members/components/members-page";
@@ -12,7 +13,7 @@ type Props = {
 
 export default async function Page({ params }: Props) {
   return (
-    <Suspense fallback={<p>Memebers page fallback</p>}>
+    <Suspense fallback={<MainLoading />}>
       <MembersPageWrapper params={params} />
     </Suspense>
   );

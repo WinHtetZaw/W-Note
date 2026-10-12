@@ -59,19 +59,16 @@ export default function InputSearch() {
   //   };
 
   return (
-    <div className="mt-12 flex items-center gap-4">
-      <InputGroup className="group flex-1 pl-2">
+    <div className="mt-12  flex items-center gap-4">
+      <InputGroup className="group h-11 flex-1 pl-2">
         <InputGroupInput
-          className=" text-[1rem] placeholder:text-zinc-500 placeholder:tracking-wider"
+          className=" h-auto placeholder:text-zinc-500 placeholder:tracking-wider"
           value={value}
           onBlur={handleOnBlur}
           onKeyUp={handleEnterClick}
           onChange={(e) => setValue(e.target.value)}
           placeholder="Search . . ."
         />
-        {/* <InputGroupAddon>
-          <Search className="size-5 text-muted group-focus-within:text-zinc-200" />
-        </InputGroupAddon> */}
         <InputGroupAddon align="inline-end">
           <Button
             onMouseDown={(e) => e.preventDefault()}

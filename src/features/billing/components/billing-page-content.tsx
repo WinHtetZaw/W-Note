@@ -1,7 +1,6 @@
-import { CreditCard, Receipt, Sparkles } from "lucide-react";
+import { CreditCard } from "lucide-react";
 import CurrentPlanCard from "./current-plan-card";
 import BillingPlans from "./billing-plans";
-import UsageOverview from "./usage-overview";
 import { fetchActiveSubscriptionPlan } from "../server/actions/fetch-active-subscripton-plan";
 import PageHead from "@/components/dashboard/page-head";
 import { fetchAIUsageStatus } from "@/features/ai/server/actions/fetch-ai-usage-status";
@@ -35,7 +34,7 @@ export default async function BillingPageContent({ params }: BillingPageProps) {
 
       {/* Current plan */}
       <section>
-        <div className="mb-4 flex items-center gap-2">
+        <div className="mb-3 flex items-center gap-2">
           <CreditCard className="size-4 text-icon" />
 
           <h2 className="font-semibold">Current plan</h2>
@@ -67,7 +66,7 @@ export default async function BillingPageContent({ params }: BillingPageProps) {
       </section>
 
       {/* Usage */}
-      <UsageOverview workspaceId={workspaceId} />
+      {/* <UsageOverview workspaceId={workspaceId} /> */}
     </div>
   );
 }

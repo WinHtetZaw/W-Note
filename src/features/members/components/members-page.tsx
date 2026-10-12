@@ -37,7 +37,7 @@ export default function MembersPage(props: Props) {
   // console.log(members);
 
   return (
-    <>
+    <div className="space-y-12">
       <PageHead
         pageLabel="Members"
         title="Workspace Members"
@@ -48,15 +48,13 @@ export default function MembersPage(props: Props) {
         )}
       </PageHead>
 
-      <section className="mt-10">
-        <MemberSearch value={search} onChange={setSearch} />
-      </section>
+      <MemberSearch value={search} onChange={setSearch} />
 
-      <section className="mt-12">
+      <section>
         <div className="mb-6 flex items-center justify-between">
           <h2 className="text-2xl font-bold">Members</h2>
 
-          <span className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-zinc-400">
+          <span className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-muted-foreground ">
             {filteredMembers.length} Members
           </span>
         </div>
@@ -80,7 +78,7 @@ export default function MembersPage(props: Props) {
         </div>
       </section>
       {invitationList}
-    </>
+    </div>
   );
 }
 

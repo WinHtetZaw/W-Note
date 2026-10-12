@@ -1,33 +1,27 @@
 import Link from "next/link";
-import {
-  ArrowRight,
-  Briefcase,
-  Check,
-  FileText,
-  Plus,
-  Sparkles,
-  Users,
-} from "lucide-react";
+import { ArrowRight, Briefcase, Check, Plus, Users } from "lucide-react";
 import { Suspense } from "react";
 import { fetchUserWorkspaces } from "@/features/workspaces/server/actions/fetch-user-workspaces";
 import MainLoading from "@/components/ui/main-loading";
 import { redirect } from "next/navigation";
 import PageHead from "@/components/dashboard/page-head";
-import DashboardHeader from "@/components/layout/dashboard-header";
 import { SubscriptionPlans } from "@/features/billing/constants/billing.constants";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
 
 export default function WorkspacePage() {
   return (
     <>
-      <DashboardHeader />
+      <Header />
       <Suspense fallback={<MainLoading />}>
-        <WrorkspacePageContent />
+        <WorkspacePageContent />
       </Suspense>
+      <Footer />
     </>
   );
 }
 
-async function WrorkspacePageContent() {
+async function WorkspacePageContent() {
   const result = await fetchUserWorkspaces();
 
   if (result.code || result.data.length === 0) {
@@ -58,7 +52,7 @@ async function WrorkspacePageContent() {
   >;
 
   return (
-    <div className="wax-w-5xl mx-auto p-12">
+    <div className="wax-w-5xl mx-auto p-6 lg:p-8">
       <PageHead
         pageLabel="Workspaces"
         title="Choose a workspace"
@@ -73,11 +67,6 @@ async function WrorkspacePageContent() {
         </Link>
       </PageHead>
 
-      {/* Grid */}
-      {/* <Suspense fallback={<p>loading</p>}>
-        <WorkspaceOverviewCard />
-      </Suspense> */}
-
       {
         <div className="mt-8 grid gap-4 sm:grid-cols-2">
           {workspaces.map((membership) => {
@@ -91,7 +80,7 @@ async function WrorkspacePageContent() {
               <Link
                 key={workspace.id}
                 href={`/dashboard/w/${workspace.id}`}
-                className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-xl transition hover:border-violet-500/30 hover:bg-white/[0.05]"
+                className="group relative overflow-hidden card p-8"
               >
                 {/* Hover glow */}
                 <div

@@ -1,22 +1,19 @@
-import { Bell } from "lucide-react";
 import { ThemeToggle } from "../ui/theme-toggle";
 import { Suspense } from "react";
-import ProfileLink from "@/features/members/components/profile-link";
 import HeaderSearch from "../dashboard/header-search";
 import BurgerMenu from "../ui/burger-menu";
 import { Skeleton } from "../ui/skeleton";
+import ProfileLink from "../ui/profile-link";
 
 export default async function DashboardHeader() {
   return (
     <header className="sticky top-0 z-40 header-bg">
       <div className="flex h-20 items-center justify-between px-6">
         <BurgerMenu />
-        {/* Search */}
         <Suspense fallback={<p>search fallbak</p>}>
           <HeaderSearch />
         </Suspense>
 
-        {/* Right */}
         <div className="ml-auto flex items-center gap-4">
           {/* ! later implement notification feat
           <button className="hidden lg:block relative rounded-2xl border border-white/10 bg-white/5 p-3 transition hover:bg-white/10">
@@ -25,11 +22,7 @@ export default async function DashboardHeader() {
             <div className="absolute right-2 top-2 h-2 w-2 rounded-full bg-violet-500" />
           </button> */}
 
-          <Suspense
-            fallback={
-              <Skeleton className="size-10 rounded-full md:h-14 md:w-30 md:rounded-2xl" />
-            }
-          >
+          <Suspense fallback={<Skeleton className="size-10 rounded-full" />}>
             <ProfileLink />
           </Suspense>
 

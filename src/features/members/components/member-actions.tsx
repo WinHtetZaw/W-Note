@@ -1,10 +1,7 @@
 "use client";
 
 import { useState } from "react";
-
-import Link from "next/link";
-
-import { MoreVertical, Trash2, User } from "lucide-react";
+import { MoreVertical, Trash2 } from "lucide-react";
 
 import {
   DropdownMenu,
@@ -47,21 +44,16 @@ export default function MemberActions({
         </DropdownMenuTrigger>
 
         <DropdownMenuContent align="end" className="w-64 p-2 backdrop-blur-2xl">
-          <Link href={`/workspace/${workspaceId}/members/${member.user.id}`}>
+          {/* <Link href={`/workspace/${workspaceId}/members/${member.user.id}`}>
             <DropdownMenuItem className="h-11 cursor-pointer rounded-xl">
               <User className="mr-3 h-4 w-4" />
               View Profile
             </DropdownMenuItem>
-          </Link>
+          </Link> */}
 
           {(currentUserRole === "owner" || currentUserRole === "admin") && (
             <>
               <DropdownMenuSeparator />
-
-              {/* <DropdownMenuItem className="h-11 cursor-pointer rounded-xl">
-                <Shield className="mr-3 h-4 w-4 text-icon" />
-                Change Role
-              </DropdownMenuItem> */}
               <ChangeRoleButton
                 workspaceId={workspaceId}
                 memberId={member.userId}
@@ -71,10 +63,6 @@ export default function MemberActions({
           )}
 
           {currentUserRole === "owner" && member.role !== "owner" && (
-            // <DropdownMenuItem className="h-11 cursor-pointer rounded-xl">
-            //   <Crown className="mr-3 h-4 w-4 text-yellow-400" />
-            //   Transfer Ownership
-            // </DropdownMenuItem>
             <TransferOwnershipButton
               workspaceId={workspaceId}
               newOwnerId={member.userId}

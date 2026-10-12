@@ -16,7 +16,7 @@ export async function AIUsageCard({ workspaceId }: { workspaceId: string }) {
   const usedRequest = formatNumber(usage);
 
   return (
-    <div className="p-5 glass rounded-3xl">
+    <div className="p-4 glass rounded-3xl">
       <div className="flex items-center gap-2">
         <Zap className="size-5 icon" />
 

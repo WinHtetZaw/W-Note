@@ -12,24 +12,26 @@ interface Props {
 
 export default function InvitationCard({ invitation }: Props) {
   return (
-    <div className="rounded-[32px] border border-white/10 bg-white/5 p-6 backdrop-blur-2xl">
+    <div className="rounded-[32px] relative p-6 glass">
       <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-        <div className="flex items-center gap-5">
-          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-violet-600/20">
-            <Mail className="h-7 w-7 text-violet-400" />
+        <div className="flex flex-1 items-center gap-3 lg:gap-6">
+          <div className="flex size-16 min-w-16 items-center justify-center rounded-full bg-violet-600/20">
+            <Mail className="size-7 text-icon" />
           </div>
 
-          <div>
-            <h2 className="text-lg font-semibold">{invitation.email}</h2>
+          <div className="flex-1 pr-12 lg:pr-0">
+            <h2 className="mb-2 w-full text-lg font-semibold  line-clamp-1">
+              {invitation.email}
+            </h2>
 
-            <div className="mt-2 flex flex-wrap gap-5 text-sm text-zinc-400">
+            <div className="flex flex-wrap gap-2 text-sm text-muted">
               <div className="flex items-center gap-2">
-                <Clock3 className="h-4 w-4" />
+                <Clock3 className="size-4" />
                 Invited {timeAgo(invitation.updatedAt)}
               </div>
 
               <div className="flex items-center gap-2">
-                <CalendarClock className="h-4 w-4" />
+                <CalendarClock className="size-4" />
                 Expires in {formatExpiryInDays(invitation.expiresAt)}
               </div>
             </div>

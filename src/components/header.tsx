@@ -7,6 +7,7 @@ import { ReactNode, Suspense } from "react";
 import { ThemeToggle } from "./ui/theme-toggle";
 import { Skeleton } from "./ui/skeleton";
 import { Button } from "./ui/button";
+import ProfileLink from "./ui/profile-link";
 
 export default async function Header() {
   return (
@@ -27,6 +28,10 @@ export default async function Header() {
           </Suspense>
 
           <ThemeToggle />
+
+          <Suspense fallback={<Skeleton className="size-10 rounded-full" />}>
+            <ProfileLink />
+          </Suspense>
         </nav>
       </div>
     </header>

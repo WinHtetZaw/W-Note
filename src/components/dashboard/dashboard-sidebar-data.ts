@@ -1,5 +1,10 @@
 export const workspaceLinks = [
   {
+    label: "Dashboard",
+    href: "",
+    icon: "home",
+  },
+  {
     label: "Notes",
     href: "notes",
     icon: "fileText",

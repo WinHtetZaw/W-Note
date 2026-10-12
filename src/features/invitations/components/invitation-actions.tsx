@@ -67,7 +67,7 @@ export default function InvitationActions(props: Props) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button className="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10">
+        <button className="absolute z-10 top-3 right-3 lg:static flex size-11 items-center justify-center rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10">
           <MoreVertical className="h-5 w-5" />
         </button>
       </DropdownMenuTrigger>

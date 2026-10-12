@@ -14,7 +14,7 @@ export default async function InvitationList({
   }
 
   return (
-    <section className="mt-20">
+    <section>
       <div className="mb-6 flex items-center justify-between">
         <h2 className="text-2xl font-bold">Pending Invitations</h2>
 

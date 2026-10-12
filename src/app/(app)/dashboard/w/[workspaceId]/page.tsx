@@ -3,11 +3,12 @@ import PageHead from "@/components/dashboard/page-head";
 import RecentNotes from "@/features/workspaces/components/recent-notes";
 import WorkspaceStats, {
   WorkspaceStatsLoading,
-} from "@/features/workspaces/components/wokspace-stats";
+} from "@/features/workspaces/components/workspace-stats";
 import CreateNoteButton from "@/features/notes/components/create-note-button";
 import MainLoading from "@/components/ui/main-loading";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import UsageOverview from "@/features/billing/components/usage-overview";
 
 type Props = {
   params: Promise<{ workspaceId: string }>;
@@ -40,6 +41,8 @@ async function WorkspaceDetailContent({ params }: Props) {
       </Suspense>
 
       <RecentNotes params={params} />
+
+      <UsageOverview workspaceId={workspaceId} />
 
       <div className="grid gap-6 md:grid-cols-3">
         <QuickAction

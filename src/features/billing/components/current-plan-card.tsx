@@ -110,22 +110,20 @@ export default function CurrentPlanCard({
   };
 
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-xl">
+    <div className="relative overflow-hidden rounded-[32px] border border-white/10 bg-white/3 backdrop-blur-xl">
       {/* Subtle plan glow */}
       <div className="pointer-events-none absolute -right-20 -top-20 size-48 rounded-full bg-violet-500/10 blur-3xl" />
 
-      <div className="relative flex flex-col gap-6 p-6 sm:p-7 lg:flex-row lg:items-center lg:justify-between">
+      <div className="relative flex flex-col gap-6 p-6 lg:flex-row lg:items-center lg:justify-between">
         {/* Plan information */}
-        <div className="flex min-w-0 items-start gap-4">
+        <div className="flex min-w-0 items-start gap-3">
           <div className="flex size-12 shrink-0 items-center justify-center rounded-xl border border-violet-500/10 bg-violet-500/10">
             <CreditCard className="size-5 text-icon" />
           </div>
 
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-2">
-              <h3 className="text-lg font-semibold text-white">
-                {planInfo.label}
-              </h3>
+              <h3 className="text-lg font-semibold">{planInfo.label}</h3>
 
               <span
                 className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium ${statusInfo.className}`}

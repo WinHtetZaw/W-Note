@@ -20,6 +20,11 @@ export function DashboardSidebarContent({
   workspaceName,
   workspaces,
 }: Props) {
+  const generateHref = (workspaceId: string, href: string) => {
+    return href
+      ? `/dashboard/w/${workspaceId}/${href}`
+      : `/dashboard/w/${workspaceId}`;
+  };
   return (
     <>
       <div className="sticky min-h-20 lg:sticky top-0 z-50 flex h-20 items-center px-4 lg:px-8 header-bg">
@@ -52,7 +57,8 @@ export function DashboardSidebarContent({
                 key={item.label}
                 label={item.label}
                 icon={item.icon}
-                href={`/dashboard/w/${workspaceId}/${item.href}`}
+                href={generateHref(workspaceId, item.href)}
+                exact={item.href === ""}
               />
             ))}
           </div>
@@ -69,7 +75,7 @@ export function DashboardSidebarContent({
                 key={item.label}
                 label={item.label}
                 icon={item.icon}
-                href={`/dashboard/w/${workspaceId}/${item.href}`}
+                href={generateHref(workspaceId, item.href)}
               />
             ))}
           </div>
