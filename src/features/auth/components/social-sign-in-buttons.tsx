@@ -1,5 +1,7 @@
 "use client";
 
+import { Github } from "@/components/icons/github-icon";
+import { Google } from "@/components/icons/google-icon";
 import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth/auth-client";
 import { useState } from "react";
@@ -27,26 +29,29 @@ export function SocialSignInButtons() {
   return (
     <div className="flex flex-col gap-3">
       <Button
-        className="h-14 w-full rounded-2xl border border-white/10 bg-white/5 transition hover:bg-white/10"
+        className="h-14 w-full group flex items-center"
         variant="outline"
         disabled={loadingProvider !== null}
         onClick={() => handleSocialSignIn("google")}
       >
+        <Google className=" size-6 grayscale-100 group-hover:grayscale-0 transition-[filter] duration-250" />
         {loadingProvider === "google"
           ? "Redirecting..."
           : "Continue with Google"}
       </Button>
 
-      <button
-        className="h-14 w-full rounded-2xl border border-white/10 bg-white/5 transition hover:bg-white/10"
-
+      <Button
+        className="h-14 w-full group"
+        variant="outline"
         disabled={loadingProvider !== null}
         onClick={() => handleSocialSignIn("github")}
       >
+        <Github className=" size-6 grayscale-100 text-violet-400 group-hover:grayscale-0 transition-[filter] duration-250" />
+
         {loadingProvider === "github"
           ? "Redirecting..."
           : "Continue with GitHub"}
-      </button>
+      </Button>
     </div>
   );
 }

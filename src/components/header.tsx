@@ -9,7 +9,7 @@ import { Skeleton } from "./ui/skeleton";
 import { Button } from "./ui/button";
 import ProfileLink from "./ui/profile-link";
 
-export default async function Header() {
+export default async function Header({ isAuthPage }: { isAuthPage?: boolean }) {
   return (
     <header className="sticky w-full top-0 z-50 border-b border-foreground/10 backdrop-blur-xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
@@ -23,15 +23,20 @@ export default async function Header() {
 
           <NavLink href="/pricing">Pricing</NavLink>
 
-          <Suspense fallback={<Skeleton className="h-5 w-20 rounded-xl" />}>
-            <AuthCheckLink />
-          </Suspense>
+          {/* <ThemeToggle /> */}
 
-          <ThemeToggle />
-
-          <Suspense fallback={<Skeleton className="size-10 rounded-full" />}>
-            <ProfileLink />
-          </Suspense>
+          {!isAuthPage && (
+            <>
+              <Suspense fallback={<Skeleton className="h-5 w-20 rounded-xl" />}>
+                <AuthCheckLink />
+              </Suspense>
+              <Suspense
+                fallback={<Skeleton className="size-10 rounded-full" />}
+              >
+                <ProfileLink />
+              </Suspense>
+            </>
+          )}
         </nav>
       </div>
     </header>

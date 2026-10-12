@@ -1,6 +1,5 @@
 import NoteActions from "@/features/notes/components/note-actions";
-import { FolderNote } from "@/features/notes/server/queries/get-folder-notes";
-import { NoteView } from "@/lib/types";
+import { NoteView } from "@/features/notes/utils";
 import { timeAgo } from "@/lib/utils";
 import { ArrowRight, Clock3, FileText } from "lucide-react";
 import Link from "next/link";
