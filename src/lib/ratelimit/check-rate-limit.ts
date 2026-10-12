@@ -10,14 +10,14 @@ export async function checkRateLimit(
   try {
     const result = await rateLimiters[limiter].limit(identifier);
 
-    console.log("RATE LIMIT:", {
-      limiter,
-      identifier,
-      success: result.success,
-      limit: result.limit,
-      remaining: result.remaining,
-      reset: new Date(result.reset).toISOString(),
-    });
+    // console.log("RATE LIMIT:", {
+    //   limiter,
+    //   identifier,
+    //   success: result.success,
+    //   limit: result.limit,
+    //   remaining: result.remaining,
+    //   reset: new Date(result.reset).toISOString(),
+    // });
 
     if (!result.success) {
       return fail({ reason: ErrorReason.RateLimited, details: result });

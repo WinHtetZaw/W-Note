@@ -4,7 +4,6 @@ import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { transferWorkspaceOwnership } from "@/features/workspaces/server/actions/transfer-workspace-ownership";
 import { errorMessages } from "@/lib/errors";
 import { Crown } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { toast } from "sonner";
 
@@ -16,7 +15,6 @@ type Props = {
 export default function TransferOwnershipButton(props: Props) {
   const { workspaceId, newOwnerId } = props;
   const [isPending, startTransition] = useTransition();
-  const router = useRouter();
 
   const handleClick = () => {
     startTransition(async () => {
@@ -27,7 +25,6 @@ export default function TransferOwnershipButton(props: Props) {
 
       if (result.code) {
         toast.error(errorMessages[result.code]);
-        console.log(result);
         return;
       }
 
@@ -40,13 +37,14 @@ export default function TransferOwnershipButton(props: Props) {
       //   }
 
       window.location.reload();
-      toast.success("Successfully transfered owner.");
+      toast.success("Successfully transferred ownership.");
     });
   };
 
   return (
     <DropdownMenuItem
       onClick={handleClick}
+      disabled={isPending}
       className="h-11 cursor-pointer rounded-xl"
     >
       <Crown className="mr-3 h-4 w-4 text-yellow-400" />

@@ -1,7 +1,6 @@
 "use client";
 
-import { wait } from "@/lib/utils";
-import { Check, Sparkles, Users } from "lucide-react";
+import { Check } from "lucide-react";
 import { useTransition } from "react";
 import { SubscriptionPlans } from "../types/billing.types";
 import { createCheckoutSession } from "../server/actions/create-checkout-session";
@@ -13,60 +12,13 @@ type BillingPlansProps = {
   activePlan: SubscriptionPlans;
 };
 
-const plans = [
-  {
-    name: "free",
-    description: "For individuals getting started with AI notes.",
-    price: "$0",
-    period: "forever",
-    icon: Sparkles,
-    features: [
-      "Up to 50 notes",
-      "Basic AI assistance",
-      "1 workspace",
-      "Basic note search",
-    ],
-  },
-  {
-    name: "pro",
-    description: "For individuals and small teams using AI every day.",
-    price: "$12",
-    period: "per month",
-    icon: Sparkles,
-    popular: true,
-    features: [
-      "Unlimited notes",
-      "Advanced AI assistance",
-      "Unlimited folders",
-      "AI-powered search",
-      "Note history",
-      "Priority processing",
-    ],
-  },
-  {
-    name: "team",
-    description: "For teams collaborating on a shared knowledge base.",
-    price: "$24",
-    period: "per member / month",
-    icon: Users,
-    features: [
-      "Everything in Pro",
-      "Team collaboration",
-      "Workspace members",
-      "Advanced permissions",
-      "Team AI usage",
-      "Priority support",
-    ],
-  },
-];
-
 export default function BillingPlans({
   workspaceId,
   activePlan,
 }: BillingPlansProps) {
   const [isPending, startTransition] = useTransition();
 
-  const handleClcik = (planName: SubscriptionPlans) => {
+  const handleClick = (planName: SubscriptionPlans) => {
     if (planName === "free") {
       return;
     }
@@ -77,10 +29,9 @@ export default function BillingPlans({
       });
 
       if (res.code) {
-        console.log(res);
+        // console.error(res);
         return;
       }
-      console.log(res);
 
       if (res.data.url) window.location.href = res.data?.url;
     });
@@ -145,7 +96,8 @@ export default function BillingPlans({
 
             <button
               type="button"
-              onClick={() => handleClcik(p)}
+              disabled={isPending}
+              onClick={() => handleClick(p)}
               className={[
                 "mt-8 h-10 rounded-xl px-4 text-sm font-semibold transition",
                 plan.popular

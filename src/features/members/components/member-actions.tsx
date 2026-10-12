@@ -52,14 +52,11 @@ export default function MemberActions({
           </Link> */}
 
           {(currentUserRole === "owner" || currentUserRole === "admin") && (
-            <>
-              <DropdownMenuSeparator />
-              <ChangeRoleButton
-                workspaceId={workspaceId}
-                memberId={member.userId}
-                currentRole={member.role}
-              />
-            </>
+            <ChangeRoleButton
+              workspaceId={workspaceId}
+              memberId={member.userId}
+              currentRole={member.role}
+            />
           )}
 
           {currentUserRole === "owner" && member.role !== "owner" && (

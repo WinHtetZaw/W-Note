@@ -1,58 +1,3 @@
-// "use client";
-
-// import { Button } from "@/components/ui/button";
-// import {
-//   Dialog,
-//   DialogClose,
-//   DialogContent,
-//   DialogDescription,
-//   DialogFooter,
-//   DialogHeader,
-//   DialogTitle,
-// } from "@/components/ui/dialog";
-// import { OwnWorkspaces } from "@/features/workspaces/types";
-// import { useTransition } from "react";
-
-// type Props = {
-//   wsResolutionDialog: boolean;
-//   setWsResolutionDialog: (value: boolean) => void;
-//   workspaces: OwnWorkspaces;
-// };
-
-// export default function WorkspaceResolutionDialog(props: Props) {
-//   const { wsResolutionDialog, setWsResolutionDialog, workspaces } = props;
-//   const [isPending, startTransition] = useTransition();
-
-//   console.log(workspaces);
-
-//   return (
-//     <Dialog open={wsResolutionDialog} onOpenChange={setWsResolutionDialog}>
-//       <DialogContent className="sm:max-w-3xl glass text-primary-foreground">
-//         <DialogHeader>
-//           <DialogTitle className="text-xl">Workspace Resolution</DialogTitle>
-//           <DialogDescription className="text-muted mb-4">
-//             You still own 2 workspaces. <br />
-//             To delete your account, you must first transfer ownership or delete
-//             these workspaces.
-//           </DialogDescription>
-//         </DialogHeader>
-//         {workspaces.map((ws) => (
-//           <div key={ws.id} className="flex">
-//             <p>{ws.name}</p>
-//           </div>
-//         ))}
-//         <DialogFooter className="mt-4">
-//           <DialogClose asChild>
-//             <Button type="button" variant="outline">
-//               Cancel
-//             </Button>
-//           </DialogClose>
-//         </DialogFooter>
-//       </DialogContent>
-//     </Dialog>
-//   );
-// }
-
 "use client";
 
 import { Building2, Trash2, Users } from "lucide-react";
@@ -75,7 +20,6 @@ import { fetchOwnWorkspaces } from "@/features/workspaces/server/actions/fetch-o
 import { wait } from "@/lib/utils";
 import { hasPasswordAccount } from "@/features/auth/services/has-password-account";
 import DeleteAccountWithEmailConfirmationDilog from "./delete-account-with-email-confirmatin-dialog";
-import { authClient } from "@/lib/auth/auth-client";
 
 type DeleteAccountBlockedDialogProps = {
   open: boolean;
@@ -97,9 +41,9 @@ export default function DeleteAccountBlockedDialog({
   setConfirmDialogOpen,
 }: DeleteAccountBlockedDialogProps) {
   const [deleteWsDialogOpen, setDeleteWsDialogOpen] = useState(false);
-  const [tranferOwnershipOpen, setTransferOwnershipOpen] = useState(false);
+  const [transferOwnershipOpen, setTransferOwnershipOpen] = useState(false);
   const [isDeletePending, startDeleteTransition] = useTransition();
-  const [isTranferPending, startTranferTransition] = useTransition();
+  const [isTransferPending, startTransferTransition] = useTransition();
   const [isPasswordAuth, setIsPasswordAuth] = useState(true);
 
   useEffect(() => {
@@ -121,20 +65,15 @@ export default function DeleteAccountBlockedDialog({
       return;
     };
     fetchingWorkspace();
-
-    // console.log("hello____>", workspaces);
-  }, [isDeletePending, isTranferPending]);
+  }, [isDeletePending, isTransferPending]);
 
   useEffect(() => {
     const gettingIsPasswordAuth = async () => {
       const result = await hasPasswordAccount();
       setIsPasswordAuth(result);
-      console.log(await authClient.listAccounts());
     };
     gettingIsPasswordAuth();
   }, []);
-
-  console.log(isPasswordAuth);
 
   return (
     <>
@@ -198,11 +137,11 @@ export default function DeleteAccountBlockedDialog({
                       <Button
                         type="button"
                         variant="outline"
-                        disabled={isTranferPending}
+                        disabled={isTransferPending}
                         onClick={() => setTransferOwnershipOpen(true)}
                         className="border-white/10 bg-white/5 text-zinc-200 hover:bg-white/10 hover:text-white"
                       >
-                        {isTranferPending
+                        {isTransferPending
                           ? "Transfering..."
                           : "Transfer ownership"}
                       </Button>
@@ -220,11 +159,11 @@ export default function DeleteAccountBlockedDialog({
                     </div>
 
                     <TransferOwnershipDialog
-                      open={tranferOwnershipOpen}
+                      open={transferOwnershipOpen}
                       onOpenChange={setTransferOwnershipOpen}
                       workspace={ws}
-                      isTranferPending={isTranferPending}
-                      startTranferTransition={startTranferTransition}
+                      isTransferPending={isTransferPending}
+                      startTransferTransition={startTransferTransition}
                     />
 
                     <DeleteWorkspaceDialog

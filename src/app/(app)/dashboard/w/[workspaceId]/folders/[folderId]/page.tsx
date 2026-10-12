@@ -1,73 +1,33 @@
-import Link from "next/link";
-import {
-  Folder,
-  FileText,
-  Plus,
-  Clock3,
-  MoreHorizontal,
-  ArrowRight,
-} from "lucide-react";
+import { Folder } from "lucide-react";
 import FolderActionsMenu from "@/features/folders/components/folder-actions-menu";
 import PageHead from "@/components/dashboard/page-head";
-import NoteCreateButton from "@/components/ui/note-create-button";
 import { Suspense } from "react";
 import CreateNoteButton from "@/features/notes/components/create-note-button";
 import FolderNotesList from "@/features/folders/components/folder-notes-list";
 import { fetchFolderNotes } from "@/features/folders/server/actions/fetch-folder-notes";
-
-const notes = [
-  {
-    id: "1",
-    title: "Product Roadmap Q1",
-    updatedAt: "2 hours ago",
-  },
-  {
-    id: "2",
-    title: "AI Feature Ideas",
-    updatedAt: "5 hours ago",
-  },
-  {
-    id: "3",
-    title: "User Feedback Summary",
-    updatedAt: "1 day ago",
-  },
-  {
-    id: "4",
-    title: "Launch Checklist",
-    updatedAt: "2 days ago",
-  },
-];
-
-// type Props = {
-//   params: Promise<{ workspaceId: string; folderId: string }>;
-// };
+import MainLoading from "@/components/ui/main-loading";
 
 type Props = {
   params: Promise<{ workspaceId: string; folderId: string }>;
-  // searchParams: Promise<{ q: string }>;
+  searchParams: Promise<{ q: string }>;
 };
 
-export default async function FolderPage({ params }: Props) {
+export default async function FolderPage({ params, searchParams }: Props) {
   return (
-    <Suspense fallback={<p>folder detail page loading...</p>}>
-      <FolderDetailContent params={params} />
+    <Suspense fallback={<MainLoading />}>
+      <FolderDetailContent params={params} searchParams={searchParams} />
     </Suspense>
   );
 }
 
-async function FolderDetailContent({ params }: Props) {
+async function FolderDetailContent({ params, searchParams }: Props) {
   const { workspaceId, folderId } = await params;
-  // const { q } = await searchParams;
+  const { q } = await searchParams;
 
-  // const result = await fetchFolderNotes(workspaceId, folderId);
-  const result = await fetchFolderNotes({ workspaceId, folderId });
+  const result = await fetchFolderNotes({ workspaceId, folderId, q });
 
-  // const result = q
-  //   ? await searchNotesAction(workspaceId, q)
-  //   : await fetchNotes(workspaceId);
-
-  if (!result.data) {
-    return <p>Notes not found</p>;
+  if (result.code) {
+    throw new Error("Fail to fetch folders.");
   }
 
   return (
@@ -80,9 +40,7 @@ async function FolderDetailContent({ params }: Props) {
       >
         <div className="flex gap-3">
           <CreateNoteButton workspaceId={workspaceId} folderId={folderId} />
-          <Suspense fallback={<p>loading</p>}>
-            <FolderActionsMenu />
-          </Suspense>
+          <FolderActionsMenu />
         </div>
       </PageHead>
 

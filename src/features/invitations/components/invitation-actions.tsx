@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useTransition } from "react";
 import { Copy, Mail, MoreVertical, XCircle } from "lucide-react";
 
 import {
@@ -40,7 +40,6 @@ export default function InvitationActions(props: Props) {
       const result = await resendWorkspaceInvite({ invitationId, workspaceId });
 
       if (result.code) {
-        console.log(result);
         toast.error(errorMessages[result.code]);
         return;
       }
@@ -55,8 +54,8 @@ export default function InvitationActions(props: Props) {
       const result = await revokeWorkspaceInvite({ invitationId, workspaceId });
 
       if (result.code) {
-        console.log(result);
         toast.error(errorMessages[result.code]);
+        return;
       }
 
       toast.success("Successfully invitation cancelled");

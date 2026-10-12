@@ -31,27 +31,18 @@ import {
 import { OwnWorkspaces } from "../types";
 import { MemberWithDetail } from "@/features/members/types";
 import { fetchMembersForTransfer } from "@/features/members/server/actions/fetch-members-for-transfer";
-import { wait } from "@/lib/utils";
 import { toast } from "sonner";
-import { showSuccessToast } from "@/components/ui/custom-toast";
 import { transferWorkspaceOwnership } from "../server/actions/transfer-workspace-ownership";
 import { useRouter } from "next/navigation";
 import { errorMessages } from "@/lib/errors";
-
-type WorkspaceMember = {
-  id: string;
-  name: string;
-  email: string;
-  role: "member" | "admin";
-  image?: string | null;
-};
+import Image from "next/image";
 
 type props = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   workspace: OwnWorkspaces[number];
-  isTranferPending: boolean;
-  startTranferTransition: (callback: () => void) => void;
+  isTransferPending: boolean;
+  startTransferTransition: (callback: () => void) => void;
 };
 
 export default function TransferOwnershipDialog(props: props) {
@@ -59,8 +50,8 @@ export default function TransferOwnershipDialog(props: props) {
     open,
     onOpenChange,
     workspace,
-    isTranferPending,
-    startTranferTransition,
+    isTransferPending,
+    startTransferTransition,
   } = props;
   const [selectedMember, setSelectedMember] = useState<MemberWithDetail | null>(
     null,
@@ -78,18 +69,17 @@ export default function TransferOwnershipDialog(props: props) {
         return;
       }
       setMembers(result.data);
-      console.log(members);
     };
     gettingMembers();
   }, []);
 
   const handleTransfer = async () => {
-    if (!selectedMember || isTranferPending) return;
+    if (!selectedMember || isTransferPending) return;
 
-    const loadingToast = toast.loading("Transfering workspace...");
+    const loadingToast = toast.loading("Transferring workspace...");
     onOpenChange(false);
 
-    startTranferTransition(async () => {
+    startTransferTransition(async () => {
       const result = await transferWorkspaceOwnership({
         workspaceId: workspace.workspaceId,
         newOwnerId: selectedMember.userId,
@@ -108,7 +98,7 @@ export default function TransferOwnershipDialog(props: props) {
   };
 
   const handleOpenChange = (value: boolean) => {
-    if (isTranferPending) return;
+    if (isTransferPending) return;
 
     onOpenChange(value);
 
@@ -150,7 +140,7 @@ export default function TransferOwnershipDialog(props: props) {
                   variant="outline"
                   role="combobox"
                   aria-expanded={memberPickerOpen}
-                  className="h-auto min-h-14 w-full justify-between border-white/10 bg-white/[0.03] px-4 py-3 text-left hover:bg-white/[0.06]"
+                  className="h-auto min-h-14 w-full justify-between border-white/10 bg-white/3 px-4 py-3 text-left hover:bg-white/6"
                 >
                   {selectedMember ? (
                     <MemberPreview member={selectedMember} />
@@ -166,7 +156,7 @@ export default function TransferOwnershipDialog(props: props) {
 
               <PopoverContent
                 align="start"
-                className="w-[var(--radix-popover-trigger-width)] border-white/10 bg-zinc-950 p-0 text-white"
+                className="w-(--radix-popover-trigger-width) border-white/10 bg-zinc-950 p-0 text-white"
               >
                 <Command className="bg-transparent">
                   <CommandInput
@@ -255,7 +245,7 @@ export default function TransferOwnershipDialog(props: props) {
           <Button
             type="button"
             variant="outline"
-            disabled={isTranferPending}
+            disabled={isTransferPending}
             onClick={() => handleOpenChange(false)}
             className="text-zinc-400 hover:bg-white/5 hover:text-white"
           >
@@ -264,13 +254,13 @@ export default function TransferOwnershipDialog(props: props) {
 
           <Button
             type="button"
-            disabled={!selectedMember || isTranferPending}
+            disabled={!selectedMember || isTransferPending}
             onClick={handleTransfer}
             className="gap-2 bg-violet-500 text-white hover:bg-violet-400"
           >
             <Crown className="size-4" />
 
-            {isTranferPending ? "Transferring..." : "Transfer ownership"}
+            {isTransferPending ? "Transferring..." : "Transfer ownership"}
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -282,7 +272,7 @@ function MemberPreview({ member }: { member: MemberWithDetail }) {
   return (
     <div className="flex min-w-0 items-center gap-3">
       {member.user.image ? (
-        <img
+        <Image
           src={member.user.image}
           alt=""
           className="size-9 shrink-0 rounded-full object-cover"

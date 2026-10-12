@@ -34,8 +34,6 @@ export default function MembersPage(props: Props) {
     );
   }, [search]);
 
-  // console.log(members);
-
   return (
     <div className="space-y-12">
       <PageHead

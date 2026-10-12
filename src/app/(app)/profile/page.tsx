@@ -11,7 +11,7 @@ import { Suspense } from "react";
 
 export default async function ProfilePage() {
   return (
-    <div className="space-y-8 max-w-4xl mx-auto">
+    <>
       <PageHead
         pageLabel="Account Settings"
         title="Your Profile"
@@ -26,9 +26,9 @@ export default async function ProfilePage() {
         <AccountInfoCard />
       </Suspense>
 
-      <ReferencesCard />
+      {/* <ReferencesCard /> */}
 
       <DeleteAccountCard />
-    </div>
+    </>
   );
 }

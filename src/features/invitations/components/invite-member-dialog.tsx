@@ -43,11 +43,11 @@ export default function InviteMemberDialog({ open, onOpenChange }: Props) {
   function onSubmit(values: InvitationFormValues) {
     startTransition(async () => {
       const result = await createWorkspaceInvite({ workspaceId, ...values });
-      if (!result.data) {
+      if (result.code) {
         toast.error(errorMessages[result.code]);
-        console.log(result);
         return;
       }
+
       toast.success("Successfully invitation sent.");
       router.refresh();
       form.reset();

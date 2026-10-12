@@ -1,16 +1,9 @@
 "use client";
 
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Field, FieldError, FieldLabel } from "@/components/ui/field";
-import { ArrowRight, Eye, EyeClosed, Lock, Mail, User } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ArrowRight, Mail, User } from "lucide-react";
 import { useState, useTransition } from "react";
-import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupInput,
-} from "@/components/ui/input-group";
 import { SignUpFormValues, signUpSchema } from "../schemas/sign-up-schema";
 import { authClient } from "@/lib/auth/auth-client";
 import { toast } from "sonner";
@@ -31,7 +24,6 @@ export default function SignUpForm() {
   const router = useRouter();
 
   const onSubmit = (formData: SignUpFormValues) => {
-    console.log(formData);
     const { name, email, password } = formData;
     startTransition(async () => {
       const { data, error } = await authClient.signUp.email({
@@ -47,11 +39,6 @@ export default function SignUpForm() {
       toast.success("Account created successfully. Please sign in.");
       router.push("/sign-in");
     });
-  };
-
-  const handleShowPassword = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    setShowPassword(!showPassword);
   };
 
   return (

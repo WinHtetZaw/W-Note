@@ -7,9 +7,7 @@ import z from "zod";
 import { useTransition } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { authClient } from "@/lib/auth/auth-client";
 import { createFolder } from "../server/actions/create-folder";
-import { useCreateFolder } from "../hooks/use-create-folder";
 import { FormInput, FormSubmitButton } from "@/components/form";
 import { renameFolder } from "../server/actions/rename-folder";
 import { errorMessages } from "@/lib/errors/error-messages";
@@ -34,18 +32,13 @@ export default function FolderForm({ isEditForm, oldFolder }: Props) {
   const { workspaceId, folderId }: { workspaceId: string; folderId: string } =
     useParams();
   const router = useRouter();
-  // const mutation = useCreateFolder(workspaceId);
 
   const handleCreate = async ({ name }: z.infer<typeof formSchema>) => {
     const result = await createFolder({
       name,
       workspaceId,
     });
-    // const result = await mutation.mutateAsync({
-    //   ...data,
-    //   workspaceId,
-    //   createdBy: session.user.id,
-    // });
+
     if (result.code) {
       toast.error(errorMessages[result.code]);
       return;

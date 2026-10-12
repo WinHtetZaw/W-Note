@@ -49,11 +49,6 @@ export function ConfirmPasswordDialog(props: Props) {
     startTransition(async () => {
       const result = await DeleteAccount(formData.password);
       if (result.code) {
-        console.log(result);
-        if (result.code === "CONFLICT") {
-          //   setWsResolutionDialog(true);
-          return;
-        }
         toast.error(errorMessages[result.code]);
         return;
       }

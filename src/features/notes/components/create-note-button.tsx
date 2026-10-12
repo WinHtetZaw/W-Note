@@ -24,12 +24,10 @@ export default function CreateNoteButton(props: Props) {
       const result = await createNote({ workspaceId, folderId });
 
       if (result.code) {
-        console.log(result);
         toast.error(errorMessages[result.code]);
         return;
       }
 
-      // toast.success("Note created successfully.");
       return;
     });
   };

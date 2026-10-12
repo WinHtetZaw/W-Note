@@ -8,11 +8,10 @@ import {
   DropdownMenuSubTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Shield } from "lucide-react";
-import { useState, useTransition } from "react";
+import { useTransition } from "react";
 import { changeMemberRoleAction } from "../server/actions/change-member-role-action";
 import { toast } from "sonner";
 import { errorMessages } from "@/lib/errors";
-import { wait } from "@/lib/utils";
 
 type Props = {
   workspaceId: string;
@@ -21,20 +20,18 @@ type Props = {
 };
 
 export default function ChangeRoleButton(props: Props) {
-  const { workspaceId, memberId, currentRole } = props;
+  const { workspaceId, memberId } = props;
   const [isPending, startTransition] = useTransition();
 
   const handleUpdateRole = (role: "member" | "admin") => {
     startTransition(async () => {
-      // await wait(2000);
-      // return;
       const result = await changeMemberRoleAction({
         workspaceId,
         memberId,
         role,
       });
-      if (!result.success) {
-        console.log(result.details);
+
+      if (result.code) {
         toast.error(errorMessages[result.code]);
         return;
       }
@@ -58,12 +55,14 @@ export default function ChangeRoleButton(props: Props) {
             <DropdownMenuItem
               onClick={() => handleUpdateRole("admin")}
               className="h-11 cursor-pointer rounded-xl"
+              disabled={isPending}
             >
               Admin
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => handleUpdateRole("member")}
               className="h-11 cursor-pointer rounded-xl"
+              disabled={isPending}
             >
               Member
             </DropdownMenuItem>

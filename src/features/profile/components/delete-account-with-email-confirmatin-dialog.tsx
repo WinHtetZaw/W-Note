@@ -20,16 +20,16 @@ type Props = {
   setDeleteDialogOpen: (value: boolean) => void;
 };
 
-export default function DeleteAccountWithEmailConfirmationDilog(props: Props) {
+export default function DeleteAccountWithEmailConfirmationDialog(props: Props) {
   const { emailConfirmationOpen, setEmailConfirmationOpen } = props;
   const [isPending, startTransition] = useTransition();
 
   const handleSent = () => {
     startTransition(async () => {
-      const { data, error } = await authClient.deleteUser();
+      const { error } = await authClient.deleteUser();
 
       if (error) {
-        toast.error("Fail to ");
+        toast.error("Fail to delete account. Please try again.");
         return;
       }
 
