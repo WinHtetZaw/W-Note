@@ -5,10 +5,11 @@ import MemberSearch from "./member-search";
 import MemberCard from "./member-card";
 import { Member } from "../utils/types";
 import PageHead from "@/components/dashboard/page-head";
+import { WorkspaceRole } from "../types";
 
 interface Props {
   workspaceId: string;
-  currentUserRole: "owner" | "admin" | "member";
+  currentUserRole: WorkspaceRole;
   invitationList: ReactNode;
   invitationButton: ReactNode;
   members: Member[];

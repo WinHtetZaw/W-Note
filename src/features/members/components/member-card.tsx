@@ -5,12 +5,13 @@ import { Mail } from "lucide-react";
 import MemberActions from "./member-actions";
 import { Member } from "../utils/types";
 import RoleBadge from "@/components/ui/role-badge";
+import { WorkspaceRole } from "../types";
 
 interface Props {
   workspaceId: string;
   // member: WorkspaceMember;
   member: Member;
-  currentUserRole: "owner" | "admin" | "member";
+  currentUserRole: WorkspaceRole;
 }
 
 export default function MemberCard({
@@ -18,6 +19,7 @@ export default function MemberCard({
   member,
   currentUserRole,
 }: Props) {
+  console.log(currentUserRole);
   return (
     <div className="relative rounded-[32px] glass p-6">
       <div className="flex flex-col-reverse gap-6 lg:flex-row lg:items-center lg:justify-between">
@@ -54,12 +56,14 @@ export default function MemberCard({
           <RoleBadge role={member.role} />
 
           {/* <StatusBadge status={"offline"} /> */}
-
-          <MemberActions
-            workspaceId={workspaceId}
-            member={member}
-            currentUserRole={currentUserRole}
-          />
+          {currentUserRole !== "owner" ||
+            (member.role !== "owner" && (
+              <MemberActions
+                workspaceId={workspaceId}
+                member={member}
+                currentUserRole={currentUserRole}
+              />
+            ))}
         </div>
       </div>
     </div>
