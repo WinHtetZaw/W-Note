@@ -29,7 +29,7 @@ async function FoldersContent(props: Props) {
         title="Folders"
         subTitle="Structure and organize your workspace notes."
       >
-        <FolderCreateLink />
+        <FolderCreateLink className=" ml-auto" />
       </PageHead>
 
       <InputSearch />

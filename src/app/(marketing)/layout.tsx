@@ -8,7 +8,7 @@ export default function MarketingLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="min-h-screen bg-transparent">
+    <div className="min-h-svh bg-transparent">
       <BackgroundGlow />
       <Header />
       <main className="page-container">{children}</main>

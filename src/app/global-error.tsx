@@ -17,8 +17,8 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
 
   return (
     <html lang="en">
-      <body className="bg-zinc-950 text-white">
-        <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-zinc-950 px-6">
+      <body className="bg-zinc-950 text-foreground">
+        <main className="relative flex min-h-svh items-center justify-center overflow-hidden bg-zinc-950 px-6">
           {/* Background glow */}
           <div
             aria-hidden="true"

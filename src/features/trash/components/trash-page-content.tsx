@@ -31,7 +31,7 @@ export async function TrashPageContent({ params }: TrashPageProps) {
   const hasNotes = notes.length > 0;
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-12">
       <PageHead
         pageLabel="Trash"
         labelIcon={Trash}
@@ -48,7 +48,7 @@ export async function TrashPageContent({ params }: TrashPageProps) {
 
       {/* Content */}
       {hasNotes ? (
-        <div className="grid gap-3">
+        <div className="flex flex-col gap-6">
           {notes.map((note) => (
             <TrashNoteCard
               key={note.id}

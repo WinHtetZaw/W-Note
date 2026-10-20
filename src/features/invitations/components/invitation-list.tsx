@@ -18,7 +18,7 @@ export default async function InvitationList({
       <div className="mb-6 flex items-center justify-between">
         <h2 className="text-2xl font-bold">Pending Invitations</h2>
 
-        <span className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-zinc-400">
+        <span className="rounded-full glass min-w-fit px-4 py-2 text-sm text-muted">
           {wsPendingInvitations.data.length} Pending
         </span>
       </div>
@@ -51,7 +51,7 @@ function EmptyState({
   description: string;
 }) {
   return (
-    <div className="rounded-[32px] border border-dashed border-white/10 bg-white/3 p-16 text-center">
+    <div className="rounded-[32px] border border-dashed glass max-sm:p-6 p-16 text-center">
       <h3 className="text-2xl font-bold">{title}</h3>
 
       <p className="mt-3 text-zinc-500">{description}</p>

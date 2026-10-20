@@ -16,7 +16,7 @@ import { Suspense } from "react";
 
 type Props = {
   params: Promise<{
-    invitationId: string;
+    token: string;
   }>;
 };
 
@@ -29,8 +29,8 @@ export default async function InvitationPage({ params }: Props) {
 }
 
 async function InvitationPageContent({ params }: Props) {
-  const { invitationId } = await params;
-  const result = await fetchUserPendingInvitationById(invitationId);
+  const { token } = await params;
+  const result = await fetchUserPendingInvitationById(token);
 
   if (result.code) {
     redirect("/invitations");
@@ -43,13 +43,13 @@ async function InvitationPageContent({ params }: Props) {
   const expiry = formatExpiryInDays(invitation.expiresAt);
 
   return (
-    <section className="mx-auto flex min-h-[80vh] w-full md:w-2xl items-center px-6 py-16">
-      <div className="w-full rounded-[32px] border border-white/10 bg-white/5 p-8 backdrop-blur-2xl">
+    <section className="mx-auto flex min-h-[80vh] w-full md:w-2xl items-center py-16">
+      <div className="w-full rounded-[32px] p-6 lg:p-8 glass">
         {/* Header */}
 
         <div className="text-center">
           <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-violet-600/15">
-            <Sparkles className="h-8 w-8 text-violet-400" />
+            <Sparkles className="size-8 text-icon" />
           </div>
 
           <h1 className="text-4xl font-black">You're Invited!</h1>
@@ -140,9 +140,9 @@ async function InvitationPageContent({ params }: Props) {
           </button> */}
         </div>
 
-        <p className="mt-8 text-center text-sm text-zinc-500">
+        {/* <p className="mt-8 text-center text-sm text-zinc-500">
           Already have an account? Sign in to continue.
-        </p>
+        </p> */}
       </div>
     </section>
   );

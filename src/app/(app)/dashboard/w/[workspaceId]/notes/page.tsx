@@ -33,7 +33,7 @@ async function NotesContent(props: Props) {
         title="Workspace Notes"
         subTitle="Manage and organize your AI-enhanced notes."
       >
-        <CreateNoteButton workspaceId={workspaceId} className="w-fit" />
+        <CreateNoteButton workspaceId={workspaceId} className="w-fit ml-auto" />
       </PageHead>
       <InputSearch />
       <Suspense fallback={<CardSkeletonList />}>

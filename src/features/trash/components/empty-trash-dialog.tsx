@@ -48,7 +48,7 @@ export function EmptyTrashDialog({
       <AlertDialogTrigger asChild>
         <Button
           variant="outline"
-          className="text-destructive hover:text-destructive"
+          className="text-destructive hover:text-destructive ml-auto"
         >
           <Trash2 className="mr-2 size-4" />
           Empty trash

@@ -40,6 +40,7 @@ export function DashboardSidebarContent({
 
       <div className="space-y-8 p-4 lg:p-8">
         <WorkspaceSwitcher
+          currentWorkspaceId={workspaceId}
           userWorkspaces={workspaces}
           currentName={workspaceName}
         />

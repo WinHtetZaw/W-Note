@@ -58,7 +58,7 @@ export default function MembersPage(props: Props) {
           </span>
         </div>
 
-        <div className="space-y-5">
+        <div className="space-y-6">
           {filteredMembers.length === 0 ? (
             <EmptyState
               title="No members found"

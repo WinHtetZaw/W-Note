@@ -4,9 +4,9 @@ import { ErrorCode } from "@/lib/errors";
 import { redirect } from "next/navigation";
 import { userPendingInvitationByIdService } from "../../services/user-pending-invitation-by-id-service";
 
-export async function fetchUserPendingInvitationById(invitationId: string) {
+export async function fetchUserPendingInvitationById(token: string) {
   const [error, data] = await userPendingInvitationByIdService({
-    invitationId,
+    token,
   });
 
   if (error == null) {

@@ -28,19 +28,19 @@ export default function MemberCard({
           href={`/workspace/${workspaceId}/members/${member.userId}`}
           className="flex items-center gap-5"
         >
-          <div className="size-16 content-center text-center rounded-full bg-violet-600 text-xl font-bold text-white">
+          <div className="size-16 shrink-0 content-center text-center rounded-full bg-violet-600 text-xl font-bold text-white">
             <span>{member.user.name.charAt(0)}</span>
           </div>
 
-          <div className="flex-1">
-            <h2 className="text-xl font-semibold text-white">
-              {member.user.name}
-            </h2>
+          <div className="flex-1 overflow-hidden">
+            <h2 className="text-xl font-semibold">{member.user.name}</h2>
 
-            <div className="mt-2 flex flex-wrap gap-5 text-sm">
-              <div className=" flex items-center gap-2 text-zinc-400">
-                <Mail className="h-4 w-4" />
-                {member.user.email}
+            <div className="mt-2 w-full flex flex-wrap gap-5 text-sm">
+              <div className=" min-w-0 flex items-center gap-2 text-muted">
+                <Mail className="size-4" />
+                <span className="truncate flex-1 w-full">
+                  {member.user.email}
+                </span>
               </div>
 
               {/* <div className=" flex items-center gap-2 text-sm text-zinc-500">

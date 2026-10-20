@@ -49,7 +49,6 @@ export default function FormSelect<T extends FieldValues>(
               {label}
             </FieldLabel>
           )}
-          commant
           <Select
             name={field.name}
             value={field.value}

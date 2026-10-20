@@ -12,7 +12,7 @@ export default function PageLabel({ label, className, icon }: PageLabelProps) {
   return (
     <div
       className={cn(
-        "inline-flex items-center gap-2 rounded-full glass px-4 py-2 text-sm",
+        "inline-flex items-center gap-2 rounded-full min-w-fit glass px-4 py-2 text-sm",
         className,
       )}
     >

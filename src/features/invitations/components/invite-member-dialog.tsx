@@ -57,7 +57,7 @@ export default function InviteMemberDialog({ open, onOpenChange }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="rounded-[32px] text-primary-foreground border border-white/10 bg-zinc-900/95 p-8 backdrop-blur-2xl">
+      <DialogContent className="rounded-[32px] p-6 lg:p-8">
         <DialogHeader>
           <DialogTitle className="text-3xl font-black">
             Invite Member

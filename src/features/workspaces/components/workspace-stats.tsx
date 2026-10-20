@@ -30,7 +30,7 @@ export default async function WorkspaceStats({ workspaceId }: Props) {
           key={label}
           className="p-6 glass rounded-3xl gap-6 flex flex-row-reverse lg:flex-col items-center"
         >
-          <h3 className="text-2xl lg:text-4xl font-black mr-auto lg:mr-0">
+          <h3 className="text-2xl lg:text-4xl font-black ml-auto lg:mr-0">
             {formatNumber(value)}
           </h3>
           <div className="flex flex-row-reverse min-w-32 lg:min-w-auto lg:flex-row gap-2 items-center lg:justify-between">

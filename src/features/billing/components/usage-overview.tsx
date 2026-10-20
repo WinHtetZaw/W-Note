@@ -1,5 +1,6 @@
 import SectionHeader from "@/components/dashboard/section-header";
-import { fetchWorkspaceusage } from "@/features/workspaces/server/actions/fetch-workspace-usage";
+import { fetchWorkspaceUsage } from "@/features/workspaces/server/actions/fetch-workspace-usage";
+import { calculatePercentage } from "@/utils/caculate-percentage";
 import {
   Activity,
   ArrowUpRight,
@@ -47,7 +48,7 @@ const usageConfig = [
 function getUsagePercentage(used: number, limit: number) {
   if (limit <= 0) return 100;
 
-  return Math.min(Math.round((used / limit) * 100), 100);
+  return calculatePercentage(used, limit);
 }
 
 function getUsageColor(percentage: number) {
@@ -77,7 +78,7 @@ function getUsageColor(percentage: number) {
 export default async function UsageOverview({
   workspaceId,
 }: UsageOverviewProps) {
-  const result = await fetchWorkspaceusage(workspaceId);
+  const result = await fetchWorkspaceUsage(workspaceId);
 
   if (result.code) {
     throw new Error("Fail to fetch workspace usage.");
@@ -93,9 +94,9 @@ export default async function UsageOverview({
   };
 
   return (
-    <section className="space-y-5">
+    <section>
       {/* Overview header */}
-      <div className="flex flex-wrap items-center justify-between gap-3">
+      <div className="flex mb-8 flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-2">
           <div className="flex size-8 items-center justify-center rounded-lg bg-violet-500/10">
             <Activity className="size-4 text-violet-400" />
@@ -112,13 +113,13 @@ export default async function UsageOverview({
           </div>
         </div>
 
-        <span className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-xs text-zinc-400">
+        <span className="rounded-full ml-auto glass px-3 py-1 text-xs text-muted">
           Live usage
         </span>
       </div>
 
       {/* Usage cards */}
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid gap-6 sm:grid-cols-2">
         {usageConfig.map((item) => {
           const Icon = item.icon;
           const resource = usageData[item.key];
@@ -190,7 +191,7 @@ export default async function UsageOverview({
                     <span
                       className={`text-sm font-medium tabular-nums ${colors.text}`}
                     >
-                      {percentage}%
+                      {Number(percentage.toFixed(2))}%
                     </span>
                   )}
                 </div>

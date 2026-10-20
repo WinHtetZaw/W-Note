@@ -35,7 +35,7 @@ export async function DashboardSidebar({ params }: Props) {
   return (
     <>
       {/* Desktop */}
-      <aside className="hidden h-screen w-72 shrink-0 overflow-y-auto border-r backdrop-blur-xl scrollbar-none lg:block">
+      <aside className="hidden h-dvh w-72 shrink-0 overflow-y-auto border-r backdrop-blur-xl scrollbar-none lg:block">
         {content}
       </aside>
 

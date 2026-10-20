@@ -4,8 +4,8 @@ type GenerateInviteLinkInput = {
   token: string;
 };
 
-export function generateInviteLink(id: string) {
+export function generateInviteLink({ token }: GenerateInviteLinkInput) {
   const baseUrl = env.NEXT_PUBLIC_APP_URL;
   if (!baseUrl) throw new Error("NEXT_PUBLIC_APP_URL is missing");
-  return `${baseUrl}/invitations/${id}`;
+  return `${baseUrl}/invitations/${token}`;
 }

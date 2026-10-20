@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import EmptyState from "@/components/ui/empty-state";
 import { Skeleton } from "@/components/ui/skeleton";
 import { fetchNotes } from "@/features/notes/server/actions/fetch-notes";
-import { FileText, Plus } from "lucide-react";
+import { FileText } from "lucide-react";
 import Link from "next/link";
 
 type Props = {
@@ -26,7 +26,6 @@ export default async function RecentNotesList({ workspaceId }: Props) {
   return (
     <div className="mt-8 space-y-4">
       {notes.length === 0 ? (
-        // <RecentNotesEmpty />
         <EmptyState
           title=" No Notes yet."
           description=" Create a new note to get started."
@@ -42,7 +41,9 @@ export default async function RecentNotesList({ workspaceId }: Props) {
               className="flex w-full items-center justify-between"
             >
               <Link href={`/dashboard/w/${workspaceId}/notes/${note.id}`}>
-                <span className="font-medium">{note.title}</span>
+                <span className="font-medium truncate flex-1">
+                  {note.title}
+                </span>
 
                 <FileText className="size-4 icon" />
               </Link>
@@ -53,22 +54,6 @@ export default async function RecentNotesList({ workspaceId }: Props) {
     </div>
   );
 }
-
-// function RecentNotesEmpty() {
-//   return (
-//     <div className="mt-8 flex flex-col items-center justify-center text-center">
-//       <div className="flex items-center gap-2 mb-4">
-//         <div className="flex size-10 items-center justify-center rounded-xl bg-muted/50">
-//           <FileText className="size-5 text-muted-foreground" />
-//         </div>
-//         <h3 className="font-medium">No notes yet</h3>
-//       </div>
-//       <p className="mt-1 max-w-xs text-sm text-muted">
-//         Create your first note and start capturing your ideas.
-//       </p>
-//     </div>
-//   );
-// }
 
 export function RecentNotesListLoading() {
   return (

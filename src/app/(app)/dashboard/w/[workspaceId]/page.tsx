@@ -30,7 +30,7 @@ async function WorkspaceDetailContent({ params }: Props) {
   const { workspaceId } = await params;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-18">
       <PageHead
         pageLabel="Workspace Overview"
         title="Startup Team"
@@ -69,7 +69,7 @@ async function WorkspaceDetailContent({ params }: Props) {
 
 function PageHeadLink({ workspaceId }: { workspaceId: string }) {
   return (
-    <div className="flex gap-3">
+    <div className="flex gap-3 ml-auto">
       <CreateNoteButton workspaceId={workspaceId} />
       {/* <Suspense fallback={<p>workspace detail actions loading</p>}>
         <WorkspaceDetailActions />

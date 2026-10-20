@@ -17,7 +17,7 @@ export default function Error({ error, reset }: ErrorPageProps) {
   }, [error]);
 
   return (
-    <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-zinc-950 px-6">
+    <main className="relative flex min-h-svh items-center justify-center overflow-hidden bg-zinc-950 px-6">
       {/* Background glow */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
         <div className="absolute left-1/2 top-1/3 size-125 -translate-x-1/2 rounded-full bg-violet-500/10 blur-3xl" />

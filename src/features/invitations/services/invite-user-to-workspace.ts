@@ -73,8 +73,8 @@ export async function inviteUserToWorkspace(
     const workspaceName = workspace.name;
 
     const expiresIn = formatExpiryInDays(expiresAt);
-    // const invitationLink = generateInviteLink({ token });
-    const invitationLink = generateInviteLink(invitation.id);
+    const invitationLink = generateInviteLink({ token });
+    // const invitationLink = generateInviteLink(invitation.id);
 
     const emailResult = await sendInvitationEmail({
       to: email,

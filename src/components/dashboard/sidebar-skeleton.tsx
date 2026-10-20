@@ -3,7 +3,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 export function SidebarSkeleton() {
   return (
     <aside
-      className="hidden h-screen w-72 shrink-0 overflow-y-auto border-r bg-background/80 backdrop-blur-xl scrollbar-none lg:block"
+      className="hidden h-dvh w-72 shrink-0 overflow-y-auto border-r bg-background/80 backdrop-blur-xl scrollbar-none lg:block"
       aria-hidden="true"
     >
       {/* Header */}

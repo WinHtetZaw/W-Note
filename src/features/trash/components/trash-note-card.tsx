@@ -68,13 +68,13 @@ export function TrashNoteCard({ workspaceId, note }: TrashNoteCardProps) {
   }
 
   return (
-    <div className="group flex items-center gap-4 rounded-xl border bg-card/40 p-4 backdrop-blur-xl transition-colors hover:bg-card/70">
+    <div className="group flex items-center gap-4 rounded-2xl p-4 glass">
       <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-muted/50">
         <FileText className="size-5 text-muted-foreground" />
       </div>
 
-      <div className="min-w-0 flex-1">
-        <h3 className="truncate font-medium">
+      <div className=" flex-1 overflow-hidden">
+        <h3 className="line-clamp-2 font-medium">
           {note.title || "Untitled note"}
         </h3>
 
@@ -93,7 +93,7 @@ export function TrashNoteCard({ workspaceId, note }: TrashNoteCardProps) {
           </Button>
         </DropdownMenuTrigger>
 
-        <DropdownMenuContent align="end">
+        <DropdownMenuContent align="end" className="w-48">
           <DropdownMenuItem disabled={restorePending} onClick={handleRestore}>
             <RotateCcw className="mr-2 size-4" />
             Restore
@@ -106,7 +106,7 @@ export function TrashNoteCard({ workspaceId, note }: TrashNoteCardProps) {
             variant="destructive"
             onClick={handleDelete}
           >
-            <Trash2 className="mr-2 size-4" />
+            <Trash2 className="mr-2 size-4 min-w-fit" />
             Delete permanently
           </DropdownMenuItem>
         </DropdownMenuContent>

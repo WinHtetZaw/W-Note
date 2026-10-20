@@ -3,8 +3,9 @@ import { ErrorReason } from "@/lib/errors";
 import { requireAuth } from "@/lib/permissions";
 import { getUserPendingInvitationById } from "../server/queries/get-user-pending-invitation-by-id";
 import z from "zod";
+import { hashInvitationToken } from "./hash-invitation-token";
 
-const schema = z.object({ invitationId: z.uuid() });
+const schema = z.object({ token: z.string() });
 
 type IncomingData = z.infer<typeof schema>;
 
@@ -21,11 +22,10 @@ export async function userPendingInvitationByIdService(rawData: IncomingData) {
     return fail({ reason: authError.reason });
   }
 
+  const hashedToken = hashInvitationToken(validated.data.token);
   // ─── DB Operation ───────────────────────────────────
   try {
-    const invitation = await getUserPendingInvitationById(
-      validated.data.invitationId,
-    );
+    const invitation = await getUserPendingInvitationById(hashedToken);
 
     if (!invitation) {
       return fail({ reason: ErrorReason.InvitationNotFound });

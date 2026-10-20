@@ -6,7 +6,7 @@ import { redirect } from "next/navigation";
 import { ErrorCode } from "@/lib/errors";
 import { fetchWorkspaceUsageService } from "../../services/fetch-workspace-usage-service";
 
-export async function fetchWorkspaceusage(workspaceId: string) {
+export async function fetchWorkspaceUsage(workspaceId: string) {
   const [error, workspaceUsage] = await fetchWorkspaceUsageService({
     workspaceId,
   });
