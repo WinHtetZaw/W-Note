@@ -16,11 +16,9 @@ import { ConfirmPasswordDialog } from "./confirm-password-dialog";
 import { fetchOwnWorkspaces } from "@/features/workspaces/server/actions/fetch-own-workspaces";
 import { toast } from "sonner";
 import { errorMessages } from "@/lib/errors";
-import WorkspaceResolutionDialog from "./delete-account-blocked-dialg";
 import { OwnWorkspaces } from "@/features/workspaces/types";
 import DeleteAccountBlockedDialog from "./delete-account-blocked-dialg";
 import { hasPasswordAccount } from "@/features/auth/services/has-password-account";
-import { authClient } from "@/lib/auth/auth-client";
 import DeleteAccountWithEmailConfirmationDilog from "./delete-account-with-email-confirmatin-dialog";
 
 type Props = {
@@ -74,8 +72,8 @@ export default function DeleteAccountDialog(props: Props) {
             <Trash2 className="h-10 w-10 text-red-400" />
           </div>
 
-          <AlertDialogTitle className="text-center text-3xl font-black">
-            Delete Account
+          <AlertDialogTitle className="text-center block w-full text-3xl font-black">
+            Account Delete
           </AlertDialogTitle>
 
           <AlertDialogDescription className="mt-4 text-center text-base leading-7 text-zinc-400">
@@ -83,11 +81,11 @@ export default function DeleteAccountDialog(props: Props) {
           </AlertDialogDescription>
         </AlertDialogHeader>
 
-        <div className="mt-6 rounded-2xl border border-red-500/20 bg-red-500/5 p-5">
-          <p className="text-sm leading-6 text-zinc-400">
+        <div className="mt-6 rounded-2xl glass-red p-5">
+          <em className="text-sm leading-6 text-muted">
             Deleting your account will remove all your data from our servers.
             This permanently deletes your account and cannot be undone.
-          </p>
+          </em>
         </div>
         {/* <ConfirmPasswordDialog
           setDeleteDialogOpen={setDeleteDialogOpen}
@@ -127,13 +125,13 @@ export default function DeleteAccountDialog(props: Props) {
         />
 
         <AlertDialogFooter className="mt-8">
-          <AlertDialogCancel className="rounded-2xl border-white/10 bg-white/5 hover:bg-white/10">
-            Cancel
-          </AlertDialogCancel>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
 
           <AlertDialogAction
             onClick={handleConfirmOpen}
-            className="rounded-2xl bg-red-500 hover:bg-red-400"
+            variant="destructive"
+            className="text-foreground"
+            disabled={isPending}
           >
             Delete Account
           </AlertDialogAction>

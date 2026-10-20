@@ -16,7 +16,7 @@ export default async function PersonalInfoCard() {
   return (
     <section className="rounded-[32px] p-8 glass">
       <SectionHeader
-        icon={<User className="h-5 w-5" />}
+        icon={<User className="size-5" />}
         title="Personal Information"
         description="Update the information associated with your account."
       />
@@ -44,7 +44,7 @@ export default async function PersonalInfoCard() {
       </div> */}
       <div className="mt-8 flex flex-col gap-8">
         <div className="flex items-center gap-5">
-          <div className="flex h-20 w-20 items-center uppercase justify-center rounded-full bg-violet-600 text-2xl font-black">
+          <div className="flex  size-20 items-center uppercase justify-center rounded-full bg-violet-600 text-2xl font-black">
             {userName[0]}
           </div>
 
@@ -67,21 +67,11 @@ export function PersonalInfoCardLoading() {
       <div className="mt-8 flex flex-col gap-8">
         <div className="flex items-center gap-5">
           <div className="flex h-20 w-20 items-center uppercase justify-center rounded-full bg-violet-600 text-2xl font-black"></div>
-
-          <div>
-            <h3 className="font-semibold">Profile Photo</h3>
-
-            <p className="mt-1 text-sm text-zinc-500">
-              JPG, PNG or WebP. Maximum 5MB.
-            </p>
-
-            <Skeleton className="mt-3 rounded-xl h-9.5 w-38" />
+          <div className="flex flex-1 flex-col">
+            <Skeleton className="h-8 w-24 rounded-xl mb-4" />
+            <Skeleton className="h-12 rounded-2xl mb-5" />
+            <Skeleton className="h-12 w-40 rounded-2xl ml-auto" />
           </div>
-        </div>
-
-        <div className="flex flex-col w-2/3 gap-6">
-          <Skeleton className="h-12 rounded-2xl" />
-          <Skeleton className="h-12 w-40 rounded-2xl ml-auto" />
         </div>
       </div>
     </section>

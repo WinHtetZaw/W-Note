@@ -44,7 +44,7 @@ export function DashboardSidebarContent({
           currentName={workspaceName}
         />
 
-        <CreateNoteButton workspaceId={workspaceId} className="w-full" />
+        <CreateNoteButton workspaceId={workspaceId} className="w-full h-12" />
 
         <div>
           <p className="mb-3 px-4 text-xs font-semibold tracking-wider text-zinc-500 uppercase">

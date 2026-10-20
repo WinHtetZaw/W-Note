@@ -9,6 +9,7 @@ import MainLoading from "@/components/ui/main-loading";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import UsageOverview from "@/features/billing/components/usage-overview";
+import BackButton from "@/components/ui/back-button";
 
 type Props = {
   params: Promise<{ workspaceId: string }>;
@@ -16,9 +17,12 @@ type Props = {
 
 export default async function WorkspaceDetailPage({ params }: Props) {
   return (
-    <Suspense fallback={<MainLoading />}>
-      <WorkspaceDetailContent params={params} />
-    </Suspense>
+    <>
+      <BackButton />
+      <Suspense fallback={<MainLoading />}>
+        <WorkspaceDetailContent params={params} />
+      </Suspense>
+    </>
   );
 }
 

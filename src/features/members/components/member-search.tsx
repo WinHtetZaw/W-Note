@@ -11,7 +11,7 @@ interface Props {
 
 export default function MemberSearch({ value, onChange }: Props) {
   return (
-    <div className="flex h-11 items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-5 py-4 backdrop-blur-xl">
+    <div className="flex items-center gap-3 rounded-3xl border border-white/10 bg-white/5 px-5 py-4 backdrop-blur-xl">
       <Search className="size-5 text-zinc-500" />
 
       <input

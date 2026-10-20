@@ -1,5 +1,6 @@
 import PageHead from "@/components/dashboard/page-head";
 import SectionHeader from "@/components/dashboard/section-header";
+import BackButton from "@/components/ui/back-button";
 import MainLoading from "@/components/ui/main-loading";
 import GeneralCard from "@/features/settings/components/general-card";
 import NotificationsCard from "@/features/settings/components/notifications-card";
@@ -16,6 +17,7 @@ type Props = {
 export default function SettingsPage({ params }: Props) {
   return (
     <>
+      <BackButton />
       <Suspense fallback={<MainLoading />}>
         <SettingPageContent params={params} />
       </Suspense>

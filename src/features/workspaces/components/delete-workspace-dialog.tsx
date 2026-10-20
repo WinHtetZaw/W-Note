@@ -56,20 +56,20 @@ export default function DeleteWorkspaceDialog(props: Props) {
 
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
-      <AlertDialogContent className="min-w-124 rounded-3xl p-8 glass">
+      <AlertDialogContent className="min-w-50 lg:min-w-124 rounded-3xl p-6 lg:p-8 glass">
         <AlertDialogHeader className="w-full">
-          <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-red-500/10">
+          <div className="mx-auto mb-6 flex size-20 items-center justify-center rounded-full bg-red-500/10">
             <Trash className="size-10 text-destructive" />
           </div>
 
-          <AlertDialogTitle className="text-center text-3xl font-black text-white">
+          <AlertDialogTitle className="text-center text-3xl font-black">
             Delete Workspace
           </AlertDialogTitle>
 
-          <AlertDialogDescription className="mt-4 text-base leading-7 text-muted">
+          <AlertDialogDescription className="mt-4 text-base text-muted">
             <span className="block text-lg">
               <strong>This action cannot be undone.</strong>
-            </span>{" "}
+            </span>
             All notes, folders, AI usage history, and workspace members will be
             permanently removed.
           </AlertDialogDescription>
@@ -83,16 +83,10 @@ export default function DeleteWorkspaceDialog(props: Props) {
         </div>
         <AlertDialogFooter className="mt-8 justify-between bg-transparent">
           <AlertDialogCancel asChild>
-            <Button variant={"outline"} className="text-white">
-              Cancel
-            </Button>
+            <Button variant={"outline"}>Cancel</Button>
           </AlertDialogCancel>
 
-          <AlertDialogAction
-            onClick={handleDelete}
-            disabled={isDeletePending}
-            className="h-12 rounded-2xl bg-red-500 hover:bg-red-400"
-          >
+          <AlertDialogAction onClick={handleDelete} disabled={isDeletePending}>
             {isDeletePending ? "Deleting..." : "Delete Workspace"}
           </AlertDialogAction>
         </AlertDialogFooter>

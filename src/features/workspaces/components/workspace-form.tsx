@@ -29,12 +29,13 @@ export default function WorkspaceForm({ initialValues, workspaceId }: Props) {
 
   const handleCreate = async (values: WorkspaceFormValues) => {
     const result = await createWorkspace(values);
-    if (!result.success) {
+    if (result.code) {
       toast.error("Fail to create workspace.");
-    } else {
-      toast.success("Workspace created successfully.");
-      router.push(`/dashboard/w/${result.data.id}`);
+      return;
     }
+
+    toast.success("Workspace created successfully.");
+    router.push(`/dashboard/w/${result.data.id}`);
   };
 
   const handleRename = async (
@@ -58,23 +59,21 @@ export default function WorkspaceForm({ initialValues, workspaceId }: Props) {
   };
 
   return (
-    <>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <FormInput
-          control={form.control}
-          name="name"
-          label="Workspace Name"
-          placeholder="Enter your workspace name ..."
-        />
+    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <FormInput
+        control={form.control}
+        name="name"
+        label="Workspace Name"
+        placeholder="Enter your workspace name ..."
+      />
 
-        <FormSubmitButton
-          className="md:w-fit md:ml-auto flex"
-          isPending={isPending}
-        >
-          <Save className="size-5" />
-          {workspaceId ? "Save Changes" : "Create Workspace"}
-        </FormSubmitButton>
-      </form>
-    </>
+      <FormSubmitButton
+        className="w-full md:w-fit md:ml-auto flex"
+        isPending={isPending}
+      >
+        <Save className="size-5" />
+        {workspaceId ? "Save Changes" : "Create Workspace"}
+      </FormSubmitButton>
+    </form>
   );
 }

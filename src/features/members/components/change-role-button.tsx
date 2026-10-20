@@ -51,7 +51,7 @@ export default function ChangeRoleButton(props: Props) {
           Change Role
         </DropdownMenuSubTrigger>
         <DropdownMenuPortal>
-          <DropdownMenuSubContent className="p-2 w-48">
+          <DropdownMenuSubContent className="p-2 max-sm:-mt-27.5 max-sm:ml-[100%] max-sm:data-[side=right]:-ml-32">
             <DropdownMenuItem
               onClick={() => handleUpdateRole("admin")}
               className="h-11 cursor-pointer rounded-xl"

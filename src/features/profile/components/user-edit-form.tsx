@@ -48,11 +48,12 @@ export default function UserEditForm({ userName }: Props) {
       toast.success("Successfully updated name");
     });
   };
+
   return (
     <>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col gap-6 w-2/3"
+        className="flex flex-1 flex-col gap-6 w-2/3"
       >
         <FormInput
           control={form.control}
@@ -64,7 +65,7 @@ export default function UserEditForm({ userName }: Props) {
         />
         <FormSubmitButton
           isPending={isPending}
-          className="mr-auto font-semibold h-12"
+          className="md:ml-auto font-semibold h-12"
         >
           Save Changes
         </FormSubmitButton>

@@ -1,3 +1,4 @@
+import BackButton from "@/components/ui/back-button";
 import MainLoading from "@/components/ui/main-loading";
 import BillingPageContent from "@/features/billing/components/billing-page-content";
 import { Suspense } from "react";
@@ -10,8 +11,11 @@ type BillingPageProps = {
 
 export default async function Page({ params }: BillingPageProps) {
   return (
-    <Suspense fallback={<MainLoading />}>
-      <BillingPageContent params={params} />
-    </Suspense>
+    <>
+      <BackButton />
+      <Suspense fallback={<MainLoading />}>
+        <BillingPageContent params={params} />
+      </Suspense>
+    </>
   );
 }

@@ -60,7 +60,7 @@ export default function InputSearch() {
 
   return (
     <div className="mt-12  flex items-center gap-4">
-      <InputGroup className="group h-11 flex-1 pl-2">
+      <InputGroup className="group flex-1 pl-2">
         <InputGroupInput
           className=" h-auto placeholder:text-zinc-500 placeholder:tracking-wider"
           value={value}
@@ -86,7 +86,7 @@ export default function InputSearch() {
         // onClick={handleSearchParamsClear}
         onClick={handleSearch}
         variant="outline"
-        className="size-11 p-0"
+        className="size-14 p-0 rounded-3xl"
       >
         <Search className="size-5 text-muted group-focus-within:text-zinc-200" />
       </Button>

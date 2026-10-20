@@ -13,7 +13,11 @@ export async function DashboardSidebar({ params }: Props) {
   const currentWorkspace = await fetchWorkspace(currentWsId.workspaceId);
   const workspacesData = await fetchUserWorkspaces();
 
-  if (!currentWorkspace.data || !workspacesData.data) {
+  if (!currentWorkspace.data) {
+    return redirect("/dashboard/w");
+  }
+
+  if (!workspacesData.data || workspacesData.data.length === 0) {
     return redirect("/dashboard/w/new");
   }
 

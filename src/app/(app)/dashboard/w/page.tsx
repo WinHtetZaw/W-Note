@@ -8,16 +8,20 @@ import PageHead from "@/components/dashboard/page-head";
 import { SubscriptionPlans } from "@/features/billing/constants/billing.constants";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
+import BackButton from "@/components/ui/back-button";
 
 export default function WorkspacePage() {
   return (
-    <>
+    <div className="min-h-svh flex flex-col">
       <Header />
-      <Suspense fallback={<MainLoading />}>
-        <WorkspacePageContent />
-      </Suspense>
+      <div className="page-container p-6 lg:px-8 lg:py-12">
+        <BackButton />
+        <Suspense fallback={<MainLoading />}>
+          <WorkspacePageContent />
+        </Suspense>
+      </div>
       <Footer />
-    </>
+    </div>
   );
 }
 
@@ -52,7 +56,7 @@ async function WorkspacePageContent() {
   >;
 
   return (
-    <div className="wax-w-5xl mx-auto p-6 lg:p-8">
+    <>
       <PageHead
         pageLabel="Workspaces"
         title="Choose a workspace"
@@ -153,6 +157,6 @@ async function WorkspacePageContent() {
           </Link>
         </div>
       )}
-    </div>
+    </>
   );
 }
