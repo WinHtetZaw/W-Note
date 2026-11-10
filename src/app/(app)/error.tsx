@@ -12,9 +12,9 @@ type ErrorPageProps = {
 };
 
 export default function Error({ error, reset }: ErrorPageProps) {
-  useEffect(() => {
-    console.error(error);
-  }, [error]);
+  // useEffect(() => {
+  //   console.error(error);
+  // }, [error]);
 
   return (
     <main className="relative flex min-h-svh items-center justify-center overflow-hidden bg-zinc-950 px-6">

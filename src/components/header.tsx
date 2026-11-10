@@ -30,11 +30,11 @@ export default async function Header({ isAuthPage }: { isAuthPage?: boolean }) {
               <Suspense fallback={<Skeleton className="h-5 w-20 rounded-xl" />}>
                 <AuthCheckLink />
               </Suspense>
-              <Suspense
+              {/* <Suspense
                 fallback={<Skeleton className="size-10 rounded-full" />}
               >
                 <ProfileLink />
-              </Suspense>
+              </Suspense> */}
             </>
           )}
         </nav>
@@ -49,7 +49,12 @@ async function AuthCheckLink() {
   return (
     <>
       {session?.user ? (
-        <SignOutButton className="h-8 px-2 text-link transition hover:text-violet-500" />
+        <>
+          <SignOutButton className="h-8 px-2 text-link transition hover:text-violet-500" />
+          <Suspense fallback={<Skeleton className="size-10 rounded-full" />}>
+            <ProfileLink />
+          </Suspense>
+        </>
       ) : (
         <NavLink href="/sign-in">Sign In</NavLink>
       )}

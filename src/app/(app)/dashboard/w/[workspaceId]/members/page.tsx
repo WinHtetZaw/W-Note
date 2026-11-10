@@ -4,7 +4,7 @@ import InvitationButton from "@/features/invitations/components/invitation-butto
 import InvitationList from "@/features/invitations/components/invitation-list";
 import MembersPage from "@/features/members/components/members-page";
 import { fetchMembers } from "@/features/members/server/actions/fetch-members";
-import { fetchUserWorkspace } from "@/features/workspaces/server/actions/fetch-user-workspace";
+import groupMembersByRole from "@/features/members/utils/group-member-by-role";
 import { fetchUserWorkspaceRole } from "@/features/workspaces/server/actions/fetch-usre-workspace-role";
 import { Suspense } from "react";
 
@@ -37,6 +37,8 @@ async function MembersPageWrapper({ params }: Props) {
   if (!membersResult.data) {
     return <p>fail to fetch members</p>;
   }
+
+  console.log(groupMembersByRole(membersResult.data));
 
   return (
     <MembersPage

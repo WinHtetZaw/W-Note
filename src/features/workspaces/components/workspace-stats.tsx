@@ -2,6 +2,7 @@ import { FileText, FolderTree, Users } from "lucide-react";
 import { fetchWorkspaceOverview } from "../server/actions/fetch-workspace-overview";
 import { formatNumber } from "@/utils/formatting";
 import { Skeleton } from "@/components/ui/skeleton";
+import { notFound } from "next/navigation";
 
 type Props = {
   workspaceId: string;
@@ -10,10 +11,9 @@ type Props = {
 export default async function WorkspaceStats({ workspaceId }: Props) {
   const result = await fetchWorkspaceOverview(workspaceId);
 
-  if (result.code)
-    return (
-      <p className="mt-8 text-muted text-center">Something wrong. Try again.</p>
-    );
+  if (result.code) {
+    return null;
+  }
 
   const { noteCount, folderCount, memberCount } = result.data;
 
@@ -30,7 +30,7 @@ export default async function WorkspaceStats({ workspaceId }: Props) {
           key={label}
           className="p-6 glass rounded-3xl gap-6 flex flex-row-reverse lg:flex-col items-center"
         >
-          <h3 className="text-2xl lg:text-4xl font-black ml-auto lg:mr-0">
+          <h3 className="text-2xl lg:text-4xl font-black ml-auto lg:ml-0">
             {formatNumber(value)}
           </h3>
           <div className="flex flex-row-reverse min-w-32 lg:min-w-auto lg:flex-row gap-2 items-center lg:justify-between">

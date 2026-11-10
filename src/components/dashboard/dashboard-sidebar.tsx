@@ -1,4 +1,4 @@
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { fetchUserWorkspaces } from "@/features/workspaces/server/actions/fetch-user-workspaces";
 import { fetchWorkspace } from "@/features/workspaces/server/actions/fetch-workspace";
 import { DashboardSidebarContent } from "./dashboard-sidebar-content";
@@ -14,7 +14,7 @@ export async function DashboardSidebar({ params }: Props) {
   const workspacesData = await fetchUserWorkspaces();
 
   if (!currentWorkspace.data) {
-    return redirect("/dashboard/w");
+    return notFound();
   }
 
   if (!workspacesData.data || workspacesData.data.length === 0) {

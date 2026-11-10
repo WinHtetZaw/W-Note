@@ -11,8 +11,7 @@ export default function NotFoundPage() {
     <main className="relative flex min-h-svh items-center justify-center overflow-hidden bg-zinc-950 px-6">
       {/* Background glow */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-        <div className="absolute left-1/2 top-1/3 size-125 -translate-x-1/2 rounded-full bg-violet-500/10 blur-3xl" />
-        <div className="absolute left-1/3 top-1/2 size-75 rounded-full bg-purple-500/5 blur-3xl" />
+        <div className="absolute left-1/2 top-1/2 size-125 -translate-1/2 rounded-full bg-violet-500/10 blur-3xl" />
       </div>
 
       <div className="relative z-10 mx-auto w-full max-w-lg text-center">

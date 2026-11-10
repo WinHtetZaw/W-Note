@@ -32,7 +32,7 @@ export function WorkspaceSwitcher({
     <div className="flex glass rounded-2xl h-14 px-4 gap-4 w-full items-center justify-between pr-0">
       <Link
         href={`/dashboard/w/${currentWorkspaceId}`}
-        className="flex-1 w-full line-clamp-1"
+        className="flex-1 w-full truncate"
       >
         {currentName}
       </Link>

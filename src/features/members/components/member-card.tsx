@@ -19,7 +19,7 @@ export default function MemberCard({
   member,
   currentUserRole,
 }: Props) {
-  console.log(currentUserRole);
+  console.log(currentUserRole, member.role);
   return (
     <div className="relative rounded-[32px] glass p-6">
       <div className="flex flex-col-reverse gap-6 lg:flex-row lg:items-center lg:justify-between">
@@ -56,14 +56,13 @@ export default function MemberCard({
           <RoleBadge role={member.role} />
 
           {/* <StatusBadge status={"offline"} /> */}
-          {currentUserRole !== "owner" ||
-            (member.role !== "owner" && (
-              <MemberActions
-                workspaceId={workspaceId}
-                member={member}
-                currentUserRole={currentUserRole}
-              />
-            ))}
+          {member.role !== "owner" && (
+            <MemberActions
+              workspaceId={workspaceId}
+              member={member}
+              currentUserRole={currentUserRole}
+            />
+          )}
         </div>
       </div>
     </div>

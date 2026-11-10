@@ -2,8 +2,9 @@ import { Button } from "@/components/ui/button";
 import EmptyState from "@/components/ui/empty-state";
 import { Skeleton } from "@/components/ui/skeleton";
 import { fetchNotes } from "@/features/notes/server/actions/fetch-notes";
-import { FileText } from "lucide-react";
+import { ArrowRight, FileText } from "lucide-react";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
 type Props = {
   workspaceId: string;
@@ -16,15 +17,11 @@ export default async function RecentNotesList({ workspaceId }: Props) {
   });
 
   if (errorCode) {
-    return (
-      <p className="mt-8 text-center text-sm text-muted">
-        Something went wrong. Try again.
-      </p>
-    );
+    return notFound();
   }
 
   return (
-    <div className="mt-8 space-y-4">
+    <div className="mt-8 flex flex-col gap-4">
       {notes.length === 0 ? (
         <EmptyState
           title=" No Notes yet."
@@ -50,6 +47,14 @@ export default async function RecentNotesList({ workspaceId }: Props) {
             </Button>
           ))}
         </>
+      )}
+      {notes.length > 0 && (
+        <Link
+          href={`/dashboard/w/${workspaceId}/notes`}
+          className="flex ml-auto items-center min-w-fit gap-2 text-sm text-muted hover:text-foreground"
+        >
+          View all <ArrowRight className="size-4" />
+        </Link>
       )}
     </div>
   );

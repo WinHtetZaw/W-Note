@@ -9,6 +9,7 @@ import {
   Sparkles,
   Users,
 } from "lucide-react";
+import { notFound } from "next/navigation";
 
 type UsageOverviewProps = {
   workspaceId: string;
@@ -81,7 +82,8 @@ export default async function UsageOverview({
   const result = await fetchWorkspaceUsage(workspaceId);
 
   if (result.code) {
-    throw new Error("Fail to fetch workspace usage.");
+    // throw new Error("Fail to fetch workspace usage.");
+    return notFound();
   }
 
   const usage = result.data;

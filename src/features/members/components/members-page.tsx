@@ -6,6 +6,7 @@ import MemberCard from "./member-card";
 import { Member } from "../utils/types";
 import PageHead from "@/components/dashboard/page-head";
 import { WorkspaceRole } from "../types";
+import MembersList from "./members-list";
 
 interface Props {
   workspaceId: string;
@@ -58,7 +59,7 @@ export default function MembersPage(props: Props) {
           </span>
         </div>
 
-        <div className="space-y-6">
+        {/* <div className="space-y-6">
           {filteredMembers.length === 0 ? (
             <EmptyState
               title="No members found"
@@ -74,7 +75,13 @@ export default function MembersPage(props: Props) {
               />
             ))
           )}
-        </div>
+        </div> */}
+
+        <MembersList
+          filteredMembers={filteredMembers}
+          workspaceId={workspaceId}
+          currentUserRole={currentUserRole}
+        />
       </section>
       {invitationList}
     </div>

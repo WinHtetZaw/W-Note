@@ -29,7 +29,7 @@ export function SocialSignInButtons() {
   return (
     <div className="flex flex-col gap-3 items-center">
       <Button
-        className="max-w-70 w-full group flex items-center gap-4"
+        className="w-full group flex items-center gap-4"
         variant="outline"
         disabled={loadingProvider !== null}
         onClick={() => handleSocialSignIn("google")}
@@ -41,7 +41,7 @@ export function SocialSignInButtons() {
       </Button>
 
       <Button
-        className="max-w-70 w-full group flex items-center gap-4"
+        className="w-full group flex items-center gap-4"
         variant="outline"
         disabled={loadingProvider !== null}
         onClick={() => handleSocialSignIn("github")}
