@@ -34,6 +34,7 @@ export async function createFolderService(rawData: CreateFolderInput) {
 
   // ─── DB Operation ───────────────────────────────────────────────────
   try {
+    console.info("[CREATE_FOLDER] Started");
     const [error, folder] = await createFolderAtomic({
       workspaceId,
       name,

@@ -34,7 +34,7 @@ export async function createFolderAtomic(input: CreateFolderAtomicInput) {
     );
 
     // Check plan limit
-    const quota = await checkPlanLimit(workspaceId, "notes", folderCount);
+    const quota = await checkPlanLimit(workspaceId, "folders", folderCount);
 
     if (!quota.allowed) {
       return fail({ reason: ErrorReason.PlanLimitReached });
