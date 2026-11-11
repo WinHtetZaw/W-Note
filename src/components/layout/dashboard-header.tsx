@@ -4,13 +4,18 @@ import HeaderSearch from "../dashboard/header-search";
 import BurgerMenu from "../ui/burger-menu";
 import { Skeleton } from "../ui/skeleton";
 import ProfileLink from "../ui/profile-link";
+import SignOutButton from "@/features/auth/components/sign-out-button";
 
 export default async function DashboardHeader() {
   return (
     <header className="sticky top-0 z-40 header-bg">
       <div className="flex h-20 items-center justify-between px-6">
         <BurgerMenu />
-        <Suspense fallback={<p>search fallbak</p>}>
+        <Suspense
+          fallback={
+            <Skeleton className="hidden sm:block rounded-2xl h-11 w-100" />
+          }
+        >
           <HeaderSearch />
         </Suspense>
 
@@ -26,7 +31,9 @@ export default async function DashboardHeader() {
             <ProfileLink />
           </Suspense>
 
-          <ThemeToggle />
+          <SignOutButton className="h-8 px-2 text-link transition" />
+
+          {/* <ThemeToggle /> */}
         </div>
       </div>
     </header>

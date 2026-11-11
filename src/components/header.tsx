@@ -50,10 +50,10 @@ async function AuthCheckLink() {
     <>
       {session?.user ? (
         <>
-          <SignOutButton className="h-8 px-2 text-link transition hover:text-violet-500" />
           <Suspense fallback={<Skeleton className="size-10 rounded-full" />}>
             <ProfileLink />
           </Suspense>
+          <SignOutButton className="h-8 px-2 text-link transition hover:text-violet-500" />
         </>
       ) : (
         <NavLink href="/sign-in">Sign In</NavLink>

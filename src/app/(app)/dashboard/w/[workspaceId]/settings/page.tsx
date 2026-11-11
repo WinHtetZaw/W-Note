@@ -35,7 +35,8 @@ async function SettingPageContent({ params }: Props) {
       />
 
       {/* Grid */}
-      <div className="mt-10 grid gap-6 xl:grid-cols-[1fr_350px]">
+      {/* <div className="mt-10 grid gap-6 xl:grid-cols-[1fr_350px]"> */}
+      <div className="mt-10 space-y-10">
         {/* Left */}
         <div className="space-y-6">
           <GeneralCard params={params} />

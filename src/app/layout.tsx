@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/providers/theme-provider";
 import { inter, plusJakarta } from "@/components/ui/fonts";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -39,8 +40,8 @@ export default function RootLayout({
     >
       <body className="min-h-svh flex flex-col text-foreground bg-background">
         <ThemeProvider>
-          <Toaster closeButton richColors />
-          {children}
+          <Toaster closeButton />
+          <TooltipProvider>{children}</TooltipProvider>
         </ThemeProvider>
       </body>
     </html>
